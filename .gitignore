@@ -1,4 +1,5 @@
 nbproject/
 log/
 *.yml
-
+*.idea
+*~
