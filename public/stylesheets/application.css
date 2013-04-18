@@ -1,0 +1,55 @@
+body {
+    font-family: "Nimbus Sans L", "Arial Narrow", sans-serif;
+    overflow: hidden;
+    color: #333;
+}
+
+.table {
+    display: table;
+    width: 100%;
+}
+
+.row {
+    display: table-row;
+}
+
+.cell {
+    display: table-cell;
+    padding: 5px;
+}
+
+.lightblueCell {
+    background-color: #cfe7f5;
+    border-radius: 8px;
+    width: 150px;
+    padding: 8px;
+    text-align: center;
+}
+
+.borderedCell {
+    border: 1px solid #666;
+    border-radius: 8px;
+    width: 150px;
+    padding: 8px;
+    text-align: center;
+    background-color: #fff;
+}
+
+.gray {
+    background-color: #eee;
+}
+
+.red {
+    color: #fff;
+    background-color: red;
+}
+
+.green {
+    color: #fff;
+    background-color: #83b56b;
+}
+
+.blue {
+    color: #fff;
+    background-color: #438dcb;
+}
