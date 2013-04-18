@@ -1,0 +1,47 @@
+<html>
+      <head>
+        <title>Announcements</title>
+        <style>
+          td{
+              font-size: 35;
+          }
+          td.even{
+            background-color: graytext;
+          }
+          td.odd{
+              background-color: #ffffff;
+          }
+        </style>
+
+      </head>
+
+      <body  >
+
+        <div align="center" style="text-align:center;border: 1px solid black; border-radius: 15px; height:80px;width: 95%;margin-top:40px; margin-left: 40px; background-color: #87ceeb;" >
+
+          <img src="/images/announcements.png" align="left"  style="height: 80%; top:20%" />
+
+          <font face="arial" size="25"  >ANNOUNCEMENTS</font>
+
+          <img src="/images/coatOfArms.png" align="right"  style="height: 80%; top:20%" />
+        </div>
+
+        <div align="center" style="border: 1px solid black; border-radius: 15px; height:600px;width: 95%;margin-top:40px; margin-left: 40px; " >
+
+           <table width="100%" >
+             <% @announcements.each do |announcement| %>
+                <ul>
+                  <tr><td class=<%= cycle('odd','even') %> ><li><%= announcement.heading %></td></tr>
+                  <tr><td class=<%= cycle('odd','even') %> ><li><%= announcement.heading %></td></tr>
+                </ul>
+
+
+             <% end %>
+
+           </table>
+
+
+        </ul>
+          </div>
+      </body>
+</html>
