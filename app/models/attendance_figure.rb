@@ -4,4 +4,5 @@ class AttendanceFigure < ActiveRecord::Base
 
   belongs_to :location_tag, :foreign_key => :location_tag_id
 
+
 end
