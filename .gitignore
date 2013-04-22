@@ -2,3 +2,5 @@ nbproject/
 log/
 *.yml
 tmp/
+*.idea
+*~
