@@ -19,6 +19,13 @@ class Stats < WEBrick::HTTPServlet::AbstractServlet
 
   def print_result(request)
 
+=begin
+
+    settings = YAML.load_file("database.yml") rescue {}
+
+
+=end
+
     settings = YAML.load_file("database.yml")[ARGV[0]] rescue {}
 
     host = settings["host"] || "localhost"
@@ -37,14 +44,15 @@ class Stats < WEBrick::HTTPServlet::AbstractServlet
         "GROUP BY location_id, DATE(obs_datetime);")
 
     result = {
-      "locations" => {}
+      "locations" => []
     }
 
     (0..(rs.num_rows - 1)).each do |i|
 
       row = rs.fetch_row
       
-      result["locations"][row[3]] = {
+      result["locations"] << {
+        "location name" => row[3],
         "date" => row[2],
         "number of patients" => row[1],
         "location id" => row[0]

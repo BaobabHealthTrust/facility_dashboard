@@ -13,7 +13,8 @@ ActiveRecord::Schema.define(:version => 20130418120823) do
 
   create_table "attendance_figures", :primary_key => "attendance_figure_id", :force => true do |t|
     t.integer  "attendance_figure"
-    t.integer  "location_tag_id"
+    t.datetime "attendance_figure_day"
+    t.string   "location_created"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
