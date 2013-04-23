@@ -19,4 +19,5 @@ class AttendanceFigure < ActiveRecord::Base
 
   end
 
+
 end

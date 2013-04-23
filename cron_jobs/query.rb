@@ -22,82 +22,53 @@ class Stats < WEBrick::HTTPServlet::AbstractServlet
 =begin
 
     settings = YAML.load_file("database.yml") rescue {}
-
+    YAML.load(File.open(File.join(RAILS_ROOT, "config/database.yml"), "r"))['bart']
 
 =end
 
-    settings = YAML.load_file("database.yml")[ARGV[0]] rescue {}
-
-    host = settings["host"] || "localhost"
-
-    user = settings["username"]
-
-    pass = settings["password"]
-
-    db = settings["database"]
-
-    con = Mysql.connect(host, user, pass, db)
-
-    rs = con.query("SELECT DISTINCT location_id, COUNT(*) number_of_patients, " +
-        "DATE(obs_datetime) date_of_encounter, (SELECT name FROM location " +
-        "WHERE location.location_id = obs.location_id) location_name FROM obs " +
-        "GROUP BY location_id, DATE(obs_datetime);")
+    settings = YAML.load_file("cron_jobs/database.yml")
 
     result = {
-      "locations" => []
+        "locations" => []
     }
 
-    (0..(rs.num_rows - 1)).each do |i|
+    settings.each_key{|key|
 
-      row = rs.fetch_row
+      host = settings[key]["host"] || "localhost"
 
-      result["locations"] << {
-        "location name" => row[3],
-        "date" => row[2],
-        "number of patients" => row[1],
-        "location id" => row[0]
-      }
+      user = settings[key]["username"]
 
-    end
+      pass = settings[key]["password"]
+
+      db = settings[key]["database"]
+
+      con = Mysql.connect(host, user, pass, db)
+
+      rs = con.query("SELECT DISTINCT location_id, COUNT(*) number_of_patients, " +
+                         "DATE(obs_datetime) date_of_encounter, (SELECT name FROM location " +
+                         "WHERE location.location_id = obs.location_id) location_name FROM obs " +
+                         "GROUP BY location_id, DATE(obs_datetime);")
+
+
+
+      (0..(rs.num_rows - 1)).each do |i|
+
+        row = rs.fetch_row
+
+        result["locations"] << {
+            "location name" => row[3],
+            "date" => row[2],
+            "number of patients" => row[1],
+            "location id" => row[0]
+        }
+
+      end
+
+
+    }
+
 
     return 200, "text/html", result.to_json
-  end
-
-
-  def get_encounters
-
-    settings = YAML.load_file("database.yml")[ARGV[0]] rescue {}
-
-    host = settings["host"] || "localhost"
-
-    user = settings["username"]
-
-    pass = settings["password"]
-
-    db = settings["database"]
-
-    con = Mysql.connect(host, user, pass, db)
-
-    counts = []
-
-    results = con.query( "SELECT count(*) indicator_value, DATE(encounter_datetime) indicator_date," +
-                             "(SELECT name FROM encounter_type WHERE encounter_type_id = encounter_type)" +
-                             "indicator_type FROM encounter GROUP BY indicator_type, indicator_date;")
-
-    (0..(results.num_rows -1)).each do |i|
-
-      row = results.fetch_row
-
-      counts << {
-          "date" => row[1],
-          "indicator_value" => row[0],
-          "indicator_type" => row[2]
-      }
-
-    end
-
-    return 200, "text/html", counts.to_json
-
   end
 
 end

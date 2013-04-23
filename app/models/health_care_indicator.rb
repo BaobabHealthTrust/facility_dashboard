@@ -4,7 +4,7 @@ class HealthCareIndicator < ActiveRecord::Base
 
   def update_values
 
-    results = JSON.parse(RestClient.get("http://0.0.0.0:8000/encounters"))
+    results = JSON.parse(RestClient.get("http://0.0.0.0:8001/encounters"))
 
     results.each do |indicator|
 
@@ -18,5 +18,6 @@ class HealthCareIndicator < ActiveRecord::Base
 
 
   end
+
 
 end
