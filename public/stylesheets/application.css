@@ -2,6 +2,7 @@ body {
     font-family: "Nimbus Sans L", "Arial Narrow", sans-serif;
     overflow: hidden;
     color: #333;
+    -moz-user-select: none;
 }
 
 .table {

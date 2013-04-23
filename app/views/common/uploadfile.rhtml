@@ -1,0 +1,33 @@
+<% form_tag ({:controller => "common", :action => "upload_selected_file"},
+  :multipart => true, :style => "float: left;") do %>
+
+  <input id="upload_path" type="file" name="upload[datafile]" style="font-size: 24px;" />
+
+  <input type="hidden" id="upload_path_url" name="upload_path_url" />
+  
+<% end %>
+
+<input type="button" value="Upload File" style="float: right; font-size: 24px;" onclick="checkParent()" />
+
+<script type="text/javascript">
+  <!--
+
+  function $$(id){
+    return window.parent.document.getElementById(id);
+  }
+
+  function __$(id){
+    return document.getElementById(id);
+  }
+
+  function checkParent(){
+    if($$("upload_path")){
+      $$("upload_path").value = __$("upload_path").value;
+      __$("upload_path_url").value = __$("upload_path").value;
+    }
+
+    document.forms[0].submit();
+  }
+
+  //-->
+</script>
