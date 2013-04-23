@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(:version => 20130418120823) do
     t.string   "indicator_type"
     t.integer  "location_id"
     t.integer  "indicator_value"
+    t.date     "indicator_date"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

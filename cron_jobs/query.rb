@@ -31,7 +31,7 @@ class Stats < WEBrick::HTTPServlet::AbstractServlet
     host = settings["host"] || "localhost"
 
     user = settings["username"]
-    
+
     pass = settings["password"]
 
     db = settings["database"]
@@ -50,7 +50,7 @@ class Stats < WEBrick::HTTPServlet::AbstractServlet
     (0..(rs.num_rows - 1)).each do |i|
 
       row = rs.fetch_row
-      
+
       result["locations"] << {
         "location name" => row[3],
         "date" => row[2],
@@ -61,6 +61,43 @@ class Stats < WEBrick::HTTPServlet::AbstractServlet
     end
 
     return 200, "text/html", result.to_json
+  end
+
+
+  def get_encounters
+
+    settings = YAML.load_file("database.yml")[ARGV[0]] rescue {}
+
+    host = settings["host"] || "localhost"
+
+    user = settings["username"]
+
+    pass = settings["password"]
+
+    db = settings["database"]
+
+    con = Mysql.connect(host, user, pass, db)
+
+    counts = []
+
+    results = con.query( "SELECT count(*) indicator_value, DATE(encounter_datetime) indicator_date," +
+                             "(SELECT name FROM encounter_type WHERE encounter_type_id = encounter_type)" +
+                             "indicator_type FROM encounter GROUP BY indicator_type, indicator_date;")
+
+    (0..(results.num_rows -1)).each do |i|
+
+      row = results.fetch_row
+
+      counts << {
+          "date" => row[1],
+          "indicator_value" => row[0],
+          "indicator_type" => row[2]
+      }
+
+    end
+
+    return 200, "text/html", counts.to_json
+
   end
 
 end

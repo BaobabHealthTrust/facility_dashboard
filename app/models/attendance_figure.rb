@@ -5,8 +5,6 @@ class AttendanceFigure < ActiveRecord::Base
 
   def update_values
 
-
-
     temp_object = JSON.parse(RestClient.get("http://0.0.0.0:8000/stats"))
 
     temp_object["locations"].each do |location|
@@ -18,8 +16,6 @@ class AttendanceFigure < ActiveRecord::Base
       attendance_figure.save
 
     end
-
-
 
   end
 
