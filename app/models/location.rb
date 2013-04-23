@@ -4,4 +4,6 @@ class Location < ActiveRecord::Base
 
   has_many :catchment_areas
 
+  validates_presence_of :name , :creator
+
 end

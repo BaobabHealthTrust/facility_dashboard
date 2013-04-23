@@ -4,6 +4,7 @@ class CreateServices < ActiveRecord::Migration
       t.integer :service_id
       t.string :service_name
       t.integer :location_offered
+      t.boolean :available
       t.timestamps
     end
   end

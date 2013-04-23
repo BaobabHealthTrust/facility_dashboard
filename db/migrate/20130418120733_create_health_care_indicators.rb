@@ -5,6 +5,7 @@ class CreateHealthCareIndicators < ActiveRecord::Migration
       t.string :indicator_type
       t.integer :location_id
       t.integer :indicator_value
+      t.date :indicator_date
       t.timestamps
     end
   end

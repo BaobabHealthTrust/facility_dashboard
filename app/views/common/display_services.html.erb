@@ -1,0 +1,40 @@
+<html>
+<head>
+  <title>services</title>
+  <style>
+      td{
+          font-size: 35;
+      }
+      td.even{
+          background-color: graytext;
+      }
+      td.odd{
+          background-color: #ffffff;
+      }
+  </style>
+
+</head>
+
+<body bgcolor="#f8f8ff"   >
+
+    <div align="center" style="text-align:center;border: 1px solid black; border-radius: 15px; height:80px;width: 95%;margin-top:40px; margin-left: 40px; background-color: #87ceeb;" >
+
+      <font face="arial" size="25"  >AVAILABLE SERVICES</font>
+
+      <img src="/images/coatOfArms.png" align="right"  style="height: 80%; top:20%" />
+    </div>
+
+    <div align="center" style="border: 1px solid black; border-radius: 15px; height:600px;width: 95%;margin-top:40px; margin-left: 40px; " >
+
+      <table width="95%" style="margin-left:0.5%; "  >
+        <% @services .each do |service| %>
+            <ul>
+              <tr><td class=<%= cycle('odd','even') %> ><li><%= service.service_name  %></td></tr>
+              <tr><td class=<%= cycle('odd','even') %> ><li><%= service.service_name  %></td></tr>
+            </ul>
+        <% end %>
+      </table>
+
+    </div>
+</body>
+</html>

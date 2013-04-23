@@ -6,7 +6,7 @@
               font-size: 35;
           }
           td.even{
-            background-color: graytext;
+            background-color: #dcdcdc;
           }
           td.odd{
               background-color: #ffffff;
@@ -15,9 +15,9 @@
 
       </head>
 
-      <body  >
+      <body bgcolor="#f8f8ff"   >
 
-        <div align="center" style="text-align:center;border: 1px solid black; border-radius: 15px; height:80px;width: 95%;margin-top:40px; margin-left: 40px; background-color: #87ceeb;" >
+        <div align="center" style="text-align:center;border: 1px solid black; border-radius: 15px; height:80px;width: 95%;margin-top:40px; margin-left: 40px; background-color: #1e90ff;" >
 
           <img src="/images/announcements.png" align="left"  style="height: 80%; top:20%" />
 
@@ -31,17 +31,13 @@
            <table width="100%" >
              <% @announcements.each do |announcement| %>
                 <ul>
-                  <tr><td class=<%= cycle('odd','even') %> ><li><%= announcement.heading %></td></tr>
-                  <tr><td class=<%= cycle('odd','even') %> ><li><%= announcement.heading %></td></tr>
+                  <tr><td class=<%= cycle('odd','even') %> ><li><%= announcement.heading  %></td></tr>
+                  <tr><td class=<%= cycle('odd','even') %> ><li><%= announcement.heading  %></td></tr>
+
                 </ul>
-
-
              <% end %>
-
            </table>
 
-
-        </ul>
-          </div>
+        </div>
       </body>
 </html>

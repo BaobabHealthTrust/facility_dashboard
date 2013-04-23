@@ -14,6 +14,8 @@ ActiveRecord::Schema.define(:version => 20130418120823) do
   create_table "attendance_figures", :primary_key => "attendance_figure_id", :force => true do |t|
     t.integer  "attendance_figure"
     t.integer  "location_tag_id"
+    t.datetime "attendance_figure_day"
+    t.string   "location_created"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -36,6 +38,7 @@ ActiveRecord::Schema.define(:version => 20130418120823) do
     t.string   "indicator_type"
     t.integer  "location_id"
     t.integer  "indicator_value"
+    t.date     "indicator_date"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -77,6 +80,7 @@ ActiveRecord::Schema.define(:version => 20130418120823) do
   create_table "services", :primary_key => "service_id", :force => true do |t|
     t.string   "service_name"
     t.integer  "location_offered"
+    t.boolean  "available"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
