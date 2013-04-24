@@ -7,4 +7,4 @@ gem 'json', '1.5.0'
 gem 'rake',  '0.8.7'
 gem 'bundler'
 gem "ImageResize", "~> 0.0.5"
-gem "rufus-scheduler", "~> 2.0.18"
+

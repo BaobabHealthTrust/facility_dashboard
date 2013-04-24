@@ -4,7 +4,8 @@ class HealthCareIndicator < ActiveRecord::Base
 
   def update_values
 
-    results = JSON.parse(RestClient.get("http://0.0.0.0:8001/encounters"))
+    results = JSON.parse(RestClient.get("http://0.0.0.0:8001/encounters"))  rescue raise("Start the healthcare indicator
+       servelet (ruby cron_jobs/health_indicators_load.rb)")
 
     results.each do |indicator|
 
