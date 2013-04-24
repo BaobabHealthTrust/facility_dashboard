@@ -1,0 +1,27 @@
+production:
+  adapter: mysql
+  database: dashboard
+  username: username
+  password: password
+  host: localhost
+  pool: 500
+
+development:
+  adapter: mysql
+  database: dashboard
+  username: username
+  password: password
+  host: localhost
+  pool: 500
+
+test: &TEST
+  adapter: mysql
+  database: dashboard
+  username: username
+  password: password
+  host: localhost
+  pool: 500
+
+cucumber:
+  <<: *TEST
+

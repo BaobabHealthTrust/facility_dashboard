@@ -1,29 +1,23 @@
-bwaila_maternity:
-  adapter: mysql
-  encoding: utf8
-  reconnect: false
-  database: bwaila_maternity_live
-  pool: 5
-  username: root
-  password: admin
-  socket: /var/run/mysqld/mysqld.sock
 
 bart2:
   adapter: mysql
   encoding: utf8
   reconnect: false
-  database: bart2
+  database: bart2_db
   pool: 5
-  username: root
-  password: admin
+  username: username
+  password: password
   socket: /var/run/mysqld/mysqld.sock
 
-anc:
+
+
+opd:
   adapter: mysql
   encoding: utf8
   reconnect: false
-  database: anc_development
+  database: opd_db
   pool: 5
-  username: root
-  password: admin
+  username: username
+  password: password
   socket: /var/run/mysqld/mysqld.sock
+

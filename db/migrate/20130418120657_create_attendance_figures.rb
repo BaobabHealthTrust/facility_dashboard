@@ -3,7 +3,7 @@ class CreateAttendanceFigures < ActiveRecord::Migration
     create_table :attendance_figures, :primary_key => :attendance_figure_id do |t|
       t.integer :attendance_figure_id
       t.integer :attendance_figure
-      t.datetime :attendance_figure_day
+      t.date :attendance_figure_day
       t.string :location_created
       t.timestamps
     end
