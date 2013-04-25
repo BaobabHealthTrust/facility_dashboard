@@ -1,7 +1,7 @@
 class AttendanceFigure < ActiveRecord::Base
 
   set_primary_key :attendance_figure_id
-
+  require "rest-client"
 
   def update_values
 
@@ -18,5 +18,6 @@ class AttendanceFigure < ActiveRecord::Base
     end
 
   end
+
 
 end
