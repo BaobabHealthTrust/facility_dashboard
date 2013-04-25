@@ -39,13 +39,16 @@
            border-radius: 10px; padding: 10px; border: 1px solid #999;">
         <table width="100%" cellpadding="10" style="height: 100%;">
           <tr>
-            <td rowspan="6" style="border: 1px solid #000; background-color: #eee;
+            <td rowspan="7" style="border: 1px solid #000; background-color: #eee;
                 width: 50%; vertical-align: top;">
               <iframe id="iframe" src="/common/uploadfile" height="50"
                       target="_self" style="border: none; width: 100%;
                       height: 95%; overflow: auto;">
               </iframe>
               <input type="hidden" id="upload_path" name="upload_path" />
+              <input type="hidden" id="width" name="width" />
+              <input type="hidden" id="height" name="height" />
+              <input type="hidden" id="media_bg_color" name="media_bg_color" />
               <img id="img" alt="" />
             </td>
             <td id="heading_lbl" style="width: 200px; text-align: right; font-size: 24px; height: 40px;">
@@ -68,6 +71,15 @@
           <tr>
             <td style="vertical-align: bottom;">
               &nbsp;
+            </td>
+          </tr>
+          <tr>
+            <td id="duration_lbl" style="width: 200px; text-align: right; font-size: 24px; height: 40px; ">
+              Display<span style="color: #fff">_</span>Time(mins)
+            </td>
+            <td>
+              <input type="text" value="" id="duration" name="duration" style="width: 100%;
+                     font-size: 24px; padding: 10px;" onclick="checkIfNumber(this.id)" />
             </td>
           </tr>
           <tr>
@@ -111,6 +123,24 @@
     alert("<%= flash[:notice] %>");
 <% end %>
 
+  function checkIfNumber(id){
+    if(__$(id)){
+
+      console.log(__$(id).value.trim());
+
+      if(!__$(id).value.trim().match(/^\d+(\.\d+)?$/)){
+        __$(id).style.color = "red";
+        __$(id + "_lbl").style.color = "red";
+      } else {
+        __$(id).style.color = "black";
+        __$(id + "_lbl").style.color = "black";
+      }
+
+      setTimeout("checkIfNumber('" + id + "')", 100);
+    
+    }
+  }
+
   function checkDate(id){
     if(!__$(id).value.trim().match(/^\d{4}\-((0[1-9])|(1[0-2]))\-(([0-2][0-9])|(3[0-1]))$|^$/)){
       __$(id).style.color = "red";
@@ -153,7 +183,7 @@
       case "Advertisement":
 
         __$("heading").value = "";
-        __$("heading").setAttribute("disabled", true);        
+        __$("heading").setAttribute("disabled", true);
         __$("heading_lbl").style.color = "#ccc";
         
         __$("message_text").value = "";
@@ -167,6 +197,10 @@
         __$("end_date").value = "";
         __$("end_date").removeAttribute("disabled");
         __$("end_date_lbl").style.color = "#000";
+
+        __$("duration").value = "";
+        __$("duration").removeAttribute("disabled");
+        __$("duration_lbl").style.color = "#000";
 
         __$("upload_path").value = "";
         __$("iframe").src = "/common/uploadfile";
@@ -191,6 +225,10 @@
         __$("end_date").removeAttribute("disabled");
         __$("end_date_lbl").style.color = "#000";
 
+        __$("duration").value = "";
+        __$("duration").setAttribute("disabled", true);
+        __$("duration_lbl").style.color = "#ccc";
+
         __$("upload_path").value = "";
         __$("iframe").src = "";
 
@@ -213,6 +251,10 @@
         __$("end_date").value = "";
         __$("end_date").removeAttribute("disabled");
         __$("end_date_lbl").style.color = "#000";
+
+        __$("duration").value = "";
+        __$("duration").removeAttribute("disabled");
+        __$("duration_lbl").style.color = "#000";
 
         __$("upload_path").value = "";
         __$("iframe").src = "/common/uploadfile";
@@ -237,6 +279,10 @@
         __$("end_date").setAttribute("disabled", true);
         __$("end_date_lbl").style.color = "#ccc";
 
+        __$("duration").value = "";
+        __$("duration").setAttribute("disabled", true);
+        __$("duration_lbl").style.color = "#ccc";
+
         __$("upload_path").value = "";
         __$("iframe").src = "";
 
@@ -255,7 +301,14 @@
 
         __$("message_text").value = "";
 
-        if(!__$("start_date").value.trim().match(/^\d{4}\-((0[1-9])|(1[0-2]))\-(([0-2][0-9])|(3[0-1]))$/)){
+        if(!__$("duration").value.match(/^\d+(\.\d+)?$/)){
+          alert("Please provide a valid duration!");
+
+          __$("duration").focus();
+
+          valid = false;
+
+        } else if(!__$("start_date").value.trim().match(/^\d{4}\-((0[1-9])|(1[0-2]))\-(([0-2][0-9])|(3[0-1]))$/)){
           alert("Please provide a valid start date!");
 
           __$("start_date").focus();
@@ -330,6 +383,13 @@
           alert("Please write text to display!");
 
           __$("message_text").focus();
+
+          valid = false;
+
+        } else if(!__$("duration").value.match(/^\d+(\.\d+)?$/)){
+          alert("Please provide a valid duration!");
+
+          __$("duration").focus();
 
           valid = false;
 
