@@ -19,12 +19,7 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
 
   def print_result(request)
 
-=begin
 
-    settings = YAML.load_file("database.yml") rescue {}
-    YAML.load(File.open(File.join(RAILS_ROOT, "config/database.yml"), "r"))['bart']
-
-=end
 
     settings = YAML.load_file("cron_jobs/database.yml")
 
@@ -44,16 +39,17 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
 
       con = Mysql.connect(host, user, pass, db)
 
-      attendance_figures = con.query("SELECT DISTINCT location_id, COUNT(*) number_of_patients,
+      attendance_figures = con.query("SELECT DISTINCT location_id, COUNT(distinct person_id) number_of_patients,
                          DATE(obs_datetime) date_of_encounter, (SELECT name FROM location
                          WHERE location.location_id = obs.location_id) location_name FROM obs
-                          WHERE DATE(obs_datetime) IN (current_date,subdate(current_date, 1))
+                          WHERE voided = 0 AND DATE(obs_datetime) IN (current_date,subdate(current_date, 1))
                          GROUP BY location_id, DATE(obs_datetime);")
 
       indicators = con.query("SELECT count(*) indicator_value, DATE(encounter_datetime) indicator_date," +
-           "(SELECT name FROM encounter_type WHERE encounter_type_id = encounter_type)" +
-           "indicator_type FROM encounter WHERE DATE(encounter_datetime) IN (current_date,subdate(current_date, 1))" +
-            "GROUP BY indicator_type, DATE(encounter_datetime);")
+                      "(SELECT name FROM encounter_type WHERE encounter_type_id = encounter_type)" +
+                      "indicator_type FROM encounter WHERE voided = 0 AND "+
+                      "DATE(encounter_datetime) IN (current_date,subdate(current_date, 1))" +
+                      "GROUP BY indicator_type, DATE(encounter_datetime);")
 
       (0..(attendance_figures .num_rows - 1)).each do |i|
 
@@ -63,7 +59,8 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
             "location name" => row[3],
             "date" => row[2],
             "number of patients" => row[1],
-            "location id" => row[0]
+            "location id" => row[0],
+            "facility" => settings[key]["facility"]
         }
 
       end
@@ -75,7 +72,8 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
         result["health_indicator"] << {
             "date" => row[1],
             "indicator_value" => row[0],
-            "indicator_type" => row[2]
+            "indicator_type" => row[2],
+            "facility" => settings[key]["facility"]
         }
 
       end

@@ -37,7 +37,7 @@ class Encs < WEBrick::HTTPServlet::AbstractServlet
 
       results = con.query("SELECT count(*) indicator_value, DATE(encounter_datetime) indicator_date," +
                               "(SELECT name FROM encounter_type WHERE encounter_type_id = encounter_type)" +
-                              "indicator_type FROM encounter GROUP BY indicator_type, DATE(encounter_datetime);")
+                              "indicator_type FROM encounter WHERE voided = 0 AND YEAR(encounter_datetime) = YEAR(current_date) GROUP BY indicator_type, DATE(encounter_datetime);")
 
 
       (0..(results.num_rows - 1)).each do |i|

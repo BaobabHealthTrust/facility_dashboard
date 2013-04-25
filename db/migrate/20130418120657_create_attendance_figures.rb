@@ -4,6 +4,7 @@ class CreateAttendanceFigures < ActiveRecord::Migration
       t.integer :attendance_figure_id
       t.integer :attendance_figure
       t.date :attendance_figure_day
+      t.string :facility
       t.string :location_created
       t.timestamps
     end

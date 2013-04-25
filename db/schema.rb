@@ -14,6 +14,7 @@ ActiveRecord::Schema.define(:version => 20130418120823) do
   create_table "attendance_figures", :primary_key => "attendance_figure_id", :force => true do |t|
     t.integer  "attendance_figure"
     t.date     "attendance_figure_day"
+    t.string   "facility"
     t.string   "location_created"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -36,6 +37,7 @@ ActiveRecord::Schema.define(:version => 20130418120823) do
   create_table "health_care_indicators", :primary_key => "indicator_id", :force => true do |t|
     t.string   "indicator_type"
     t.integer  "indicator_value"
+    t.string   "facility"
     t.date     "indicator_date"
     t.datetime "created_at"
     t.datetime "updated_at"

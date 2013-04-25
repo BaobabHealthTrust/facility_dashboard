@@ -44,10 +44,10 @@ class Stats < WEBrick::HTTPServlet::AbstractServlet
 
       con = Mysql.connect(host, user, pass, db)
 
-      rs = con.query("SELECT DISTINCT location_id, COUNT(*) number_of_patients, " +
+      rs = con.query("SELECT DISTINCT location_id, COUNT(distinct person_id) number_of_patients, " +
                          "DATE(obs_datetime) date_of_encounter, (SELECT name FROM location " +
                          "WHERE location.location_id = obs.location_id) location_name FROM obs " +
-                         "GROUP BY location_id, DATE(obs_datetime);")
+                         "WHERE voided = 0 AND YEAR(obs_datetime) = YEAR(current_date) GROUP BY location_id, DATE(obs_datetime);")
 
 
 
