@@ -1,49 +1,58 @@
 <html>
-    <head>
+  <head>
 
-      <title>
-        Facility Attendance
-      </title>
-      <style>
-          tr{
-              font-size: 35;
-          }
-          tr.even{
-              background-color: #dcdcdc;
-          }
-          tr.odd{
-              background-color: #ffffff;
-          }
-          td{
-              text-align: center;
-          }
-          td.title{
-              text-align:left;
-          }
-      </style>
-    </head>
+    <title>
+      Facility Attendance
+    </title>
+    <style>
+      tr{
+        font-size: 35;
+      }
+      tr.even{
+        background-color: #dcdcdc;
+      }
+      tr.odd{
+        background-color: #ffffff;
+      }
+      td{
+        text-align: center;
+      }
+      td.title{
+        text-align:left;
+      }
+    </style>
+  </head>
 
-    <body bgcolor="#f8f8ff" >
+  <body bgcolor="#f8f8ff" >
 
-        <div align="center" style="text-align:center;border: 1px solid black; border-radius: 15px; height:80px;width: 95%;margin-top:20px; margin-left: 40px; background-color:#1e90ff" >
+    <div align="center" style="text-align:center;border: 1px solid black; border-radius: 15px; height:80px;width: 95%;margin-top:20px; margin-left: 40px; background-color:#1e90ff" >
 
-          <font face="arial" size="25"> FACILITY ATTENDANCE</font>
+      <font face="arial" size="25"> FACILITY ATTENDANCE</font>
 
-          <img src="/images/coatOfArms.png" align="right"  style="height: 80%; top:20%" />
-        </div>
+      <img src="/images/coatOfArms.png" align="right"  style="height: 80%; top:20%" />
+    </div>
 
-        <div align="center" style="border: 1px solid black; border-radius: 15px; height:650px;width: 95%;margin-top:40px; margin-left: 40px; " >
+    <div align="center" style="border: 1px solid black; border-radius: 15px; height:650px;width: 95%;margin-top:40px; margin-left: 40px; " >
 
-          <table width="95%" style="margin-left:0.5%;margin-top: 0.3% "  >
+      <table width="95%" style="margin-left:0.5%;margin-top: 0.3% "  >
 
-            <tr class= <%= cycle("odd","even")%> >
-              <td width="40%">&nbsp</td><td>Today</td><td>This Month</td><td>This Year</td>
-            </tr>
-            <tr class= <%= cycle("odd","even")%> >
-              <td width="40%" class="title" >Total Attendance</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
-            </tr>
-          </table>
+        <tr class= <%= cycle("odd","even")%> >
+          <td width="40%">&nbsp</td><td>Today</td><td>This Month</td><td>This Year</td>
+        </tr>
+        <tr class= <%= cycle("odd","even")%> >
+          <td width="40%" class="title" >Total Attendance</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        </tr>
+      </table>
 
-        </div>
-    </body>
+    </div>
+
+
+    <script type="text/javascript">
+      <!--
+      slideShow(1000);
+
+      setTimeout("window.location = '/common/next_path'", 6000 <%= "+ #{@duration.to_i * 60000}" %>);
+      //-->
+    </script>
+  </body>
 </html>

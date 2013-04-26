@@ -26,46 +26,39 @@
 <div id="coat">
   <img src="/images/coatOfArms.png" alt="" height="60" style="position: absolute; top: 25px; right: 30px;" />
 </div>
-<!--div id="facility" style="background-color: #cfe7f5; position: absolute;
-     bottom: 15px; right: 15px; padding: 5px; font-size: 24px; border-radius: 15px; padding-left: 15px; padding-right: 15px;">
-     <%= @facility %>
-</div-->
 
 <div id="content" style="border-radius: 10px; border: 1px solid #999; margin: 10px; 
-     height: 75%; overflow: hidden; padding: 10px; text-align: center; vertical-align: middle;">
-  <table style="width: 100%; margin: 0px; padding: 0px;" cellpadding="10" cellspacing="1">
-    <% if @announcements.length > 0 %>
+     height: 80%; overflow: hidden; padding: 10px; text-align: center; vertical-align: middle;">
+  <table style="width: 80%; margin: auto; padding: 0px; height: 100%;" cellpadding="5" cellspacing="1">
+    <% if !@announcement.heading.blank? %>
+
       <tr>
-        <th style="color: lightsteelblue; background-color: #333;">
-          Added
-        </th>
-        <th  style="text-align: left; color: lightsteelblue; background-color: #333;">
-          Message
-        </th>
-        <th style="color: lightsteelblue; background-color: #333;">
-          Expiry Date
-        </th>
-      </tr>
 
-      <% @announcements.each do |announcement| %>
+        <% if !@media.blank? %>
 
-        <% color = cycle("odd", "even") %>
-
-        <tr>
-          <td class="<%= color %>" style="text-align: center; font-size: 20px; color: steelblue;
-              <%= (color == "odd" ? "border-right: 1px solid #ccc" : "") %>">
-                <%= announcement[1].to_date.strftime("%d/%b/%Y") %>
-          </td>
-          <td class="<%= color %>">
-            <%= announcement[0] %>
-          </td>
-          <td class="<%= color %>" style="text-align: center; font-size: 20px; color: steelblue;
-              <%= (color == "odd" ? "border-left: 1px solid #ccc" : "") %>">
-              <%= announcement[2].to_date.strftime("%d/%b/%Y") %>
-          </td>
-        </tr>
+          <td rowspan="2" style="border: 5px solid #888; background-color: <%= @media_bg_color %>;
+              height: 100%; overflow: hidden; border-radius: 15px; vertical-align: middle; width: 50%;" align="center">
+        <embed src="<%= @media %>" style="margin: auto; height: <%= @height %>;
+               width: <%= @width %>; margin: auto;" loop="1"  ShowControls="0" ShowStatusBar="0" ShowDisplay="0" />
+        </td>
 
       <% end %>
+
+      <td style="height: 50px;">
+        <div style="background-color: #888; border-radius: 15px; padding: 15px;
+             font-weight: bold; color: #fff;">
+             <%= @heading rescue "&nbsp;" %>
+        </div>
+      </td>
+      </tr>
+      <tr>
+        <td style="font-size: 24px; vertical-align: top;">
+          <div style="background-color: #eee; padding: 15px; border-radius: 15px;
+               height: 93%; overflow: hidden; border: 5px solid #888;">
+               <%= @text.gsub("\n", "<br />") rescue "&nbsp;" %>
+          </div>
+        </td>
+      </tr>
 
     <% else %>
 
@@ -76,29 +69,6 @@
     <% end %>
   </table>
 
-</div>
-
-<div id="footer" style="border: 1px solid #999; margin: 10px; border-radius: 10px;
-     vertical-align: middle; overflow: hidden; bottom: 20px;">
-
-  <table width="100%" style="margin: 0px; height: 50px;" cellpadding="0" cellspacing="0">
-    <tr>
-      <td style="color: red; font-size: 28px; padding-left: 10px; padding-right: 10px;
-          font-style: italic; font-weight: bold; text-align: center;">
-        NEWS<br />
-        <span style="color: blue; font-size: 0.4em;">Announcements</span>
-      </td>
-      <td style="background-color: blue; color: white;">
-    <marquee direction="left" style="float: left; font-size: 36px;">
-      <%= @news %>
-    </marquee>
-    </td>
-    <td style="vertical-align: middle; background-color: #000; color: #cfe7f5;
-        font-size: 24px; padding-left: 15px; padding-right: 15px;">
-      <%= @facility.gsub(" ", "<span style='color: black;'>_</span>") %>
-    </td>
-    </tr>
-  </table>
 </div>
 
 <script type="text/javascript">

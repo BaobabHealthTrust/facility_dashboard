@@ -210,8 +210,8 @@
       case "Announcement":
 
         __$("heading").value = "";
-        __$("heading").setAttribute("disabled", true);
-        __$("heading_lbl").style.color = "#ccc";
+        __$("heading").removeAttribute("disabled");
+        __$("heading_lbl").style.color = "#000";
 
         __$("message_text").value = "";
         __$("message_text").removeAttribute("disabled");
@@ -226,11 +226,11 @@
         __$("end_date_lbl").style.color = "#000";
 
         __$("duration").value = "";
-        __$("duration").setAttribute("disabled", true);
-        __$("duration_lbl").style.color = "#ccc";
+        __$("duration").removeAttribute("disabled");
+        __$("duration_lbl").style.color = "#000";
 
         __$("upload_path").value = "";
-        __$("iframe").src = "";
+        __$("iframe").src = "/common/uploadfile";
 
         break;
 
@@ -337,11 +337,14 @@
 
       case "Announcement":
 
-        __$("heading").value = "";
+        if(__$("heading").value.trim().match(/^$/)){
+          alert("Please write heading text to display!");
 
-        __$("upload_path").value = "";
-        
-        if(__$("message_text").value.trim().match(/^$/)){
+          __$("heading").focus();
+
+          valid = false;
+
+        } else if(__$("message_text").value.trim().match(/^$/)){
           alert("Please write text to display!");
 
           __$("message_text").focus();
