@@ -1,64 +1,69 @@
 <html>
 
-    <head>
-      <title>Attendance Trends</title>
-    </head>
+  <head>
+    <title>Attendance Trends</title>
+  </head>
 
-    <script language="javascript" type="text/javascript" src="/javascripts/flotr2.min.js"></script>
+  <script language="javascript" type="text/javascript" src="/javascripts/flotr2.min.js"></script>
 
-    <script type="text/javascript ">
+  <script type="text/javascript ">
 
-      function draw_trend(){
+    function draw_trend(){
 
-          var graph_area = document.getElementById("graph");
-          var d1 = [[0,3],[4,8],[8,5],[9,2]], graph;
-          var d2 = [[0,4],[3,2],[5,7],[7,4]]
-
-
-
-          graph = Flotr.draw(graph_area,[{data:<%= @data.to_json  %>, label: 'one', lines: {show:true }, points: {show:true }},
-              {data:d2, label: 'true', lines: {show:true }, points: {show:true }}], {xaxis :{ticks : <%=@days.to_json %>, min:0, max:12} });
+    var graph_area = document.getElementById("graph");
+    var d1 = [[0,3],[4,8],[8,5],[9,2]], graph;
+    var d2 = [[0,4],[3,2],[5,7],[7,4]]
 
 
 
-
-      <%# @day_total.each do |total|  %>
-
-      <%#= "#{total.attendance_figure_day.to_date.strftime('%A')} ,  #{total.attendance_figure} ,#{total.facility  }    "%>
-
-      <%#end  %>
+    graph = Flotr.draw(graph_area,[{data:<%= @data.to_json  %>, label: 'one', lines: {show:true }, points: {show:true }},
+    {data:d2, label: 'true', lines: {show:true }, points: {show:true }}], {xaxis :{ticks : <%=@days.to_json %>, min:0, max:12} });
 
 
-      }
-      setTimeout("draw_trend()", 30);
+
+
+<%# @day_total.each do |total|  %>
+
+<%#= "#{total.attendance_figure_day.to_date.strftime('%A')} ,  #{total.attendance_figure} ,#{total.facility  }    "%>
+
+<%#end  %>
+
+
+    }
+    setTimeout("draw_trend()", 30);
+  </script>
+
+  <body>
+
+    <div align="center" style="text-align:center;border: 1px solid black; border-radius: 15px; height:80px;
+         width: 95%;margin-top:20px; margin-left: 40px; background-color:#40E0D0; " >
+
+      <font face="arial" size="25">Facility Attendance Trends</font>
+
+      <img src="/images/coatOfArms.png" align="right"  style="height: 80%; top:20%" />
+    </div>
+
+
+    <div align="center" style="border: 1px solid black; border-radius: 15px; height:80%;
+         width: 95%;margin-top:40px; margin-left: 40px; " >
+
+      <div align="center" id= "graph" style="  width: 90%;
+           margin-top: 2%; height: 90%; " >
+
+      </div>
+
+
+    </div>
+
+    <script type="text/javascript">
+      <!--
+      slideShow(1000);
+
+      setTimeout("window.location = '/common/next_path'", 6000 <%= "+ #{@duration.to_i * 60000}" %>);
+      //-->
     </script>
 
-    <body>
-
-        <div align="center" style="text-align:center;border: 1px solid black; border-radius: 15px; height:80px;
-                width: 95%;margin-top:20px; margin-left: 40px; background-color:#40E0D0; " >
-
-          <font face="arial" size="25">Facility Attendance Trends</font>
-
-          <img src="/images/coatOfArms.png" align="right"  style="height: 80%; top:20%" />
-        </div>
-
-
-        <div align="center" style="border: 1px solid black; border-radius: 15px; height:80%;
-                width: 95%;margin-top:40px; margin-left: 40px; " >
-
-            <div align="center" id= "graph" style="  width: 90%;
-                     margin-top: 2%; height: 90%; " >
-
-            </div>
-
-
-        </div>
-
-
-
-
-    </body>
+  </body>
 
 </html>
 

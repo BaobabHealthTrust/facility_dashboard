@@ -11,16 +11,34 @@ class CommonController < ApplicationController
     else
       SlideEngine.new
     end
+
+    render :layout => false
   end
 	
+  def home    
+  end
+
 	def announcements
 
-    @announcements = Message.find(:all, :select => ["msg_id, msg_id * RAND() AS "+ 
-          "random_no, msg_type, msg_text, start_date, end_date"], :order => "random_no", :limit => 10,
+    @announcement = Message.find(:first, :select => ["msg_id, msg_id * RAND() AS "+
+          "random_no, msg_type, heading, msg_text, start_date, end_date, duration, content_path, media_bg_color"],
+      :order => "random_no", :limit => 10,
       :conditions => ["msg_type = 'announcement' AND start_date <= ? and end_date >= ?",
-        DateTime.now, DateTime.now]).collect{|a| [a.msg_text, a.start_date, a.end_date]}
+        DateTime.now, DateTime.now])
 
-    @duration = @announcements.length / 9
+    @duration = @announcement.duration rescue 1
+
+    @heading = @announcement.heading rescue "&nbsp;"
+
+    @text = @announcement.msg_text rescue "&nbsp;"
+
+    @media = @announcement.content_path rescue ""
+
+    @media_bg_color = @announcement.media_bg_color rescue "#000000"
+
+    if !@media.blank?
+      @media = "/data/#{@media}"
+    end
 
 	end
   
@@ -158,12 +176,25 @@ class CommonController < ApplicationController
 
   def general_message
 
-    @message = Message.find(:first, :select => ["msg_id, msg_id * RAND() AS "+
-          "random_no, msg_type, msg_group, heading, msg_text, start_date, end_date, " +
-          "duration, media_height, media_width, content_path, media_bg_color"],
-      :order => "random_no",
-      :conditions => ["msg_type = 'general message'
+    unless params[:id].blank?
+
+      @message = Message.find(:first, :select => ["msg_id, msg_id * RAND() AS "+
+            "random_no, msg_type, msg_group, heading, msg_text, start_date, end_date, " +
+            "duration, media_height, media_width, content_path, media_bg_color"],
+        :order => "random_no",
+        :conditions => ["msg_type = 'general message' AND start_date <= ? AND " +
+            "end_date >= ? AND msg_id = ?", DateTime.now, DateTime.now, params[:id]])
+
+    else
+
+      @message = Message.find(:first, :select => ["msg_id, msg_id * RAND() AS "+
+            "random_no, msg_type, msg_group, heading, msg_text, start_date, end_date, " +
+            "duration, media_height, media_width, content_path, media_bg_color"],
+        :order => "random_no",
+        :conditions => ["msg_type = 'general message'
       AND start_date <= ? and end_date >= ?",DateTime.now, DateTime.now ])
+
+    end
 
     @category = @message.msg_group rescue nil
 
@@ -221,15 +252,15 @@ class CommonController < ApplicationController
     @data = [[0,5],[2,3],[4,7],[6,4]]
 
     @days = [[2,start_date.strftime('%A')],[4,(start_date + 1.days).strftime('%A')],
-             [6,(start_date +2.days).strftime('%A')],[8,(start_date + 3.days).strftime('%A')],
-             [10,end_date.strftime('%A')],[12," "] ]
+      [6,(start_date +2.days).strftime('%A')],[8,(start_date + 3.days).strftime('%A')],
+      [10,end_date.strftime('%A')],[12," "] ]
 
 
 
     @day_total = AttendanceFigure.find(:all,
-                                      :conditions => ["attendance_figure_day BETWEEN ? AND ?",
-                                                      start_date , end_date ],
-                                      :group => "facility,attendance_figure_day")
+      :conditions => ["attendance_figure_day BETWEEN ? AND ?",
+        start_date , end_date ],
+      :group => "facility,attendance_figure_day")
 
   end
 

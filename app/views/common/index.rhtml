@@ -1,24 +1,38 @@
-<div id="gov" style="font-size: 36px; text-align: center; margin: 3%;">
-  Government of Malawi
-</div>
-<div id="ministry" style="font-size: 32px; text-align: center; margin: 4%;">
-  Ministry of Health
-</div>
-<div id="coat" style="font-size: 36px; text-align: center; margin: 4%;
-     vertical-align: middle; height: 30%;">
-  <img src="/images/coatOfArms.png" alt="" style="height: 100%;" />
-</div>
-<div id="welcome" style="font-size: 36px; text-align: center; margin: 3%; height: 12%;">
-  <img src="/images/welcome.png" alt="Welcome<br />to" style="height: 100%;" />
-</div>
-<div id="facility" style="font-size: 42px; text-align: center; margin: 2%; width: 40%; margin: auto;
-     background-color: #cfe7f5; padding: 10px; border-radius: 50px;">
-  <%= @facility %>
-</div>
-<script type="text/javascript">
-  <!--
-  slideShow(1000);
+<html>
+  <head>
+    <title>CVR</title>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/application.css" />
 
-  setTimeout("window.location = '/common/next_path'", 6000);
-  //-->
-</script>
+    <script type="text/javascript" src="/javascripts/application.js"></script>
+
+  </head>
+  <body style="background-color: #000;">
+    <div id="main" style="border: 1px #666 solid; height: 90%; background-color: white;">
+      <iframe src="/common/home" style="border: none; width: 100%; height: 100%;" target="_self"></iframe>
+    </div>
+
+    <div style="border: 1px solid #999; margin: 10px; border-radius: 10px;
+         vertical-align: middle; overflow: hidden; bottom: 20px;">
+
+      <table width="100%" style="margin: 0px; height: 50px;" cellpadding="0" cellspacing="0">
+        <tr>
+          <td style="color: red; font-size: 28px; padding-left: 10px; padding-right: 10px;
+              font-style: italic; font-weight: bold; text-align: center; background-color: #fff;">
+            NEWS<br />
+            <span style="color: blue; font-size: 0.4em;">Announcements</span>
+          </td>
+          <td style="background-color: blue; color: white;">
+        <marquee direction="left" style="float: left; font-size: 36px;">
+          <%= @news %>
+        </marquee>
+        </td>
+        <td style="vertical-align: middle; background-color: #000; color: #cfe7f5;
+            font-size: 24px; padding-left: 15px; padding-right: 15px;">
+          <%= @facility.gsub(" ", "<span style='color: black;'>_</span>") %>
+        </td>
+        </tr>
+      </table>
+    </div>
+
+  </body>
+</html>

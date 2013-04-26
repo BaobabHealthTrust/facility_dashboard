@@ -5,38 +5,11 @@
 <div id="coat">
   <img src="/images/coatOfArms.png" alt="" height="60" style="position: absolute; top: 25px; right: 30px;" />
 </div>
-<!--div id="facility" style="background-color: #cfe7f5; position: absolute;
-     bottom: 15px; right: 15px; padding: 5px; font-size: 24px; border-radius: 15px; padding-left: 15px; padding-right: 15px;">
-     <%= @facility %>
-</div-->
 
 <div id="content" style="border-radius: 10px; border: 1px solid #999; margin: 10px; background-color: #000;
-     height: 75%; overflow: hidden; padding: 10px; text-align: center; vertical-align: middle;">
+     height: 80%; overflow: hidden; padding: 10px; text-align: center; vertical-align: middle;">
   <embed src="<%= @media %>" style="margin: auto; height: <%= @height %>; width: <%= @width %>;" 
          loop="true"  ShowControls="0" ShowStatusBar="0" ShowDisplay="0" />
-</div>
-
-<div id="footer" style="border: 1px solid #999; margin: 10px; border-radius: 10px;
-     vertical-align: middle; overflow: hidden; bottom: 20px;">
-
-  <table width="100%" style="margin: 0px; height: 50px;" cellpadding="0" cellspacing="0">
-    <tr>
-      <td style="color: red; font-size: 28px; padding-left: 10px; padding-right: 10px;
-          font-style: italic; font-weight: bold; text-align: center;">
-        NEWS<br />
-        <span style="color: blue; font-size: 0.4em;">Announcements</span>
-      </td>
-      <td style="background-color: blue; color: white;">
-    <marquee direction="left" style="float: left; font-size: 36px;">
-      <%= @news %>
-    </marquee>
-    </td>
-    <td style="vertical-align: middle; background-color: #000; color: #cfe7f5;
-        font-size: 24px; padding-left: 15px; padding-right: 15px;">
-      <%= @facility.gsub(" ", "<span style='color: black;'>_</span>") %>
-    </td>
-    </tr>
-  </table>
 </div>
 
 <script type="text/javascript">
