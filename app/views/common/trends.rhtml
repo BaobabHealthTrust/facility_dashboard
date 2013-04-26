@@ -28,6 +28,11 @@
 
 <%#end  %>
 
+    var graph_area = document.getElementById("graph");
+
+
+    graph = Flotr.draw(graph_area,<%= @data_list %>, {xaxis :{ticks : <%=@days.to_json %>, min:0, max:6},
+    yaxis: {min:0, max:<%= @max.to_json %>}, legend: {position :'ne', backgroundColor: '#D2E8FF'}});
 
     }
     setTimeout("draw_trend()", 30);
