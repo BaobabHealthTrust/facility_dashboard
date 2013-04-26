@@ -124,4 +124,24 @@ class CommonController < ApplicationController
 
   end
 
+  def trends
+
+    start_date = Date.today - 4.days
+    end_date = Date.today
+
+    @data = [[0,5],[2,3],[4,7],[6,4]]
+
+    @days = [[2,start_date.strftime('%A')],[4,(start_date + 1.days).strftime('%A')],
+             [6,(start_date +2.days).strftime('%A')],[8,(start_date + 3.days).strftime('%A')],
+             [10,end_date.strftime('%A')],[12," "] ]
+
+
+
+    @day_total = AttendanceFigure.find(:all,
+                                      :conditions => ["attendance_figure_day BETWEEN ? AND ?",
+                                                      start_date , end_date ],
+                                      :group => "facility,attendance_figure_day")
+
+  end
+
 end
