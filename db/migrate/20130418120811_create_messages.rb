@@ -14,6 +14,7 @@ class CreateMessages < ActiveRecord::Migration
       t.text :media_bg_color
       t.date :start_date
       t.date :end_date
+      t.integer :sort_position
       t.integer :creator
       t.timestamps
     end

@@ -9,3 +9,4 @@ gem 'bundler'
 gem "ImageResize", "~> 0.0.5"
 gem 'miro'
 gem 'rmagick'
+gem 'rufus-scheduler'

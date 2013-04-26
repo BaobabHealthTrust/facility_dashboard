@@ -6,3 +6,4 @@ tmp/
 *~
 *.lock
 public/data/*
+db/schema.rb
