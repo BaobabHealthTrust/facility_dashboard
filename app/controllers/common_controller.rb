@@ -217,19 +217,39 @@ class CommonController < ApplicationController
 
     start_date = Date.today - 4.days
     end_date = Date.today
+    r = {}
+    @max = 0
+    @days = [[0," "],[6," "] ]
 
-    @data = [[0,5],[2,3],[4,7],[6,4]]
-
-    @days = [[2,start_date.strftime('%A')],[4,(start_date + 1.days).strftime('%A')],
-             [6,(start_date +2.days).strftime('%A')],[8,(start_date + 3.days).strftime('%A')],
-             [10,end_date.strftime('%A')],[12," "] ]
+    (0..4).each do |i|
+       @days << [ i+1 ,(start_date + i.days ).strftime('%A')]
+    end
 
 
+    @data_list = "["
 
-    @day_total = AttendanceFigure.find(:all,
-                                      :conditions => ["attendance_figure_day BETWEEN ? AND ?",
-                                                      start_date , end_date ],
-                                      :group => "facility,attendance_figure_day")
+    day_total = AttendanceFigure.find(:all,
+                        :conditions => ["attendance_figure_day BETWEEN ? AND ?",start_date , end_date ])
+
+    day_total.each do |x|
+
+      if r[x.facility].blank?
+        r[x.facility] = [[x.attendance_figure_day.wday,x.attendance_figure]]
+      else
+
+        r[x.facility] << [x.attendance_figure_day.wday ,x.attendance_figure]
+      end
+
+      @max = x.attendance_figure unless @max >x.attendance_figure
+
+    end
+
+    r.each do |d|
+      @data_list += "{data:"+ d[1].to_json + ", label:'" + d[0]+ "' , lines: {show:true }, points: {show:true }},"
+    end
+
+    @data_list += "]"
+    @max +=50
 
   end
 
