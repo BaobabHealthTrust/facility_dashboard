@@ -7,7 +7,11 @@ class CreateMessages < ActiveRecord::Migration
       t.column :content_type, "ENUM('video','image', 'image slideshow')", :default => nil
       t.string :heading
       t.text :msg_text
+      t.decimal :duration, :scale => 2, :precision => 64
+      t.integer :media_width
+      t.integer :media_height
       t.string :content_path
+      t.text :media_bg_color
       t.date :start_date
       t.date :end_date
       t.integer :creator

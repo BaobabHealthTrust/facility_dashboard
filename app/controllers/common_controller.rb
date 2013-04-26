@@ -1,16 +1,27 @@
 require 'ImageResize'
+require "miro"
 
 class CommonController < ApplicationController
 
   def index
-    @facility = "Kamuzu Central Hospital"
+    if SlideEngine.slide_show.length == 0
+      SlideEngine.new
+      
+      SlideEngine.reset_slides
+    else
+      SlideEngine.new
+    end
   end
 	
-	def display_announcements
+	def announcements
 
-    @announcements = Message.find(:all, :conditions => ["msg_type = 'announcement'
-      AND start_date <= ? and end_date >= ?",DateTime.now,DateTime.now])
-	
+    @announcements = Message.find(:all, :select => ["msg_id, msg_id * RAND() AS "+ 
+          "random_no, msg_type, msg_text, start_date, end_date"], :order => "random_no", :limit => 10,
+      :conditions => ["msg_type = 'announcement' AND start_date <= ? and end_date >= ?",
+        DateTime.now, DateTime.now]).collect{|a| [a.msg_text, a.start_date, a.end_date]}
+
+    @duration = @announcements.length / 9
+
 	end
   
   def uploadfile
@@ -52,7 +63,11 @@ class CommonController < ApplicationController
 
     size = [670, 500] if size.nil?
 
-    html = "<html><head></head><body><div style='position: absolute; left: 30px; " +
+    colors = Miro::DominantColors.new("#{Rails.root}/public/data/#{params["upload_path_url"]}") rescue nil
+
+    color = colors.to_hex rescue ["#000000"]
+
+    html = "<html><head></head><body style='background-color: #{color[0]}; color: #fff'><div style='position: absolute; left: 30px; " +
       "top: 30px;'><b>W:</b> #{size[0]}; <b>" +
       "H:</b> #{size[1]}</div><button onclick='var response = confirm(\"Do you really want " +
       "to delete this image?\"); if(response){window.location = \"/common/delete_image?upload_path_url=" +
@@ -60,8 +75,16 @@ class CommonController < ApplicationController
       "right: 5px; font-size: 24px;'>Delete</button><br /><br /><br /><br /><embed src='/data/#{params["upload_path_url"]}' " +
       "height='#{size[1]}' width='#{size[0]}' /> <script type='text/javascript'><!--\n " +
       "if(window.parent.document.getElementById('upload_path')){" +
-      "window.parent.document.getElementById('upload_path').value = '#{params["upload_path_url"]}';" +
-      "} \n//--></script></body></html>"
+      "window.parent.document.getElementById('upload_path').value = '#{params["upload_path_url"]}';}" +
+      "if(window.parent.document.getElementById('content_type')){" +
+      "window.parent.document.getElementById('content_type').value = '#{color[0]}';}" +
+      "if(window.parent.document.getElementById('media_bg_color')){" +
+      "window.parent.document.getElementById('media_bg_color').value = '#{color[0]}';}" +
+      "if(window.parent.document.getElementById('width')){" +
+      "window.parent.document.getElementById('width').value = '#{size[0]}';}" +
+      "if(window.parent.document.getElementById('height')){" +
+      "window.parent.document.getElementById('height').value = '#{size[1]}';}" +
+      " \n//--></script></body></html>"
     
     render :text => html
   end
@@ -98,21 +121,86 @@ class CommonController < ApplicationController
     end
   end
 
-  def display_advert
+  def advert
 
-    @advert = Message.find(:first, :conditions => ["msg_type = 'advertisement'
-      AND start_date <= ? and end_date >= ?",DateTime.now,DateTime.now ])
+    @advert = Message.find_by_msg_id(params[:id])
+
+    @duration = @advert.duration.to_i rescue 0
+
+    # @duration = 2 if @duration < 1
+
+    @media = @advert.content_path rescue ""
+
+    if @media.blank?
+      @media = "/images/coatOfArms.png"
+    else
+      @media = "/data/#{@media}"
+    end
+
+    height = @advert.media_height rescue 500
+    width = @advert.media_width rescue 500
+
+    height = 500 if height.nil?
+    width = 500 if width.nil?
+    
+    if height > width
+      @width = "100%"
+      @height = "#{(width.to_f / height.to_f) * 100}%"
+    elsif width > height
+      @height = "100%"
+      @width = "#{(height.to_f / width.to_f) * 100}%"
+    else
+      @height = "#{height}px"
+      @width = "#{width}px"
+    end
 
   end
 
-  def display_general_message
+  def general_message
 
-    @message = Message.find(:first,:conditions => ["msg_type = 'general message'
-      AND start_date <= ? and end_date >= ?",DateTime.now,DateTime.now ])
+    @message = Message.find(:first, :select => ["msg_id, msg_id * RAND() AS "+
+          "random_no, msg_type, msg_group, heading, msg_text, start_date, end_date, " +
+          "duration, media_height, media_width, content_path, media_bg_color"],
+      :order => "random_no",
+      :conditions => ["msg_type = 'general message'
+      AND start_date <= ? and end_date >= ?",DateTime.now, DateTime.now ])
 
+    @category = @message.msg_group rescue nil
+
+    @duration = @message.duration.to_i rescue 0
+
+    @media = @message.content_path rescue ""
+
+    @media_bg_color = @message.media_bg_color rescue "#000000"
+
+    if @media.blank?
+      @media = "/images/coatOfArms.png"
+    else
+      @media = "/data/#{@media}"
+    end
+
+    height = @message.media_height rescue 500
+    width = @message.media_width rescue 500
+
+    height = 500 if height.nil?
+    width = 500 if width.nil?
+=begin
+    if height < width
+      @width = "100%"
+      @height = "#{(width.to_f / height.to_f) * 100}%"
+    elsif width > height
+      @height = "100%"
+      @width = "#{(height.to_f / width.to_f) * 100}%"
+    else
+      @height = "#{height}px"
+      @width = "#{width}px"
+    end
+=end
+    @height = "100%"
+    @width = "100%"
   end
 
-  def display_services
+  def services
 
     @services = Service.find(:all, :conditions =>  ["available = ?", true])
 
@@ -120,9 +208,10 @@ class CommonController < ApplicationController
 
   def facility_attendance
 
-     #@attendance =  AttendanceFigure.find_by_sql()
+    #@attendance =  AttendanceFigure.find_by_sql()
 
   end
+
 
   def trends
 
@@ -143,5 +232,19 @@ class CommonController < ApplicationController
                                       :group => "facility,attendance_figure_day")
 
   end
+
+  def next_path
+    
+    SlideEngine.move_to_next_slide
+
+    current_slide = SlideEngine.current_slide
+
+    # raise SlideEngine.current_slide.to_yaml
+
+    redirect_to SlideEngine.slide_show[current_slide]
+  end
+
+  protected
+  
 
 end

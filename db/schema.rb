@@ -64,12 +64,16 @@ ActiveRecord::Schema.define(:version => 20130418120823) do
   end
 
   create_table "messages", :primary_key => "msg_id", :force => true do |t|
-    t.string   "msg_type",     :limit => 0
-    t.string   "msg_group",    :limit => 0
-    t.string   "content_type", :limit => 0
+    t.string   "msg_type",       :limit => 0
+    t.string   "msg_group",      :limit => 0
+    t.string   "content_type",   :limit => 0
     t.string   "heading"
     t.text     "msg_text"
+    t.decimal  "duration",                    :precision => 64, :scale => 2
+    t.integer  "media_width"
+    t.integer  "media_height"
     t.string   "content_path"
+    t.text     "media_bg_color"
     t.date     "start_date"
     t.date     "end_date"
     t.integer  "creator"
