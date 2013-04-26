@@ -1,7 +1,9 @@
 
 class EditsController < ApplicationController
 
-  def messages    
+  def messages
+    check_login
+
   end
 
   def add_message
@@ -25,6 +27,46 @@ class EditsController < ApplicationController
     flash[:notice] = "Message saved!"
 
     redirect_to :action => :messages
+  end
+
+  def add_user
+
+  end
+
+  def new_user
+
+    exists = User.find_by_username(params[:username]) rescue nil
+
+    if !exists.nil?
+      flash[:error] = "Username already taken!"
+      redirect_to "/edits/add_user"
+      return
+    end
+
+    new_user = User.new(params[:user] )
+
+    new_user.save
+    redirect_to "/edits/add_user"
+    return
+
+  end
+
+  def login
+    render :layout =>  false
+  end
+
+  def verify_user
+
+    state = User.authenticate(params[:user][:username],params[:user][:password])
+    raise state.to_yaml
+    if state
+      redirect_to @return_path unless @return_path.nil?
+      redirect_to "/"
+    else
+      flash[:messages] = "Wrong user password combination"
+      redirect_to "/edits/login"
+    end
+
   end
 
 end

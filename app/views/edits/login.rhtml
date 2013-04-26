@@ -1,0 +1,41 @@
+<html>
+    <head>
+      <title>Login</title>
+      <link rel="stylesheet" type="text/css" href="/stylesheets/application.css" />
+
+      <script type="text/javascript" src="/javascripts/application.js"></script>
+      <style>
+
+          input{
+              font-size: 35;
+          }
+
+      </style>
+
+    </head>
+    <body>
+        <div id="main" style="border: 1px #666 solid;height: 100%;background-color: silver;">
+
+          <div align="center " style=" text-align:center;margin-top: 1%; font-size:40;">
+            User Login
+          </div>
+
+          <div align="center " style=" text-align:center;margin-top: 10%; font-size:40;  "  >
+
+            <% form_for :user, :url => {:controller =>:edits , :action => :verify_user } do |form| %>
+
+                Username  : <%= form.text_field :username, :size => 10  %><br><br>
+                Password  : <%= form.password_field :password, :size => 11 %><br><br>
+                <%= form.submit "Login" %>
+
+            <%end %>
+
+
+
+          </div>
+
+
+
+        </div>
+    </body>
+</html>

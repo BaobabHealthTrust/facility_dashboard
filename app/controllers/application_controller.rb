@@ -31,6 +31,17 @@ class ApplicationController < ActionController::Base
 
   end
 
+  def check_login
+
+    unless ! @current_user.blank?
+
+      @return_path ||= request.referrer
+      redirect_to :controller => "edits", :action =>  "login"
+
+    end
+
+  end
+
   def cycle(c1, c2, p)
     return c1 if p%2 > 0
     return c2

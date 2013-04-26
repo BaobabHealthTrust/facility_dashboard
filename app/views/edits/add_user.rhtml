@@ -1,0 +1,41 @@
+<script type="text/javascript">
+
+    function submitForm(){
+        document.forms[0].submit
+    }
+
+</script>
+
+
+<%= error_messages_for :user %>
+<% form_for :user , :url => {:controller =>:edits, :action => :new_user }  do |f| %>
+    <P style = "position: absolute; left: 450px; top: 30px" >
+
+      <font size = "6" color = lawngreen>Add User</font>
+      <br><br>
+    </P>
+    <p style = "position: relative; left: 30px; top: 100px">
+      <%= f.label :username %>:
+      <%= f.text_field :username %>
+    </p>
+
+    <p style = "position: relative; left: 30px; top: 110px">
+      <%= f.label :password %>:
+      <%= f.password_field :password  %>
+    </p>
+    <p style = "position: relative; left: 30px; top: 110px">
+      <%= f.label :confirm_password %>:
+      <%= f.password_field :password  %>
+    </p>
+
+    <p style = "position: relative; left: 250px; top: 130px">
+
+      <button class = "but1" onClick ="javascript:location= 'submitForm()'" >Add User</button>
+    </p>
+<% end %>
+
+<p  style = "position: relative; top: 70px; left: 0px; align: center" >
+
+  <button  onClick ="javascript:location= '/'" style = "position: relative;  left: 30px">Cancel</button>
+
+</p>

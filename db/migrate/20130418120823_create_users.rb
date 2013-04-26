@@ -2,11 +2,10 @@ class CreateUsers < ActiveRecord::Migration
   def self.up
     create_table :users, :primary_key => :user_id do |t|
       t.integer :user_id
-      t.string :fname
-      t.string :lname
       t.string :username
       t.string :user_role
-      t.integer :creator
+      t.string :password
+      t.string :salt
       t.timestamps
     end
   end
