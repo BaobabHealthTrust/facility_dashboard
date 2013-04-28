@@ -6,6 +6,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :user_role
       t.string :password
       t.string :salt
+      t.integer :voided
       t.timestamps
     end
   end

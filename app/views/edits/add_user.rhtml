@@ -1,41 +1,75 @@
-<script type="text/javascript">
+<script type="text/javascript ">
 
-    function submitForm(){
-        document.forms[0].submit
+    function verifyForm()
+    {
+
+            submit();
+
+    }
+
+    function submit(){
+         document.forms[0].submit
     }
 
 </script>
 
+<style >
 
-<%= error_messages_for :user %>
-<% form_for :user , :url => {:controller =>:edits, :action => :new_user }  do |f| %>
-    <P style = "position: absolute; left: 450px; top: 30px" >
+  input{
+      font-size: 30;
+      width: 400;
+  }
 
-      <font size = "6" color = lawngreen>Add User</font>
-      <br><br>
-    </P>
-    <p style = "position: relative; left: 30px; top: 100px">
-      <%= f.label :username %>:
-      <%= f.text_field :username %>
-    </p>
+  button {
+      width: 200;
+      height:50;
+      font-size: 20;
+      color: black;
+  }
 
-    <p style = "position: relative; left: 30px; top: 110px">
-      <%= f.label :password %>:
-      <%= f.password_field :password  %>
-    </p>
-    <p style = "position: relative; left: 30px; top: 110px">
-      <%= f.label :confirm_password %>:
-      <%= f.password_field :password  %>
-    </p>
+  select{
+      font-size: 30;
+      width: 400;
+      color: black;
+  }
 
-    <p style = "position: relative; left: 250px; top: 130px">
+  tr{
+   height: 100px;
+  }
 
-      <button class = "but1" onClick ="javascript:location= 'submitForm()'" >Add User</button>
-    </p>
-<% end %>
+</style>
 
-<p  style = "position: relative; top: 70px; left: 0px; align: center" >
+<% if !flash[:messages].blank?  %>
+    <script type="text/javascript "> alert(<%=flash[:messages].to_json %>);</script>
+<%end%>
 
-  <button  onClick ="javascript:location= '/'" style = "position: relative;  left: 30px">Cancel</button>
+<div id="main" style="border: 1px #666 solid;height: 100%;background-color:black; text-align: center">
 
-</p>
+  <br><font color="#ffd700 "  size="7" >Register New user</font>
+  <img src="/images/coatOfArms.png" alt="" height="120" style="position: absolute; top: 25px; right: 30px;" />
+
+  <div style=" font-size:25 ; color:black; border: 1px solid black;border-radius:15px; width: 60%;height: 70%;background-color:#daa510; margin-top:5%;margin-left:20% " >
+
+    <% form_for :user, :url => {:controller =>:edits , :action => :new_user } do |form| %>
+
+        <table style="width:70%; font-size: 30; margin-top: 5% " align="center"   >
+
+          <tr><td>Username</td><td>:</td><td><%= form.text_field :username, :placeholder => "enter username...." %></td></tr>
+          <tr><td>Password</td><td>:</td><td><%= form.password_field :password, :placeholder => "enter password...."  %></td></tr>
+          <tr><td>Confirm Password</td><td>:</td><td><%= form.password_field :confirm_password, :placeholder => "re-enter password...."  %></td></tr>
+          <tr><td>User Role</td><td>:</td><td><%= form.select :user_role, ["Nominal User","Hospital Director","Ministry Official"]  %></td></tr>
+
+        </table>
+
+        <%= error_messages_for :user %>
+
+        <br>
+
+        <button onClick ="verify_form()" >Add User</button>
+        <button onClick ="javascript:location= '/'" >Cancel</button>
+
+    <%end %>
+
+  </div>
+
+</div>

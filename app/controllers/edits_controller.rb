@@ -30,22 +30,25 @@ class EditsController < ApplicationController
   end
 
   def add_user
-
+    render :layout =>  false
   end
 
   def new_user
 
-    exists = User.find_by_username(params[:username]) rescue nil
+    exists = User.find(:first, :conditions => ["voided = 0 AND username = ?", params[:user][:username]]) rescue nil
 
     if !exists.nil?
-      flash[:error] = "Username already taken!"
+      flash[:message] = "Username already taken!"
       redirect_to "/edits/add_user"
       return
     end
 
-    new_user = User.new(params[:user] )
-
+    new_user = User.new()
+    new_user.password = params[:user][:password ]
+    new_user.username = params[:user][:username]
+    new_user.user_role = params[:user][:user_role]
     new_user.save
+    flash[:message] = "User successfully created!"
     redirect_to "/edits/add_user"
     return
 
@@ -58,7 +61,7 @@ class EditsController < ApplicationController
   def verify_user
 
     state = User.authenticate(params[:user][:username],params[:user][:password])
-    raise state.to_yaml
+
     if state
       redirect_to @return_path unless @return_path.nil?
       redirect_to "/"
@@ -66,6 +69,16 @@ class EditsController < ApplicationController
       flash[:messages] = "Wrong user password combination"
       redirect_to "/edits/login"
     end
+
+  end
+
+  def delete_user
+
+    @users =  User.all #User.find(:all, :conditions => ["voided = 0"])
+    render :layout =>  false
+  end
+
+  def delete
 
   end
 

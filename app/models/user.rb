@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
 
   require 'digest/sha1'
 
+  validates_presence_of :username, :user_role, :password
+  validates_uniqueness_of :username
   set_primary_key :user_id
 
 
@@ -28,7 +30,7 @@ class User < ActiveRecord::Base
 
     if !user.nil?
 
-      salt = encrypt(self.password, self.salt)
+      salt = Digest::SHA1.hexdigest(password+ user.salt)
 
       if salt == user.password
 

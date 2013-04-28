@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
 
     unless ! @current_user.blank?
 
-      @return_path ||= request.referrer
+      @return_path = request.headers["HTTP_REFERER"]
       redirect_to :controller => "edits", :action =>  "login"
 
     end
