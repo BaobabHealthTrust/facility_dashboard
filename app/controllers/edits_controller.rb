@@ -30,6 +30,7 @@ class EditsController < ApplicationController
   end
 
   def add_user
+    check_login
     render :layout =>  false
   end
 
@@ -55,6 +56,7 @@ class EditsController < ApplicationController
   end
 
   def login
+
     render :layout =>  false
   end
 
@@ -63,8 +65,9 @@ class EditsController < ApplicationController
     state = User.authenticate(params[:user][:username],params[:user][:password])
 
     if state
-      redirect_to @return_path unless @return_path.nil?
-      redirect_to "/"
+      $current_user = params[:user][:username]
+      redirect_to $return_path.nil? ? "/" :$return_path
+
     else
       flash[:messages] = "Wrong user password combination"
       redirect_to "/edits/login"
@@ -74,7 +77,7 @@ class EditsController < ApplicationController
 
   def delete_user
 
-    @users =  User.all #User.find(:all, :conditions => ["voided = 0"])
+    @users =  User.find(:all, :conditions => ["voided = 0"])
     render :layout =>  false
   end
 

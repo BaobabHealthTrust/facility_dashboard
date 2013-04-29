@@ -2,8 +2,29 @@
 
     function verifyForm()
     {
+       var form_ok = false;
+       var message = "";
+       var password = document.getElementById("user_password").value;
+       var pswd = document.getElementById("user_confirm_password").value;
+       var username = document.getElementById("user_username").value;
 
-            submit();
+       if (( username == "") || (username == " "))
+       {
+           message = "username cannot be blank";
+       }
+       else if ( password != pswd)
+       {
+           message = "Passwords provided do not match";
+       }
+
+       if (form_ok)
+       {
+           submit();
+       }
+       else
+       {
+           alert(message );
+       }
 
     }
 
@@ -65,8 +86,8 @@
 
         <br>
 
-        <button onClick ="verify_form()" >Add User</button>
-        <button onClick ="javascript:location= '/'" >Cancel</button>
+        <button onClick ="verifyForm()" >Add User</button>
+        <button onclick= "javascript:location='common/'" >Cancel</button>
 
     <%end %>
 
