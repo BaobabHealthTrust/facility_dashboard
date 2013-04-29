@@ -1,0 +1,106 @@
+<style >
+
+
+    button {
+        width: 200;
+        height:50;
+        font-size: 20;
+        color: black;
+    }
+
+    select{
+        font-size: 30;
+        width: 400;
+        color: black;
+    }
+
+    tr{
+        height: 20px;
+        font-size: 20;
+    }
+    th{
+        font-size:27;
+        text-align: center;
+    }
+    td{
+        font-size:22;
+        text-align: left;
+    }
+    form.checkbox{
+        width:36px;
+
+    }
+    tr.even{
+       background-color: #ffffff;
+    }
+    tr.odd{
+        background-color: gray;
+    }
+
+</style>
+
+<script type="text/javascript "  >
+
+  function verifyForm()
+  {
+    var confirm = window.confirm ("Are you sure you want to remove this user?");
+
+      if (confirm == true  )
+      {
+          document.forms[0].submit
+      }
+
+
+  }
+
+</script>
+
+<% if !flash[:messages].blank?  %>
+    <script type="text/javascript "> alert(<%=flash[:messages].to_json %>);</script>
+<%end%>
+
+<div id="main" style="border: 1px #666 solid;height: 100%;background-color:black; text-align: center">
+
+  <br><font color="#ffd700 "  size="7" >Delete user</font>
+  <img src="/images/coatOfArms.png" alt="" height="120" style="position: absolute; top: 25px; right: 30px;" />
+
+  <div style=" font-size:25 ; color:black; border: 1px solid black;border-radius:15px;width: 60%;height: 70%;background-color:#daa510; margin-top:5%;margin-left:20% " >
+
+
+
+      <table height= 97% style=" margin-top:1%; margin-left:10px;  width:95%; font-size: 30; " >
+
+        <tr>
+          <% form_for :user, :url => {:controller =>:edits , :action => :delete } do |form| %>
+          <td >
+            <div style ="width:95%; height: 500px; border:1px solid black;border-radius: 15px;overflow:auto ">
+              <table style="text-align:center; margin-left: 5%; " width="90%" >
+                <tr><th>Username</th><th></th></tr>
+                <% @users.each do |user|  %>
+                   <tr class=<%= cycle("even","odd")%>  >
+                     <td><%= user.username%></td>
+                     <th><%= check_box ("user", user.user_id)  %></th>
+                   </tr>
+
+                <%end%>
+              </table>
+
+            </div>
+
+          </td>
+          <td width="50px" style="vertical-align:top" >
+            <br>
+            <button onClick ="verifyForm()" >Delete </button> <br><br>
+          <%end%>
+            <button onClick ="window.location = '/'" >Cancel </button> <br><br>
+          <button onClick ="window.location = '/edits/logout'" >Log Out</button> <br><br>
+          </td>
+        </tr>
+
+      </table>
+
+
+
+  </div>
+
+</div>

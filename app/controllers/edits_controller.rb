@@ -30,8 +30,8 @@ class EditsController < ApplicationController
   end
 
   def add_user
-    check_login
-    render :layout =>  false
+    #check_login
+
   end
 
   def new_user
@@ -62,10 +62,10 @@ class EditsController < ApplicationController
 
   def verify_user
 
-    state = User.authenticate(params[:user][:username],params[:user][:password])
+    state = User.authenticate(params[:user][:username],params[:user][:password]) rescue false
 
     if state
-      $current_user = params[:user][:username]
+      $current_user = User.find_all_by_username(params[:user][:username])
       redirect_to $return_path.nil? ? "/" :$return_path
 
     else
@@ -76,13 +76,28 @@ class EditsController < ApplicationController
   end
 
   def delete_user
-
-    @users =  User.find(:all, :conditions => ["voided = 0"])
+    @users =  User.find(:all, :conditions => ["voided = 0 AND user_id != 1"])
     render :layout =>  false
   end
 
   def delete
 
+
+    void_users = User.find(:all,
+                           :conditions => ["user_id in (?)",
+                                           params[:user].collect{|x| x[0] unless x[1].to_i==0 }])
+
+    void_users.each do |user|
+      user.voided = 1
+      user.save
+
+    end
+     redirect_to "/edits/delete_user"
+  end
+
+  def logout
+    $current_user = nil
+    redirect_to "/"
   end
 
 end
