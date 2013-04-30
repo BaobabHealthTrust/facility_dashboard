@@ -53,7 +53,6 @@
           if (check_boxes[i].checked)
               to_delete.push(check_boxes[i].id)
 
-
       }
 
       if (to_delete.length > 0 )
@@ -67,10 +66,10 @@
                        {
                          url : "/edits/delete",
                          type :"POST",
-                         data : ids = to_delete ,
+                         data : {"ids" : [to_delete]},
                          success : function(message){
                              alert(message );
-                             window.location.reload();
+                             window.location = "/edits/delete_user" ;
                          },
                          error : function (){
                              alert("error while deleting users");

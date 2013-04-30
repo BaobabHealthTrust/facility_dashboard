@@ -75,8 +75,8 @@ class EditsController < ApplicationController
   end
 
   def delete
-      void_users = User.find(:all,:conditions => ["user_id in (?)",params[:ids] ])
 
+    void_users = User.find(:all,:conditions => ["user_id in (?)",params[:ids].split(",")])
     void_users.each do |user|
       user.voided = 1
       user.save
