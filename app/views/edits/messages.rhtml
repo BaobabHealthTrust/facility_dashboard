@@ -83,21 +83,25 @@
             </td>
           </tr>
           <tr>
-            <td id="start_date_lbl" style="width: 200px; text-align: right; font-size: 24px; height: 40px; ">
+            <td id="start_date_lbl" style="width: 200px; text-align: right; 
+                font-size: 24px; height: 40px; " autocomplete="off">
               Start Date
             </td>
             <td>
               <input type="text" value="" id="start_date" name="start_date" style="width: 100%;
-                     font-size: 24px; padding: 10px;" onclick="checkDate(this.id)" />
+                     font-size: 24px; padding: 10px;" onclick="var y = (new Date()).getFullYear();
+                       loadCalendar(this.id, y, y + 5, false); checkDate(this.id)" />
             </td>
           </tr>
           <tr>
-            <td id="end_date_lbl" style="width: 200px; text-align: right; font-size: 24px; height: 40px;">
+            <td id="end_date_lbl" style="width: 200px; text-align: right; font-size: 24px; 
+                height: 40px;" autocomplete="off">
               End Date
             </td>
             <td>
               <input type="text" value="" id="end_date" name="end_date" style="width: 100%;
-                     font-size: 24px; padding: 10px;" onclick="checkDate(this.id)" />
+                     font-size: 24px; padding: 10px;" onclick="var y = (new Date()).getFullYear();
+                       loadCalendar(this.id, y, y + 5, false); checkDate(this.id)" />
             </td>
           </tr>
           <tr>
@@ -125,8 +129,6 @@
 
   function checkIfNumber(id){
     if(__$(id)){
-
-      console.log(__$(id).value.trim());
 
       if(!__$(id).value.trim().match(/^\d+(\.\d+)?$/)){
         __$(id).style.color = "red";

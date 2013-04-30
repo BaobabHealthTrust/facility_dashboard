@@ -3,7 +3,7 @@ class CreateUsers < ActiveRecord::Migration
     create_table :users, :primary_key => :user_id do |t|
       t.integer :user_id
       t.string :username
-      t.string :user_role
+      t.column :user_role, "ENUM('admin', 'editor')"
       t.string :password
       t.string :salt
       t.integer :voided, :default => 0
