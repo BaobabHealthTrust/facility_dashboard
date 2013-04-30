@@ -82,7 +82,6 @@ class EditsController < ApplicationController
 
   def delete
 
-
     void_users = User.find(:all,
                            :conditions => ["user_id in (?)",
                                            params[:user].collect{|x| x[0] unless x[1].to_i==0 }])
@@ -93,6 +92,14 @@ class EditsController < ApplicationController
 
     end
      redirect_to "/edits/delete_user"
+  end
+
+  def services
+    @services = Service.find(:all, :conditions =>  ["available = ?", true])
+  end
+
+  def delete_service
+
   end
 
   def logout
