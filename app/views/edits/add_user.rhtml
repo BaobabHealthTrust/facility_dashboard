@@ -32,6 +32,12 @@
          document.forms[0].submit
     }
 
+    function return_to_main()
+    {
+      alert("returning");
+      window.location = "/common/home";
+    }
+
 </script>
 
 <style >
@@ -42,7 +48,7 @@
   }
 
   button {
-      width: 200;
+      width: 150;
       height:50;
       font-size: 20;
       color: black;
@@ -78,18 +84,20 @@
           <tr><td>Username</td><td>:</td><td><%= form.text_field :username, :placeholder => "enter username...." %></td></tr>
           <tr><td>Password</td><td>:</td><td><%= form.password_field :password, :placeholder => "enter password...."  %></td></tr>
           <tr><td>Confirm Password</td><td>:</td><td><%= form.password_field :confirm_password, :placeholder => "re-enter password...."  %></td></tr>
-          <tr><td>User Role</td><td>:</td><td><%= form.select :user_role, ["Nominal User","Hospital Director","Ministry Official"]  %></td></tr>
+          <tr><td>User Role</td><td>:</td><td><%= form.select :user_role, ["admin", "editor"]  %></td></tr>
 
         </table>
-
-        <%= error_messages_for :user %>
 
         <br>
 
         <button onClick ="verifyForm()" >Add User</button>
-        <button onclick= "javascript:location='common/'" >Cancel</button>
-
     <%end %>
+        <button style="position: relative; top: -75px; left:240px; "  onClick ="window.location ='/' " >Cancel</button>
+        <button style="position: relative; top: -75px; left:250px; "  onClick ="window.location ='/edits/logout' " >Log Out</button>
+
+
+
+
 
   </div>
 

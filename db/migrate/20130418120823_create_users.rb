@@ -6,7 +6,7 @@ class CreateUsers < ActiveRecord::Migration
       t.column :user_role, "ENUM('admin', 'editor')"
       t.string :password
       t.string :salt
-      t.integer :voided
+      t.integer :voided, :default => 0
       t.timestamps
     end
   end

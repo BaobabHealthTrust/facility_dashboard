@@ -71,11 +71,35 @@ class EditsController < ApplicationController
   end
 
   def delete_user
-    @users =  User.find(:all, :conditions => ["voided = 0"])
+    @users =  User.find(:all, :conditions => ["voided = 0 AND user_id != 1"])
+
     render :layout =>  false
   end
 
   def delete
+      void_users = User.find(:all,
+      :conditions => ["user_id in (?)",
+        params[:user].collect{|x| x[0] unless x[1].to_i==0 }])
+
+    void_users.each do |user|
+      user.voided = 1
+      user.save
+
+    end
+    redirect_to "/edits/delete_user"
+  end
+
+  def services
+    @services = Service.find(:all, :conditions =>  ["available = ?", true])
+  end
+
+  def delete_service
+
+  end
+
+  def logout
+    $current_user = nil
+    redirect_to "/login"
   end
 
 end
