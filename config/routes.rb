@@ -3,7 +3,9 @@ ActionController::Routing::Routes.draw do |map|
   map.root :controller => 'common', :action => 'index'
 
   map.facility '/facility', :controller => 'hospital_director', :action => 'facility'
-  
+
+  map.facility '/login', :controller => 'edits', :action => 'login'
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
