@@ -98,7 +98,40 @@ class EditsController < ApplicationController
     @services = Service.find(:all, :conditions =>  ["available = ?", true])
   end
 
+  def get_service
+
+    service = Service.find(params[:id])
+
+    render :json => [service.location_offered, service.service_name]
+
+  end
+
   def delete_service
+
+    service = Service.find(:first, :conditions => ["service_id = ?", params[:service_id]])
+    service.available = false
+    service.save!
+    render :text => "true" and return
+  end
+
+  def update_service
+
+    name = params[:name]
+    location = params[:loc]
+    status = params[:available] == "Available"? true : false
+
+    new_service = Service.find(:first, :conditions => ["service_name = ?", name])
+
+    if new_service.nil?
+       new_service = Service.new()
+    end
+
+    new_service.service_name = name
+    new_service.location_offered = location
+    new_service.available = status
+    new_service.save!
+
+    render :text => "true" and return
 
   end
 

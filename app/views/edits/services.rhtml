@@ -1,3 +1,4 @@
+<%= javascript_include_tag 'jquery' %>
 <script type="text/javascript ">
 
   function del_service(service_id)
@@ -6,14 +7,14 @@
 
     if (confirm )
     {
-        jQuery.ajaxStart(
+        jQuery.ajax(
            {
-               url:"edits/delete_service",
+               url:"/edits/delete_service",
                type:"post",
-               data: service_id,
+               data: {"service_id" : service_id },
                success:function(){
                    alert("Service successfully deleted");
-                   window.location = "/edits/services"
+                   window.location.reload();
                },
                error: function(){
                   alert("Error while deleting service");
@@ -25,14 +26,81 @@
   }
   function verify()
   {
-     var service = document.getElementById("service_service_name").value;
+     var service = document.getElementById("service_name").value;
+     var location = document.getElementById("location").value;
+     var status = document.getElementById("available").value;
+
+     if( service == "" || service == " ")
+     {
+         alert("Service name cannot be blank");
+     }
+     else if (location == "" || location == " ")
+     {
+         alert("Location where service is offered cannot be blank");
+     }
+     else
+     {
+        jQuery.ajax(
+                {
+                    url: "/edits/update_service",
+                    type: "POST",
+                    data: {"name" : service, "loc" :location,"available" : status},
+                    dataType : "text",
+                    success : function (){
+                        alert("Services updated");
+                        window.location.reload();
+                        document.getElementById("service_name").disabled =false ;
+                    },
+                    error : function (){
+                       alert("Service could not be added");
+                    }
+                }
+        );
+     }
+
   }
 
-  function submit()
+  function get_service(id)
   {
 
+   /*   Ajax.request("/edits/get_service?id=" + id,
+              {
+                  method: 'get', onSuccess :function(service){
+                    alert(service.responseText )
+                }
+              }
+      ) */
+
+
+      jQuery.ajax(
+              {
+                  url: "/edits/get_service",
+                  type: "get",
+                  data: {"id" : id},
+                  success : function (service){
+                    new_data = eval(service);
+                    document.getElementById("service_name").value = new_data[1];
+                    document.getElementById("service_name").disabled = true;
+                    document.getElementById("location").value = new_data[0];
+                    document.getElementById("available").value = "Available";
+
+                  },
+                  error : function(){
+                      alert("Failed to retrieve service details");
+                  }
+              }
+      );
   }
 
+  function clear()
+  {
+      document.getElementById("service_name").value = "";
+      document.getElementById("location").value = "";
+      document.getElementById("available").value = "";
+      document.getElementById("service_name").disabled = false;
+
+  }
+  setTimeout("clear()",30 );
 </script>
 
 <style>
@@ -55,17 +123,27 @@
       font:23;
   }
 
+  tr.odd
+  {
+    background-color: #ffd780;
+  }
+
+  tr.even
+  {
+      background-color: #4682b4;
+  }
+
   button.options
   {
       width:150;
-      height:100px;
+      height:50px;
       font-size:20;
 
   }
 
   button.main
   {
-      width:70%;
+      width:100%;
       height:60px;
       font-size:28;
       font-weight:bold;
@@ -96,7 +174,7 @@
   <img src="/images/coatOfArms.png" align="right"  style="height: 80%; top:20%" />
 </div>
 
-<div align="center" style="border: 1px solid black; border-radius: 15px; height:670px;width: 95%;margin-top:20px; margin-left: 40px; " >
+<div onload= "clear()" align="center" style="border: 1px solid black; border-radius: 15px; height:670px;width: 95%;margin-top:20px; margin-left: 40px; " >
 
   <table  cellspacing="5px"  align="center " style="width: 98%;height:94%; margin-top: 1%; ">
 
@@ -111,13 +189,13 @@
     </tr>
     <tr>
       <td width="45%" >
-         <div style="width:100%;height:100%; background-color:silver;text-align:center;border:1px solid black;overflow:auto;"  >
-           <table style ="width:98%; height:100%;vertical-align:top">
+         <div style="width:100%;height:590px; background-color:silver;text-align:center;border:1px solid black;overflow:auto;"  >
+           <table style ="width:100%;vertical-align:top">
              <% @services.each do |service|  %>
                 <tr class=<%= cycle("odd", "even")%> >
-                  <td><%= service.service_name %></td>
-                  <td width="25%"><button class="options" >Edit</button></td>
-                  <td width="25%"><button class="options" onclick="del_service(<%=service.service_id%>)">
+                  <td style="font-size:25 " ><%= service.service_name %></td>
+                  <td width="25%"><button class="options" id= "<%=service.service_id%>" onclick= "get_service(this.id)" >Edit</button></td>
+                  <td width="25%"><button class="options" id= "<%=service.service_id%>"  onclick= "del_service(this.id)">
                     Delete</button></td>
                 </tr>
              <%end%>
@@ -128,26 +206,25 @@
 
       <td>
         <table cellpadding="10px"  style ="width:100%; height:100%;text-align: center;vertical-align:top">
-          <% form_for :service, :url => {:controller => "edits", :action =>  "service_updates"} do |form| %>
+
 
               <tr>
-                <td style="font-size:27;text-align:left "  width="30%" >Service Name</td><td>:</td>
-                <td> <%= form.text_field :service_name,:placeholder => "enter service name"%> </td>
+                <td style="font-size:27;text-align:left "  width="35%" >Service Name</td><td>:</td>
+                <td> <input id="service_name" > </td>
               </tr>
               <tr>
                 <td style="font-size:27; text-align:left ">Offered At</td><td>:</td>
-                <td> <%= form.text_field :location,:placeholder => "enter place service offered"%> </td>
+                <td> <input id="location" > </td>
               </tr>
               <tr>
                 <td style="font-size:27;text-align:left ">Status</td><td>:</td>
-                <td> <%= form.select :available,["Available", "Unavailable"] %> </td>
+                <td> <select id = "available" > <option>Available</option><option>Unavailable</option></select> </td>
               </tr>
               <tr>
                  <td colspan ="3">
                    <button class="main" onclick="verify()">Save</button>
                  </td>
               </tr>
-          <%end%>
 
           <tr>
             <td colspan ="3">

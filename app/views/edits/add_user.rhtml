@@ -21,10 +21,7 @@
        {
            submit();
        }
-       else
-       {
-           alert(message );
-       }
+
 
     }
 
@@ -66,9 +63,7 @@
 
 </style>
 
-<% if !flash[:messages].blank?  %>
-    <script type="text/javascript "> alert(<%=flash[:messages].to_json %>);</script>
-<%end%>
+
 
 <div id="main" style="border: 1px #666 solid;height: 100%;background-color:black; text-align: center">
 
