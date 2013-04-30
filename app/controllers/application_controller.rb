@@ -32,6 +32,13 @@ class ApplicationController < ActionController::Base
 
   end
 
+  def cycle(c1, c2, p)
+    return c1 if p%2 > 0
+    return c2
+  end
+
+  protected
+
   def check_login
 
     unless ! $current_user.blank?
@@ -41,11 +48,6 @@ class ApplicationController < ActionController::Base
 
     end
 
-  end
-
-  def cycle(c1, c2, p)
-    return c1 if p%2 > 0
-    return c2
   end
 
 end

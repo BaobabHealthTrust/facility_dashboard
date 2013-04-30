@@ -1,14 +1,13 @@
 
 class EditsController < ApplicationController
 
-  def messages
-    check_login
+  before_filter :check_login, :except => [:login, :check_login, :verify_user]
 
+  def messages   
   end
 
   def add_message
-    # raise params.to_yaml
-    
+    # raise params.to_yaml    
     saved = Message.create(
       :msg_type => params["message_type"],
       :msg_group => params["message_group"],
@@ -29,13 +28,11 @@ class EditsController < ApplicationController
     redirect_to :action => :messages
   end
 
-  def add_user
-    check_login
+  def add_user    
     render :layout =>  false
   end
 
   def new_user
-
     exists = User.find(:first, :conditions => ["voided = 0 AND username = ?", params[:user][:username]]) rescue nil
 
     if !exists.nil?
@@ -56,17 +53,15 @@ class EditsController < ApplicationController
   end
 
   def login
-
     render :layout =>  false
   end
 
   def verify_user
-
     state = User.authenticate(params[:user][:username],params[:user][:password])
 
     if state
       $current_user = params[:user][:username]
-      redirect_to $return_path.nil? ? "/" :$return_path
+      redirect_to $return_path.nil? ? "/edits/messages" :$return_path
 
     else
       flash[:messages] = "Wrong user password combination"
@@ -76,13 +71,11 @@ class EditsController < ApplicationController
   end
 
   def delete_user
-
     @users =  User.find(:all, :conditions => ["voided = 0"])
     render :layout =>  false
   end
 
   def delete
-
   end
 
 end
