@@ -1,3 +1,4 @@
+<%= javascript_include_tag "jquery" %>
 <style >
 
 
@@ -25,6 +26,7 @@
     td{
         font-size:22;
         text-align: left;
+
     }
     form.checkbox{
         width:36px;
@@ -43,13 +45,41 @@
 
   function verifyForm()
   {
-    var confirm = window.confirm ("Are you sure you want to remove this user?");
+      var check_boxes = document.getElementsByName("users");
+      var to_delete = [];
 
-      if (confirm == true  )
+      for (var i =0 ; i < check_boxes.length ; i++)
       {
-          document.forms[0].submit
+          if (check_boxes[i].checked)
+              to_delete.push(check_boxes[i].id)
+
+
       }
 
+      if (to_delete.length > 0 )
+      {
+
+          var confirm = window.confirm ("Are you sure you want to remove this user?");
+
+          if (confirm == true  )
+          {
+               jQuery.ajax(
+                       {
+                         url : "/edits/delete",
+                         type :"POST",
+                         data : ids = to_delete ,
+                         success : function(message){
+                             alert(message );
+                             window.location.reload();
+                         },
+                         error : function (){
+                             alert("error while deleting users");
+                         }
+
+                       }
+               );
+          }
+      }
 
   }
 
@@ -71,18 +101,16 @@
       <table height= 97% style=" margin-top:1%; margin-left:10px;  width:95%; font-size: 30; " >
 
         <tr>
-          <% form_for :user, :url => {:controller =>:edits , :action => :delete } do |form| %>
           <td >
             <div style ="width:95%; height: 500px; border:1px solid black;border-radius: 15px;overflow:auto ">
               <table style="text-align:center; margin-left: 5%; " width="90%" >
                 <tr><th>Username</th><th></th></tr>
                 <% @users.each do |user|  %>
                    <tr class=<%= cycle("even","odd")%>  >
-                     <td><%= user.username%></td>
-                     <th><%= check_box ("user", user.user_id)  %></th>
+                     <td style="border: 1px solid black;" ><%= user.username%></td>
+                     <td style="border: 1px solid black; text-align:center " ><input type= "checkbox" name="users"  id =<%= user.user_id  %>></td>
                    </tr>
-
-                <%end%>
+                <% end %>
               </table>
 
             </div>
@@ -91,9 +119,8 @@
           <td width="50px" style="vertical-align:top" >
             <br>
             <button onClick ="verifyForm()" >Delete </button> <br><br>
-          <%end%>
             <button onClick ="window.location = '/'" >Cancel </button> <br><br>
-          <button onClick ="window.location = '/edits/logout'" >Log Out</button> <br><br>
+            <button onClick ="window.location = '/edits/logout'" >Log Out</button> <br><br>
           </td>
         </tr>
 

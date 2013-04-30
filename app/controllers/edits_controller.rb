@@ -33,22 +33,20 @@ class EditsController < ApplicationController
   end
 
   def new_user
-    exists = User.find(:first, :conditions => ["voided = 0 AND username = ?", params[:user][:username]]) rescue nil
+    exists = User.find(:first, :conditions => ["voided = 0 AND username = ?", params[:username]]) rescue nil
 
     if !exists.nil?
-      flash[:message] = "Username already taken!"
+      render :text => "Username already taken!" and return
       redirect_to "/edits/add_user"
       return
     end
 
     new_user = User.new()
-    new_user.password = params[:user][:password ]
-    new_user.username = params[:user][:username]
-    new_user.user_role = params[:user][:user_role]
+    new_user.password = params[:password ]
+    new_user.username = params[:username]
+    new_user.user_role = params[:user_role]
     new_user.save
-    flash[:message] = "User successfully created!"
-    redirect_to "/edits/add_user"
-    return
+    render :text =>  "User successfully created!" and return
 
   end
 
@@ -77,16 +75,14 @@ class EditsController < ApplicationController
   end
 
   def delete
-      void_users = User.find(:all,
-      :conditions => ["user_id in (?)",
-        params[:user].collect{|x| x[0] unless x[1].to_i==0 }])
+      void_users = User.find(:all,:conditions => ["user_id in (?)",params[:ids] ])
 
     void_users.each do |user|
       user.voided = 1
       user.save
 
     end
-    redirect_to "/edits/delete_user"
+    render :text => "User(s) successfully deleted" and return
   end
 
   def services
