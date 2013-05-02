@@ -251,41 +251,34 @@ class CommonController < ApplicationController
     r = {}
     @max = 0
     @days = [[0," "],[6," "] ]
+    x_values={}
 
     (0..4).each do |i|
-      @days << [ i+1 ,(start_date + i.days ).strftime('%A')]
+      @days << [ x_values[(start_date + i.days ).strftime('%A')]= i+1 ,(start_date + i.days ).strftime('%A')]
     end
 
 
-    @data_list = "["
 
     day_total = AttendanceFigure.find(:all,
       :conditions => ["attendance_figure_day BETWEEN ? AND ?",start_date , end_date ])
 
     day_total.each do |x|
 
-      @days = [[2,start_date.strftime('%A')],[4,(start_date + 1.days).strftime('%A')],
-        [6,(start_date +2.days).strftime('%A')],[8,(start_date + 3.days).strftime('%A')],
-        [10,end_date.strftime('%A')],[12," "] ]
-
       if r[x.facility].blank?
-        r[x.facility] = [[x.attendance_figure_day.wday,x.attendance_figure]]
+        r[x.facility] = [[ x_values[x.attendance_figure_day.strftime('%A')],x.attendance_figure]]
       else
-        r[x.facility] << [x.attendance_figure_day.wday ,x.attendance_figure]
+        r[x.facility] << [x_values[x.attendance_figure_day.strftime('%A')] ,x.attendance_figure]
       end
 
       @max = x.attendance_figure unless @max >x.attendance_figure
 
     end
 
+    @data_list = "["
     r.each do |d|
       @data_list += "{data:"+ d[1].to_json + ", label:'" + d[0]+ "' , lines: {show:true }, points: {show:true }},"
     end
 
-    @day_total = AttendanceFigure.find(:all,
-      :conditions => ["attendance_figure_day BETWEEN ? AND ?",
-        start_date , end_date ],
-      :group => "facility,attendance_figure_day")
 
     @data_list += "]"
     @max +=50
