@@ -1,35 +1,56 @@
+<%= javascript_include_tag 'jquery' %>
 <script type="text/javascript ">
 
     function verifyForm()
     {
        var form_ok = false;
-       var message = "";
-       var password = document.getElementById("user_password").value;
-       var pswd = document.getElementById("user_confirm_password").value;
-       var username = document.getElementById("user_username").value;
+       var password = document.getElementById("password").value;
+       var pswd = document.getElementById("confirm_password").value;
+       var username = document.getElementById("username").value;
 
        if (( username == "") || (username == " "))
        {
-           message = "username cannot be blank";
+           alert("username cannot be blank");
+       }
+       else if ( password == "" || password == " ")
+       {
+            alert("Password cannot be blank");
+       }
+       else if ( pswd == "" || pswd == " ")
+       {
+           alert("Please enter password for confirmation")
        }
        else if ( password != pswd)
        {
-           message = "Passwords provided do not match";
-       }
-
-       if (form_ok)
-       {
-           submit();
+           alert("Passwords provided do not match");
        }
        else
        {
-           alert(message );
+           jQuery.ajax(
+                   {
+                       url:"/edits/new_user",
+                       type:"POST",
+                       data: {"password" : password, "username" : username, "user_role" : document.getElementById("user_role").value },
+                       success : function (message){
+                           alert(message);
+                           clear();
+                       },
+                       error : function (message)
+                       {
+                           alert(message);
+                       }
+                   }
+           );
        }
+
+
 
     }
 
-    function submit(){
-         document.forms[0].submit
+    function clear(){
+        document.getElementById("password").value = "";
+        document.getElementById("confirm_password").value = "";
+        document.getElementById("username").value = "";
     }
 
     function return_to_main()
@@ -66,34 +87,31 @@
 
 </style>
 
-<% if !flash[:messages].blank?  %>
-    <script type="text/javascript "> alert(<%=flash[:messages].to_json %>);</script>
-<%end%>
 
-<div id="main" style="border: 1px #666 solid;height: 100%;background-color:black; text-align: center">
+
+<div onload="clear()" id="main" style="border: 1px #666 solid;height: 100%;background-color:black; text-align: center">
 
   <br><font color="#ffd700 "  size="7" >Register New user</font>
   <img src="/images/coatOfArms.png" alt="" height="120" style="position: absolute; top: 25px; right: 30px;" />
 
   <div style=" font-size:25 ; color:black; border: 1px solid black;border-radius:15px; width: 60%;height: 70%;background-color:#daa510; margin-top:5%;margin-left:20% " >
 
-    <% form_for :user, :url => {:controller =>:edits , :action => :new_user } do |form| %>
+
 
         <table style="width:70%; font-size: 30; margin-top: 5% " align="center"   >
 
-          <tr><td>Username</td><td>:</td><td><%= form.text_field :username, :placeholder => "enter username...." %></td></tr>
-          <tr><td>Password</td><td>:</td><td><%= form.password_field :password, :placeholder => "enter password...."  %></td></tr>
-          <tr><td>Confirm Password</td><td>:</td><td><%= form.password_field :confirm_password, :placeholder => "re-enter password...."  %></td></tr>
-          <tr><td>User Role</td><td>:</td><td><%= form.select :user_role, ["admin", "editor"]  %></td></tr>
+          <tr><td>Username</td><td>:</td><td><input id="username"></td></tr>
+          <tr><td>Password</td><td>:</td><td><input type="password"  name accept="pswd" id="password"></td></tr>
+          <tr><td>Confirm Password</td><td>:</td><td><input type="password"   id="confirm_password"></td></tr>
+          <tr><td>User Role</td><td>:</td><td><select id="user_role"> <option>admin</option><option>editor</option></select></td></tr>
 
         </table>
 
         <br>
 
         <button onClick ="verifyForm()" >Add User</button>
-    <%end %>
-        <button style="position: relative; top: -75px; left:240px; "  onClick ="window.location ='/' " >Cancel</button>
-        <button style="position: relative; top: -75px; left:250px; "  onClick ="window.location ='/edits/logout' " >Log Out</button>
+        <button onClick ="window.location ='/' " >Cancel</button>
+        <button onClick ="window.location ='/edits/logout' " >Log Out</button>
 
 
 

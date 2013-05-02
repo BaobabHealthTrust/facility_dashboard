@@ -3,7 +3,7 @@ class CreateServices < ActiveRecord::Migration
     create_table :services, :primary_key => :service_id do |t|
       t.integer :service_id
       t.string :service_name
-      t.integer :location_offered
+      t.string  :location_offered
       t.boolean :available
       t.timestamps
     end
