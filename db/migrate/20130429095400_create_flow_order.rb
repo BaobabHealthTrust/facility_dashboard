@@ -1,6 +1,6 @@
 class CreateFlowOrder < ActiveRecord::Migration
   def self.up
-    create_table :flow_order, :primary_key => :order_id do |t|
+    create_table :flow_order do |t|
       t.integer :order_id
       t.column :order_group, "ENUM('facility attendance', 'area attendance', " +
         "'facility services', 'announcement', 'facility indicators', " +
@@ -9,6 +9,8 @@ class CreateFlowOrder < ActiveRecord::Migration
       t.integer :src_id, :default => nil
       t.string :src_table, :default => nil
       t.text :description, :default => nil
+      t.date :start_date
+      t.date :end_date
       t.integer :creator
       t.timestamps
     end

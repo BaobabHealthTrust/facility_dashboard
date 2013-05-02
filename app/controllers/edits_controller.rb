@@ -94,12 +94,28 @@ class EditsController < ApplicationController
   end
 
   def delete_service
-
   end
 
   def logout
     $current_user = nil
     redirect_to "/login"
+  end
+
+  def flow_reorder
+    @flow = FlowOrder.find(:all, :conditions => ["(DATE(start_date) <= DATE(NOW()) " +
+          "AND DATE(end_date) > DATE(NOW())) OR (COALESCE(start_date, '') = '' " +
+          "AND COALESCE(end_date, '') = '')"], :order => [:order_id])
+
+    render :layout =>  false
+  end
+
+  def update_flow_order
+
+    (0..(params["src_id"].length - 1)).each do |i|
+      FlowOrder.update(params["src_id"][i], :order_id => params["dst_id"][i])
+    end
+
+    redirect_to :action => :flow_reorder
   end
 
 end

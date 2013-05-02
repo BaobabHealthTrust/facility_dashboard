@@ -6,6 +6,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.facility '/login', :controller => 'edits', :action => 'login'
 
+  map.facility '/logout', :controller => 'edits', :action => 'logout'
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
