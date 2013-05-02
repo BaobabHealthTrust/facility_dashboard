@@ -69,6 +69,12 @@ function loadCalendar(control, minYr, maxYr, topAlign, leftAlign){
 
     var mdate = __$(control).value.match(/(\d{4})-(\d{2})-(\d{2})/);
 
+    if(!mdate){
+        var today = new Date();
+    
+        mdate = ["Today", today.getFullYear(), today.getMonth() + 1, today.getDate()];
+    }
+
     var pos = checkCtrl(__$(control));
     // w, h, t, l
 
@@ -282,6 +288,8 @@ function generateDays(){
 
     var days = ["S", "M", "T", "W", "T", "F", "S"];
 
+    var today = new Date();
+
     for(var d = 0; d < days.length; d++){
         var day = document.createElement("div");
         day.style.display = "table-cell";
@@ -317,6 +325,14 @@ function generateDays(){
                 btn.style.cursor = "pointer";
                 // btn.className = "keyboard_button blue";
                 btn.style.minWidth = "70px";
+
+                if(count == today.getDate() && parseInt(__$(year).value) == today.getFullYear() &&
+                    parseInt(months[__$(month).value][1]) == today.getMonth()){
+
+                    btn.style.backgroundColor = "rgb(192, 0, 0)";
+                    btn.style.color = "#fff";
+                    
+                }
 
                 btn.onmousedown = function(){
                     __$(calendarTarget).value = __$("year").value + "-" +

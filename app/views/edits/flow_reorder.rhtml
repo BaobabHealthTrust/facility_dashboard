@@ -1,0 +1,179 @@
+<html>
+  <head>
+    <title>CVR</title>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/application.css" />
+
+    <script type="text/javascript" src="/javascripts/application.js"></script>
+    <script type="text/javascript" src="/javascripts/calendar.js"></script>
+    <script type="text/javascript">
+      var srcCtrl;
+
+      function allowDrop(ev)
+      {
+        ev.preventDefault();
+      }
+
+      function drag(ev)
+      {
+        ev.dataTransfer.setData("Text", ev.target.id);
+      }
+
+      function drop(ev, obj)
+      {
+
+        ev.preventDefault();
+
+        if(!ev.target.id.match(/div/))
+          return;
+
+        var srctag, tag, pos;
+
+        pos = document.getElementById(srcCtrl).getAttribute("pos");
+        
+        srctag = (ev.target.children[0]).getAttribute("tag");
+
+        if(pos == srctag){
+          (ev.target.children[0]).style.backgroundColor = "#f4e49c";
+          document.getElementById(srcCtrl).style.backgroundColor = "#f4e49c";
+        } else {
+          (ev.target.children[0]).style.backgroundColor = "#97b58d";
+          document.getElementById(srcCtrl).style.backgroundColor = "#97b58d";
+        }
+        
+        document.getElementById(srcCtrl).appendChild(ev.target.children[0]);
+
+        document.getElementById("dst_id" + srctag).value = document.getElementById(srcCtrl).getAttribute("pos");
+
+        var data=ev.dataTransfer.getData("Text");
+        ev.target.appendChild(document.getElementById(data));
+
+        tag = document.getElementById(data).getAttribute("tag");
+
+        pos = obj.getAttribute("pos");
+        
+        if(pos == tag){
+          document.getElementById(data).style.backgroundColor = "#f4e49c";
+          ev.target.style.backgroundColor = "#f4e49c";
+        } else {
+          document.getElementById(data).style.backgroundColor = "#74a5d7";
+          ev.target.style.backgroundColor = "#74a5d7";
+        }
+
+        document.getElementById("dst_id" + tag).value = obj.getAttribute("pos");
+
+
+      }
+
+    </script>
+
+  </head>
+  <body style="overflow-y: scroll;">
+    <div id="main" style="border: 1px #666 solid; background-color: white;">
+      <div class="table" style="border-spacing: 10px; min-width: 1000px;">
+        <div class="row">
+          <div class="cell" style="font-size: 36px; text-align: center; margin: 10px; height: 100px;
+               background-color: #cfe7f5; border-radius: 10px; padding: 10px; border: 1px solid #999;">
+            <table width="100%">
+              <tr>
+                <td style="text-align: center; font-size: 36px; padding-right: 10px;">
+                  Display Order Management
+                </td>
+                <td style="width: 60px;">
+                  <img src="/images/coatOfArms.png" alt="" height="60" />
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div style="border: 1px solid #999; border-radius: 10px; padding: 10px;">
+
+          <% form_tag ({:controller => "edits", :action => "update_flow_order"}) do %>
+
+            <table width="100%" cellpadding="0" cellspacing="2">
+              <tr>
+                <th style="width: 1%; border-radius: 10px; border: 1px solid #666; padding: 10px;
+                    background-color: #333; color: #eee; font-size: 0.8em;">
+                  Pos.
+                </th>
+                <th style="width: 33px;  border-radius: 10px; border: 1px solid #666; padding: 10px;
+                    background-color: #333; color: #eee; font-size: 0.8em;">
+                  Init.<br />Pos.
+                </th>
+                <th style="width: 270px;  border-radius: 10px; border: 1px solid #666; padding: 10px;
+                    background-color: #333; color: #eee; font-size: 0.8em;">
+                  Group
+                </th>
+                <th style=" border-radius: 10px; border: 1px solid #666; padding: 10px;
+                    background-color: #333; color: #eee; font-size: 0.8em;">
+                  Description
+                </th>
+                <th style="width: 18.5%; border-radius: 10px; border: 1px solid #666; padding: 10px;
+                    background-color: #333; color: #eee; font-size: 0.8em;">
+                  Drop Zone
+                </th>
+              </tr>
+
+              <% i = 0 %>
+              <% @flow.each do |item| %>
+
+                <% i += 1 %>
+
+                <tr>
+                  <td style="width: 1%; border: 1px solid #666; vertical-align: middle;
+                      border-radius: 10px; background-color: #ccc;" align="center">
+                      <%= i %>
+                  </td>
+                  <td colspan="4">
+                    <div id="div<%= item.order_id %>" ondrop="drop(event, this)"
+                         style="border: 1px solid #ccc; border-radius: 10px; background-color: #eee;"
+                         ondragover="allowDrop(event)" pos="<%= i %>" onmouseover="srcCtrl = this.id">
+
+                      <div id="drag<%= item.order_id %>" draggable="true" tag="<%= i %>"
+                           style="width: 81%; vertical-align: middle; border: 1px outset #333;
+                           border-radius: 10px; background-color: #fff; cursor: move;"
+                           ondragstart="drag(event)" >
+
+                        <table cellpadding="10" width="100%">
+                          <tr>
+                            <td style="border-radius: 10px; border-right: 1px solid #666; width: 30px;" align="center">
+                              <%= i %>
+                            </td>
+                            <td style="border-right: 1px solid #666; border-radius: 10px;
+                                border-left: 1px solid #666; width: 270px;">
+                                <%= item.order_group.titleize rescue "&nbsp;" %>
+                            </td>
+                            <td style="border-left: 1px solid #666; border-radius: 10px;">
+                              <%= item.description rescue "&nbsp;" %>
+                            </td>
+                          </tr>
+                        </table>
+
+                        <input id="src_id<%= i %>" name="src_id[]" type="hidden"
+                               value="<%= item.id %>" />
+                        <input id="dst_id<%= i %>" name="dst_id[]" type="hidden" value="<%= i %>" />
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+
+              <% end %>
+
+            </table>
+
+          <% end %>
+
+
+          <div style="width: 100%; text-align: center;">
+            <button class="button blue" style="width: 190px;" onclick="window.location = window.location.href">
+              Reset
+            </button>
+            <button class="button blue" style="width: 190px;" onclick="document.forms[0].submit()">
+              Save Order
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
