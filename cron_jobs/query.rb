@@ -59,7 +59,8 @@ class Stats < WEBrick::HTTPServlet::AbstractServlet
             "location name" => row[3],
             "date" => row[2],
             "number of patients" => row[1],
-            "location id" => row[0]
+            "location id" => row[0],
+            "facility" => settings[key]["facility"]
         }
 
       end
