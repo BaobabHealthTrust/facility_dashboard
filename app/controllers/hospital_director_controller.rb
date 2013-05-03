@@ -53,42 +53,8 @@ class HospitalDirectorController < ApplicationController
     @readings["Total Attendance"] = [today, this_month, this_year]
 
     @ranges = {
-      "BART" => [
-        [0, 20, "blue"],
-        [21, 40, "green"],
-        [41, 60, "red"]
-      ],
-      "OPD" =>  [
-        [0, 20, "blue"],
-        [21, 40, "green"],
-        [41, 60, "red"]
-      ],
-      "Radiology" =>  [
-        [0, 20, "blue"],
-        [21, 40, "green"],
-        [41, 60, "red"]
-      ],
+
       "Ward 2B" =>  [
-        [0, 20, "blue"],
-        [21, 40, "green"],
-        [41, 60, "red"]
-      ],
-      "Ward 3A" =>  [
-        [0, 20, "blue"],
-        [21, 40, "green"],
-        [41, 60, "red"]
-      ],
-      "Ward 3B" =>  [
-        [0, 20, "blue"],
-        [21, 40, "green"],
-        [41, 60, "red"]
-      ],
-      "Ward 4A" =>  [
-        [0, 20, "blue"],
-        [21, 40, "green"],
-        [41, 60, "red"]
-      ],
-      "Ward 4B" =>  [
         [0, 20, "blue"],
         [21, 40, "green"],
         [41, 60, "red"]

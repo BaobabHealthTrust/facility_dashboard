@@ -245,18 +245,12 @@ class CommonController < ApplicationController
 
   end
 
-  def facility_attendance
-
-    #@attendance =  AttendanceFigure.find_by_sql()
-
-  end
-
   def facility_indicators
     @facility = "Kamuzu Central Hospital"
 
-    @centers = ["Total Attendance"]
+    @centers = ["Total Encounters"]
 
-    @readings = Hash.new([0,0,0])
+    @readings = Hash.new()
 
     today = 0
     this_month = 0
@@ -264,19 +258,27 @@ class CommonController < ApplicationController
 
     day_figures = HealthCareIndicator.find(:all, :conditions => ["indicator_date = ?", Date.today],
                                         :order => "indicator_value DESC")
-    month_totals = HealthCareIndicator .find_by_sql("SELECT indicator_type, SUM(indicator_value) total,
+    month_totals = HealthCareIndicator.find_by_sql("SELECT indicator_type, SUM(indicator_value) total,
                     Month(indicator_date) month FROM health_care_indicators WHERE
                     Year(indicator_date) = Year(current_date)  GROUP BY indicator_type,Month(indicator_date)")
 
 
+
     day_figures.each do |todays_indicators|
 
-      @readings[todays_indicators.indicator_type ][0] = todays_indicators.indicator_value
+      @readings[todays_indicators.indicator_type ] = [todays_indicators.indicator_value,0,0]
       @centers << todays_indicators.indicator_type
       today += todays_indicators.indicator_value
     end
 
+
     month_totals.each do |month_total|
+
+      @centers << month_total.indicator_type unless !@centers.index(month_total .indicator_type).nil?
+
+      if @readings[month_total.indicator_type].blank?
+        @readings[month_total.indicator_type] = [0,0,0]
+      end
 
       @readings[month_total.indicator_type][2] += month_total.total.to_i
 
@@ -286,46 +288,13 @@ class CommonController < ApplicationController
       end
 
       this_year += month_total.total.to_i
+
     end
+
 
     @readings["Total Encounters"] = [today, this_month, this_year]
 
     @ranges = {
-        "Ward 1A" => [
-            [0, 20, "blue"],
-            [21, 40, "green"],
-            [41, 60, "red"]
-        ],
-        "Ward 1B" =>  [
-            [0, 20, "blue"],
-            [21, 40, "green"],
-            [41, 60, "red"]
-        ],
-        "Ward 2A" =>  [
-            [0, 20, "blue"],
-            [21, 40, "green"],
-            [41, 60, "red"]
-        ],
-        "Ward 2B" =>  [
-            [0, 20, "blue"],
-            [21, 40, "green"],
-            [41, 60, "red"]
-        ],
-        "Ward 3A" =>  [
-            [0, 20, "blue"],
-            [21, 40, "green"],
-            [41, 60, "red"]
-        ],
-        "Ward 3B" =>  [
-            [0, 20, "blue"],
-            [21, 40, "green"],
-            [41, 60, "red"]
-        ],
-        "Ward 4A" =>  [
-            [0, 20, "blue"],
-            [21, 40, "green"],
-            [41, 60, "red"]
-        ],
         "Ward 4B" =>  [
             [0, 20, "blue"],
             [21, 40, "green"],
@@ -381,11 +350,9 @@ class CommonController < ApplicationController
 
   def area_attendance
 
-    @facility = "Kamuzu Central Hospital"
-
     @centers = ["Total Attendance"]
 
-    @readings = Hash.new([0,0,0])
+    @readings = Hash.new()
 
     today = 0
     this_month = 0
@@ -400,12 +367,23 @@ class CommonController < ApplicationController
 
     day_figures.each do |todays_attendance|
 
-      @readings[todays_attendance.facility][0] = todays_attendance.attendance_figure
-      @centers << todays_attendance.facility
+      @readings[todays_attendance.facility] = [todays_attendance.attendance_figure, 0, 0]
       today += todays_attendance.attendance_figure
+
     end
 
+
+
     month_totals.each do |month_total|
+
+      @centers << month_total.facility unless  !@centers.index(month_total.facility ).nil?
+
+
+      if @readings[month_total.facility].blank?
+
+        @readings[month_total.facility] = [0,0,0]
+
+      end
 
       @readings[month_total.facility][2] += month_total.total.to_i
 
@@ -417,50 +395,18 @@ class CommonController < ApplicationController
       this_year += month_total.total.to_i
     end
 
+
     @readings["Total Attendance"] = [today, this_month, this_year]
 
     @ranges = {
-        "Ward 1A" => [
-            [0, 20, "blue"],
-            [21, 40, "green"],
-            [41, 60, "red"]
-        ],
-        "Ward 1B" =>  [
-            [0, 20, "blue"],
-            [21, 40, "green"],
-            [41, 60, "red"]
-        ],
-        "Ward 2A" =>  [
-            [0, 20, "blue"],
-            [21, 40, "green"],
-            [41, 60, "red"]
-        ],
+
         "Ward 2B" =>  [
-            [0, 20, "blue"],
-            [21, 40, "green"],
-            [41, 60, "red"]
-        ],
-        "Ward 3A" =>  [
-            [0, 20, "blue"],
-            [21, 40, "green"],
-            [41, 60, "red"]
-        ],
-        "Ward 3B" =>  [
-            [0, 20, "blue"],
-            [21, 40, "green"],
-            [41, 60, "red"]
-        ],
-        "Ward 4A" =>  [
-            [0, 20, "blue"],
-            [21, 40, "green"],
-            [41, 60, "red"]
-        ],
-        "Ward 4B" =>  [
             [0, 20, "blue"],
             [21, 40, "green"],
             [41, 60, "red"]
         ]
     }
+
 
 
   end
