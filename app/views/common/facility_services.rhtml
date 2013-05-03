@@ -1,4 +1,59 @@
-Facility Services
+<html>
+<head>
+  <title>services</title>
+  <style>
+      td{
+          font-size: 35;
+      }
+      td.even{
+          background-color: #eee;
+          text-indent: 5%;
+      }
+      td.odd{
+          background-color: #ffffff;
+          text-indent: 5%;
+      }
+  </style>
+
+</head>
+
+<body bgcolor="#f8f8ff"   >
+
+<div id="heading" style="font-size: 36px; text-align: center; margin: 10px;
+        background-color: #cfe7f5; border-radius: 10px; padding: 15px; border: 1px solid #999;">
+
+  AVAILABLE SERVICES
+
+</div>
+
+<div id="coat">
+  <img src="/images/coatOfArms.png" alt="" height="60" style="position: absolute; top: 25px; right: 30px;" />
+</div>
+
+
+<div id="content" style="border-radius: 10px; border: 1px solid #999; margin: 10px;
+        height: 80%; overflow: hidden; padding: 10px;">
+
+  <table width="98%" style="margin-left:0.5%; "  >
+    <% @services .each do |service| %>
+        <ul>
+          <tr><td class=<%= cycle('odd','even') %> ><li><%= service.service_name  %></td></tr>
+        </ul>
+    <% end %>
+  </table>
+
+</div>
+
+
+<script type="text/javascript">
+    <!--
+    slideShow(1000);
+
+    setTimeout("window.location = '/common/next_path'", 6000 <%= "+ #{@duration.to_i * 60000}" %>);
+    //-->
+</script>
+</body>
+</html>
 
 <script type="text/javascript">
   <!--

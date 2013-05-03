@@ -6,7 +6,7 @@ class HospitalDirectorController < ApplicationController
 
     @centers = ["Total Attendance"]
 
-    @readings = Hash.new([0,0,0])
+    @readings = Hash.new()
 
     today = 0
     this_month = 0
@@ -21,12 +21,23 @@ class HospitalDirectorController < ApplicationController
 
     day_figures.each do |todays_attendance|
 
-      @readings[todays_attendance.facility][0] = todays_attendance.attendance_figure
-      @centers << todays_attendance.facility
+      @readings[todays_attendance.facility] = [todays_attendance.attendance_figure, 0, 0]
       today += todays_attendance.attendance_figure
+
     end
 
+
+
     month_totals.each do |month_total|
+
+      @centers << month_total.facility unless  !@centers.index(month_total.facility ).nil?
+
+
+      if @readings[month_total.facility].blank?
+
+        @readings[month_total.facility] = [0,0,0]
+
+      end
 
       @readings[month_total.facility][2] += month_total.total.to_i
 
@@ -38,20 +49,21 @@ class HospitalDirectorController < ApplicationController
       this_year += month_total.total.to_i
     end
 
+
     @readings["Total Attendance"] = [today, this_month, this_year]
-    
+
     @ranges = {
-      "Ward 1A" => [
+      "BART" => [
         [0, 20, "blue"],
         [21, 40, "green"],
         [41, 60, "red"]
       ],
-      "Ward 1B" =>  [
+      "OPD" =>  [
         [0, 20, "blue"],
         [21, 40, "green"],
         [41, 60, "red"]
       ],
-      "Ward 2A" =>  [
+      "Radiology" =>  [
         [0, 20, "blue"],
         [21, 40, "green"],
         [41, 60, "red"]

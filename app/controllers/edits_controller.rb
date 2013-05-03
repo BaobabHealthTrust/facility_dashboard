@@ -1,7 +1,7 @@
 
 class EditsController < ApplicationController
 
-  before_filter :check_login, :except => [:login, :check_login, :verify_user]
+  #before_filter :check_login, :except => [:login, :check_login, :verify_user]
 
   def messages   
   end
@@ -29,7 +29,7 @@ class EditsController < ApplicationController
   end
 
   def add_user    
-    render :layout =>  false
+    
   end
 
   def new_user
@@ -51,7 +51,7 @@ class EditsController < ApplicationController
   end
 
   def login
-    render :layout =>  false
+    
   end
 
   def verify_user
@@ -71,7 +71,7 @@ class EditsController < ApplicationController
   def delete_user
     @users =  User.find(:all, :conditions => ["voided = 0 AND user_id != 1"])
 
-    render :layout =>  false
+    
   end
 
   def delete
@@ -134,7 +134,7 @@ class EditsController < ApplicationController
           "AND DATE(end_date) > DATE(NOW())) OR (COALESCE(start_date, '') = '' " +
           "AND COALESCE(end_date, '') = '')"], :order => [:order_id])
 
-    render :layout =>  false
+    
   end
 
   def update_flow_order
