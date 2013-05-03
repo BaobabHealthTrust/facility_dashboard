@@ -115,6 +115,6 @@
   <!--
   slideShow(100);
 
-  setTimeout("window.location = '/common/next_path'", 6000 <%= "+ #{0.3 * 60000}" %>);
+  setTimeout("window.location = '/common/next_path'", 6000 <%= "+ #{params[:duration].to_f * 60000}" %>);
   //-->
 </script>

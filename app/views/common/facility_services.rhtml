@@ -22,7 +22,7 @@
 <div id="heading" style="font-size: 36px; text-align: center; margin: 10px;
         background-color: #cfe7f5; border-radius: 10px; padding: 15px; border: 1px solid #999;">
 
-  AVAILABLE SERVICES
+  Available Services
 
 </div>
 
@@ -59,6 +59,6 @@
   <!--
   slideShow(1000);
 
-  setTimeout("window.location = '/next_path'", 6000 <%= "+ #{@duration.to_i * 60000}" %>);
+  setTimeout("window.location = '/next_path'", 6000 <%= "+ #{params[:duration].to_f * 60000}" %>);
   //-->
 </script>
