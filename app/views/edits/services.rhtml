@@ -3,101 +3,101 @@
 
   function del_service(service_id)
   {
-  var confirm = window.confirm("Are you sure you want to delete this service?");
+    var confirm = window.confirm("Are you sure you want to delete this service?");
 
-  if (confirm )
-  {
-  jQuery.ajax(
-  {
-  url:"/edits/delete_service",
-  type:"post",
-  data: {"service_id" : service_id },
-  success:function(){
-  alert("Service successfully deleted");
-  window.location.reload();
-  },
-  error: function(){
-  alert("Error while deleting service");
-  }
+    if (confirm )
+    {
+        jQuery.ajax(
+           {
+               url:"/edits/delete_service",
+               type:"post",
+               data: {"service_id" : service_id },
+               success:function(){
+                   alert("Service successfully deleted");
+                   window.location.reload();
+               },
+               error: function(){
+                  alert("Error while deleting service");
+               }
 
-  }
-  );
-  }
+           }
+        );
+    }
   }
   function verify()
   {
-  var service = document.getElementById("service_name").value;
-  var location = document.getElementById("location").value;
-  var status = document.getElementById("available").value;
+     var service = document.getElementById("service_name").value;
+     var location = document.getElementById("location").value;
+     var status = document.getElementById("available").value;
 
-  if( service == "" || service == " ")
-  {
-  alert("Service name cannot be blank");
-  }
-  else if (location == "" || location == " ")
-  {
-  alert("Location where service is offered cannot be blank");
-  }
-  else
-  {
-  jQuery.ajax(
-  {
-  url: "/edits/update_service",
-  type: "POST",
-  data: {"name" : service, "loc" :location,"available" : status},
-  dataType : "text",
-  success : function (){
-  alert("Services updated");
-  window.location.reload();
-  document.getElementById("service_name").disabled =false ;
-  },
-  error : function (){
-  alert("Service could not be added");
-  }
-  }
-  );
-  }
+     if( service == "" || service == " ")
+     {
+         alert("Service name cannot be blank");
+     }
+     else if (location == "" || location == " ")
+     {
+         alert("Location where service is offered cannot be blank");
+     }
+     else
+     {
+        jQuery.ajax(
+                {
+                    url: "/edits/update_service",
+                    type: "POST",
+                    data: {"name" : service, "loc" :location,"available" : status},
+                    dataType : "text",
+                    success : function (){
+                        alert("Services updated");
+                        window.location.reload();
+                        document.getElementById("service_name").disabled =false ;
+                    },
+                    error : function (){
+                       alert("Service could not be added");
+                    }
+                }
+        );
+     }
 
   }
 
   function get_service(id)
   {
 
-  /*   Ajax.request("/edits/get_service?id=" + id,
-  {
-  method: 'get', onSuccess :function(service){
-  alert(service.responseText )
-  }
-  }
-  ) */
+   /*   Ajax.request("/edits/get_service?id=" + id,
+              {
+                  method: 'get', onSuccess :function(service){
+                    alert(service.responseText )
+                }
+              }
+      ) */
 
 
-  jQuery.ajax(
-  {
-  url: "/edits/get_service",
-  type: "get",
-  data: {"id" : id},
-  success : function (service){
-  new_data = eval(service);
-  document.getElementById("service_name").value = new_data[1];
-  document.getElementById("service_name").disabled = true;
-  document.getElementById("location").value = new_data[0];
-  document.getElementById("available").value = "Available";
+      jQuery.ajax(
+              {
+                  url: "/edits/get_service",
+                  type: "get",
+                  data: {"id" : id},
+                  success : function (service){
+                    new_data = eval(service);
+                    document.getElementById("service_name").value = new_data[1];
+                    document.getElementById("service_name").disabled = true;
+                    document.getElementById("location").value = new_data[0];
+                    document.getElementById("available").value = "Available";
 
-  },
-  error : function(){
-  alert("Failed to retrieve service details");
-  }
-  }
-  );
+                  },
+                  error : function(){
+                      alert("Failed to retrieve service details");
+                  }
+              }
+      );
   }
 
   function clear()
   {
-  document.getElementById("service_name").value = "";
-  document.getElementById("location").value = "";
-  document.getElementById("available").value = "";
-  document.getElementById("service_name").disabled = false;
+      document.getElementById("service_name").value = "";
+      document.getElementById("location").value = "";
+      document.getElementById("available").value = "";
+      document.getElementById("service_name").disabled = false;
 
   }
   setTimeout("clear()",30 );
@@ -107,20 +107,20 @@
 
   th
   {
-    font-size: 25;
-    font-weight: bold;
-    height: 30px;
-    background-color: silver;
+      font-size: 25;
+      font-weight: bold;
+      height: 30px;
+      background-color: silver;
   }
   table
   {
-    border: 1px solid black;
-    border-color: black;
+      border: 1px solid black;
+      border-color: black;
   }
   td
   {
-    vertical-align: top;
-    font:23;
+      vertical-align: top;
+      font:23;
   }
 
   tr.odd
@@ -130,45 +130,39 @@
 
   tr.even
   {
-    background-color: #4682b4;
+      background-color: #4682b4;
   }
 
   button.options
   {
-<<<<<<< HEAD
-      width:100%;
+      width:150;
       height:50px;
       font-size:20;
-=======
-    width:150;
-    height:50px;
-    font-size:20;
->>>>>>> 27a990197dd55422c98a2cd891dddacb913b2904
 
   }
 
   button.main
   {
-    width:100%;
-    height:60px;
-    font-size:28;
-    font-weight:bold;
+      width:100%;
+      height:60px;
+      font-size:28;
+      font-weight:bold;
 
 
   }
 
   input
   {
-    font-size:30;
-    width:95%;
-    color: black;
+      font-size:30;
+      width:95%;
+      color: black;
   }
 
   select
   {
-    font-size:30;
-    width:95%;
-    color: black;
+      font-size:30;
+      width:95%;
+      color: black;
   }
 
 </style>
@@ -181,12 +175,12 @@
   <img src="/images/coatOfArms.png" alt="" height="60" style="position: absolute; top: 25px; right: 30px;" />
 </div>
 
-<div onload= "clear()" id="content" style="border-radius: 10px; border: 1px solid #999; margin: 15px;
-        height: 82%; overflow: hidden; padding: 10px;">
+<div id="content" style="border-radius: 10px; border: 1px solid #999; margin: 10px;
+        height: 80%; overflow: hidden; padding: 10px;">
 
+<div  align="center" style="border: 1px solid black; border-radius: 15px; height:670px;width: 95%;margin-top:20px; margin-left: 40px; " >
 
-
-  <table  cellspacing="7px"  align="center" style="width: 99%;height:94%; margin-top: 1%; ">
+  <table  cellspacing="5px"  align="center " style="width: 98%;height:94%; margin-top: 1%; ">
 
     <tr>
 
@@ -199,42 +193,42 @@
     </tr>
     <tr>
       <td width="45%" >
-        <div style="width:100%;height:590px; background-color:silver;text-align:center;border:1px solid black;overflow:auto;"  >
-          <table style ="width:100%;vertical-align:top">
-            <% @services.each do |service|  %>
-              <tr class=<%= cycle("odd", "even")%> >
-                <td style="font-size:25 " ><%= service.service_name %></td>
-                <td width="25%"><button class="options" id= "<%=service.service_id%>" onclick= "get_service(this.id)" >Edit</button></td>
-                <td width="25%"><button class="options" id= "<%=service.service_id%>"  onclick= "del_service(this.id)">
+         <div style="width:100%;height:590px; background-color:silver;text-align:center;border:1px solid black;overflow:auto;"  >
+           <table style ="width:100%;vertical-align:top">
+             <% @services.each do |service|  %>
+                <tr class=<%= cycle("odd", "even")%> >
+                  <td style="font-size:25 " ><%= service.service_name %></td>
+                  <td width="25%"><button class="options" id= "<%=service.service_id%>" onclick= "get_service(this.id)" >Edit</button></td>
+                  <td width="25%"><button class="options" id= "<%=service.service_id%>"  onclick= "del_service(this.id)">
                     Delete</button></td>
-              </tr>
-            <%end%>
-          </table>
+                </tr>
+             <%end%>
+           </table>
 
-        </div>
+         </div>
       </td>
 
       <td>
         <table cellpadding="10px"  style ="width:100%; height:100%;text-align: center;vertical-align:top">
 
 
-          <tr>
-            <td style="font-size:27;text-align:left "  width="35%" >Service Name</td><td>:</td>
-            <td> <input id="service_name" > </td>
-          </tr>
-          <tr>
-            <td style="font-size:27; text-align:left ">Offered At</td><td>:</td>
-            <td> <input id="location" > </td>
-          </tr>
-          <tr>
-            <td style="font-size:27;text-align:left ">Status</td><td>:</td>
-            <td> <select id = "available" > <option>Available</option><option>Unavailable</option></select> </td>
-          </tr>
-          <tr>
-            <td colspan ="3">
-              <button class="main" onclick="verify()">Save</button>
-            </td>
-          </tr>
+              <tr>
+                <td style="font-size:27;text-align:left "  width="35%" >Service Name</td><td>:</td>
+                <td> <input id="service_name" > </td>
+              </tr>
+              <tr>
+                <td style="font-size:27; text-align:left ">Offered At</td><td>:</td>
+                <td> <input id="location" > </td>
+              </tr>
+              <tr>
+                <td style="font-size:27;text-align:left ">Status</td><td>:</td>
+                <td> <select id = "available" > <option>Available</option><option>Unavailable</option></select> </td>
+              </tr>
+              <tr>
+                 <td colspan ="3">
+                   <button class="main" onclick="verify()">Save</button>
+                 </td>
+              </tr>
 
           <tr>
             <td colspan ="3">
