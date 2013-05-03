@@ -1,132 +1,160 @@
 <%= javascript_include_tag "jquery" %>
 <style >
 
+  button {
+    width: 200;
+    height:50;
+    font-size: 20;
+    color: black;
+  }
 
-    button {
-        width: 200;
-        height:50;
-        font-size: 20;
-        color: black;
-    }
+  select{
+    font-size: 30;
+    width: 400;
+    color: black;
+  }
 
-    select{
-        font-size: 30;
-        width: 400;
-        color: black;
-    }
+  tr{
+    height: 20px;
+    font-size: 20;
+  }
+  th{
+    font-size:27;
+    text-align: center;
+  }
+  td{
+    font-size:22;
+    text-align: left;
 
-    tr{
-        height: 20px;
-        font-size: 20;
-    }
-    th{
-        font-size:27;
-        text-align: center;
-    }
-    td{
-        font-size:22;
-        text-align: left;
+  }
+  form.checkbox{
+    width:36px;
 
-    }
-    form.checkbox{
-        width:36px;
-
-    }
-    tr.even{
-       background-color: #ffffff;
-    }
-    tr.odd{
-        background-color: gray;
-    }
+  }
+  tr.even{
+    background-color: #ffffff;
+  }
+  tr.odd{
+    background-color: #eee;
+  }
 
 </style>
 
-<script type="text/javascript "  >
+<script type="text/javascript"  >
+
 
   function verifyForm()
   {
-      var check_boxes = document.getElementsByName("users");
-      var to_delete = [];
+    var check_boxes = document.getElementsByName("users");
+    var to_delete = [];
 
-      for (var i =0 ; i < check_boxes.length ; i++)
+    for (var i =0 ; i < check_boxes.length ; i++)
+    {
+      if (check_boxes[i].checked)
+        to_delete.push(check_boxes[i].id)
+
+    }
+
+    if (to_delete.length > 0 )
+    {
+
+      var confirm = window.confirm ("Are you sure you want to remove this user?");
+
+      if (confirm == true  )
       {
-          if (check_boxes[i].checked)
-              to_delete.push(check_boxes[i].id)
-
-      }
-
-      if (to_delete.length > 0 )
-      {
-
-          var confirm = window.confirm ("Are you sure you want to remove this user?");
-
-          if (confirm == true  )
-          {
-               jQuery.ajax(
-                       {
-                         url : "/edits/delete",
-                         type :"POST",
-                         data : {"ids" : [to_delete]},
-                         success : function(message){
-                             alert(message );
-                             window.location = "/edits/delete_user" ;
-                         },
-                         error : function (){
-                             alert("error while deleting users");
-                         }
-
-                       }
-               );
+        jQuery.ajax(
+        {
+          url : "/edits/delete",
+          type :"POST",
+          data : {"ids" : [to_delete]},
+          success : function(message){
+            alert(message );
+            window.location = "/edits/delete_user" ;
+          },
+          error : function (){
+            alert("error while deleting users");
           }
+
+        }
+      );
       }
+    }
 
   }
 
 </script>
 
 <% if !flash[:messages].blank?  %>
-    <script type="text/javascript "> alert(<%=flash[:messages].to_json %>);</script>
+  <script type="text/javascript "> alert(<%=flash[:messages].to_json %>);</script>
 <%end%>
-
-<div id="main" style="border: 1px #666 solid;height: 100%;background-color:black; text-align: center">
-
-  <br><font color="#ffd700 "  size="7" >Delete user</font>
-  <img src="/images/coatOfArms.png" alt="" height="120" style="position: absolute; top: 25px; right: 30px;" />
-
-  <div style=" font-size:25 ; color:black; border: 1px solid black;border-radius:15px;width: 60%;height: 70%;background-color:#daa510; margin-top:5%;margin-left:20% " >
-
-
-
-      <table height= 97% style=" margin-top:1%; margin-left:10px;  width:95%; font-size: 30; " >
-
+<div class="table" style="border-spacing: 10px; min-width: 1000px; height: 100%;">
+  <div class="row">
+    <div class="cell" style="font-size: 36px; text-align: center; margin: 10px; height: 100px;
+         background-color: #cfe7f5; border-radius: 10px; padding: 10px; border: 1px solid #999;">
+      <table width="100%">
         <tr>
-          <td >
-            <div style ="width:95%; height: 500px; border:1px solid black;border-radius: 15px;overflow:auto ">
-              <table style="text-align:center; margin-left: 5%; " width="90%" >
-                <tr><th>Username</th><th></th></tr>
-                <% @users.each do |user|  %>
-                   <tr class=<%= cycle("even","odd")%>  >
-                     <td style="border: 1px solid black;" ><%= user.username%></td>
-                     <td style="border: 1px solid black; text-align:center " ><input type= "checkbox" name="users"  id =<%= user.user_id  %>></td>
-                   </tr>
-                <% end %>
-              </table>
-
-            </div>
-
+          <td style="width: 80px;">
+            <img src="/images/home.png" height="75" style="cursor: pointer;" onclick="window.location = '/admin'" />
           </td>
-          <td width="50px" style="vertical-align:top" >
-            <br>
-            <button onClick ="verifyForm()" >Delete </button> <br><br>
-            <button onClick ="window.location = '/'" >Cancel </button> <br><br>
-            <button onClick ="window.location = '/edits/logout'" >Log Out</button> <br><br>
+          <td style="text-align: center; font-size: 36px; padding-right: 10px;">
+            Delete User(s)
+          </td>
+          <td style="width: 60px;">
+            <img src="/images/coatOfArms.png" alt="" height="60" />
           </td>
         </tr>
-
       </table>
-
-
-
+    </div>
   </div>
+  <div style="border: 1px solid #999; border-radius: 10px; padding: 10px; height: 97%;">
 
+    <table style="width:100%; font-size: 24px; height: 100%;" >
+      <tr>
+        <td>
+          <div style ="height: 600px; overflow:auto; padding: 10px; ">
+            <table style="text-align:center; width: 100%;" cellpadding="10" >
+              <tr>
+                <td style="background-color: #666; color: #eee; border-radius: 10px;
+                    padding: 10px; padding-left: 40px;">
+                  Username
+                </td>
+                <td style="background-color: #666; color: #eee; border-radius: 10px;
+                    padding: 10px; padding-left: 20px;">
+                  Role
+                </td>
+                <td style="background-color: #666; color: #eee; border-radius: 10px;
+                    padding: 10px; text-align: center; width: 30px;">
+                  Select
+                </td>
+              </tr>
+              <% @users.each do |user|  %>
+                <tr class=<%= cycle("even","odd")%>  >
+                  <td style="border: 1px solid #ccc; border-radius: 10px; padding-left: 40px;" >
+                    <%= user.username%>
+                  </td>
+                  <td style="border: 1px solid #ccc; border-radius: 10px; padding-left: 20px;" >
+                    <%= user.user_role%>
+                  </td>
+                  <td style="border: 1px solid #ccc; border-radius: 10px; text-align:center " >
+                    <input type= "checkbox" name="users"  id =<%= user.user_id  %> />
+                  </td>
+                </tr>
+              <% end %>
+            </table>
+
+          </div>
+
+        </td>
+        <td width="50px" style="vertical-align:top" >
+          <button class="button blue" onClick ="verifyForm()" style="margin: 20px;" >
+            Delete
+          </button>
+          <button class="button blue" onClick ="window.location = '/edits/logout'"
+                  style="margin: 20px;" >
+            Logout
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
 </div>

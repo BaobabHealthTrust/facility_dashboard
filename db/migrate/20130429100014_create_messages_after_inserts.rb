@@ -16,8 +16,8 @@ class CreateMessagesAfterInserts < ActiveRecord::Migration
                 WHEN 'advertisement' THEN 'Advert'
                 ELSE NEW.heading END);
 
-            INSERT INTO flow_order (order_group, src_id, src_table, description, start_date, end_date)
-            VALUES (@group, NEW.msg_id, 'messages', @desc, NEW.start_date, NEW.end_date);
+            INSERT INTO flow_order (order_group, src_id, src_table, description, duration, start_date, end_date)
+            VALUES (@group, NEW.msg_id, 'messages', @desc, NEW.duration, NEW.start_date, NEW.end_date);
 
             SET @id = (SELECT LAST_INSERT_ID());
 

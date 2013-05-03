@@ -28,8 +28,9 @@ class EditsController < ApplicationController
     redirect_to :action => :messages
   end
 
-  def add_user    
-    
+
+  def add_user 
+
   end
 
   def new_user
@@ -59,7 +60,7 @@ class EditsController < ApplicationController
 
     if state
       $current_user = params[:user][:username]
-      redirect_to $return_path.nil? ? "/edits/messages" :$return_path
+      redirect_to $return_path.nil? ? "/edits/admin" :$return_path
 
     else
       flash[:messages] = "Wrong user password combination"
@@ -70,8 +71,6 @@ class EditsController < ApplicationController
 
   def delete_user
     @users =  User.find(:all, :conditions => ["voided = 0 AND user_id != 1"])
-
-    
   end
 
   def delete
@@ -144,6 +143,9 @@ class EditsController < ApplicationController
     end
 
     redirect_to :action => :flow_reorder
+  end
+
+  def admin
   end
 
 end
