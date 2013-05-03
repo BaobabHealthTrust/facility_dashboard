@@ -47,7 +47,8 @@ class Encs < WEBrick::HTTPServlet::AbstractServlet
         counts << {
             "date" => row[1],
             "indicator_value" => row[0],
-            "indicator_type" => row[2]
+            "indicator_type" => row[2],
+            "facility" => settings[key]["facility"]
         }
 
       end

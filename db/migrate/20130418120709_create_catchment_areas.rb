@@ -3,7 +3,7 @@ class CreateCatchmentAreas < ActiveRecord::Migration
     create_table :catchment_areas, :primary_key => :catchment_area_id do |t|
       t.integer :catchment_area_id
       t.integer :population_size
-      t.integer :location_id
+      t.string  :location
       t.timestamps
     end
   end

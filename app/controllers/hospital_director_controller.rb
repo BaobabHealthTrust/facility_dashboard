@@ -4,29 +4,39 @@ class HospitalDirectorController < ApplicationController
   def facility
     @facility = "Kamuzu Central Hospital"
 
-    @centers = ["Total Attendance", "Ward 1A", "Ward 1B", "Ward 2A", "Ward 2B",
-      "Ward 3A", "Ward 3B", "Ward 4A", "Ward 4B"]
+    @centers = ["Total Attendance"]
 
-    @readings = {
-      "Ward 1A" => [100, 30, 50],
-      "Ward 1B" => [30, 10, 30],
-      "Ward 2A" => [0, 0, 60],
-      "Ward 2B" => [40, 0, 80],
-      "Ward 3A" => [0, 0, 100],
-      "Ward 3B" => [120, 1200, 3000],
-      "Ward 4A" => [0, 0, 0],
-      "Ward 4B" => [0, 0, 0]
-    }
+    @readings = Hash.new([0,0,0])
 
     today = 0
     this_month = 0
     this_year = 0
-    
-    @readings.each{|reading, value|
-      today = today + @readings[reading][0]
-      this_month = this_month + @readings[reading][1]
-      this_year = this_year + @readings[reading][2]
-    }
+
+    day_figures = AttendanceFigure.find(:all, :conditions => ["attendance_figure_day = ?", Date.today],
+                                        :order => "attendance_figure DESC")
+    month_totals = AttendanceFigure.find_by_sql("SELECT facility, SUM(attendance_figure) total,
+                    Month(attendance_figure_day) month FROM attendance_figures WHERE
+                    Year(attendance_figure_day) = Year(current_date)  GROUP BY facility,Month(attendance_figure_day)")
+
+
+    day_figures.each do |todays_attendance|
+
+      @readings[todays_attendance.facility][0] = todays_attendance.attendance_figure
+      @centers << todays_attendance.facility
+      today += todays_attendance.attendance_figure
+    end
+
+    month_totals.each do |month_total|
+
+      @readings[month_total.facility][2] += month_total.total.to_i
+
+      if Date.today.month.to_s == month_total.month
+        @readings[month_total.facility][1] = month_total.total.to_i
+        this_month += month_total.total.to_i
+      end
+
+      this_year += month_total.total.to_i
+    end
 
     @readings["Total Attendance"] = [today, this_month, this_year]
     
