@@ -75,6 +75,6 @@
   <!--
   slideShow(1000);
 
-  setTimeout("window.location = '/next_path'", 6000 <%= "+ #{@duration.to_i * 60000}" %>);
+  setTimeout("window.location = '/next_path'", 6000 <%= "+ #{params[:duration].to_f * 60000}" %>);
   //-->
 </script>

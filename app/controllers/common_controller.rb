@@ -180,6 +180,8 @@ class CommonController < ApplicationController
       @width = "#{width}px"
     end
 
+    params[:duration] = @duration
+    
   end
 
   def general_message
@@ -235,8 +237,6 @@ class CommonController < ApplicationController
       @width = "#{width}px"
     end
 
-    @height = "100%"
-    @width = "100%"
   end
 
   def facility_services

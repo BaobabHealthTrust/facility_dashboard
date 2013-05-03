@@ -35,43 +35,43 @@ class SlideEngine
       case item.order_group
       when "facility attendance"
         
-        @@slideshow << "/hospital_director/facility"
+        @@slideshow << "/hospital_director/facility?duration=#{item.duration.to_f}"
 
       when "trends"
 
-        @@slideshow << "/common/trends"
+        @@slideshow << "/common/trends?duration=#{item.duration.to_f}"
 
       when "area attendance"
 
-        @@slideshow << "/common/area_attendance"
+        @@slideshow << "/common/area_attendance?duration=#{item.duration.to_f}"
 
       when "facility services"
 
-        @@slideshow << "/common/facility_services"
+        @@slideshow << "/common/facility_services?duration=#{item.duration.to_f}"
 
       when "facility indicators"
 
-        @@slideshow << "/common/facility_indicators"
+        @@slideshow << "/common/facility_indicators?duration=#{item.duration.to_f}"
 
       when "catchment areas"
 
-        @@slideshow << "/common/catchment_areas"
+        @@slideshow << "/common/catchment_areas?duration=#{item.duration.to_f}"
 
       when "advertisement"
 
-        @@slideshow << "/common/advert"
+        @@slideshow << "/common/advert?duration=#{item.duration.to_f}"
 
       when "announcement"
 
-        @@slideshow << "/common/announcements"
+        @@slideshow << "/common/announcements?duration=#{item.duration.to_f}"
 
       when "educational messages"
 
-        @@slideshow << "/common/general_message/#{item.src_id rescue ""}"
+        @@slideshow << "/common/general_message/#{item.src_id rescue ""}?duration=#{item.duration.to_f}"
 
       when "public health messages"
 
-        @@slideshow << "/common/general_message/#{item.src_id rescue ""}"
+        @@slideshow << "/common/general_message/#{item.src_id rescue ""}?duration=#{item.duration.to_f}"
 
       end
 
