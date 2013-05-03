@@ -1,122 +1,152 @@
 <%= javascript_include_tag 'jquery' %>
-<script type="text/javascript ">
+<script type="text/javascript">
+  <!--
+  
+  function verifyForm()
+  {
+    var form_ok = false;
+    var password = document.getElementById("password").value;
+    var pswd = document.getElementById("confirm_password").value;
+    var username = document.getElementById("username").value;
 
-    function verifyForm()
+    if (( username == "") || (username == " "))
     {
-       var form_ok = false;
-       var password = document.getElementById("password").value;
-       var pswd = document.getElementById("confirm_password").value;
-       var username = document.getElementById("username").value;
-
-       if (( username == "") || (username == " "))
-       {
-           alert("username cannot be blank");
-       }
-       else if ( password == "" || password == " ")
-       {
-            alert("Password cannot be blank");
-       }
-       else if ( pswd == "" || pswd == " ")
-       {
-           alert("Please enter password for confirmation")
-       }
-       else if ( password != pswd)
-       {
-           alert("Passwords provided do not match");
-       }
-       else
-       {
-           jQuery.ajax(
-                   {
-                       url:"/edits/new_user",
-                       type:"POST",
-                       data: {"password" : password, "username" : username, "user_role" : document.getElementById("user_role").value },
-                       success : function (message){
-                           alert(message);
-                           clear();
-                       },
-                       error : function (message)
-                       {
-                           alert(message);
-                       }
-                   }
-           );
-       }
-
-
-
+      alert("username cannot be blank");
     }
-
-    function clear(){
-        document.getElementById("password").value = "";
-        document.getElementById("confirm_password").value = "";
-        document.getElementById("username").value = "";
-    }
-
-    function return_to_main()
+    else if ( password == "" || password == " ")
     {
-      alert("returning");
-      window.location = "/common/home";
+      alert("Password cannot be blank");
     }
+    else if ( pswd == "" || pswd == " ")
+    {
+      alert("Please enter password for confirmation")
+    }
+    else if ( password != pswd)
+    {
+      alert("Passwords provided do not match");
+    }
+    else
+    {
+      jQuery.ajax(
+      {
+        url:"/edits/new_user",
+        type:"POST",
+        data: {"password" : password, "username" : username, "user_role" : document.getElementById("user_role").value },
+        success : function (message){
+          alert(message);
+          clear();
+        },
+        error : function (message)
+        {
+          alert(message);
+        }
+      }
+    );
+    }
+  }
 
+  function clear(){
+    document.getElementById("password").value = "";
+    document.getElementById("confirm_password").value = "";
+    document.getElementById("username").value = "";
+  }
+
+  function return_to_main()
+  {
+    alert("returning");
+    window.location = "/common/home";
+  }
+
+  //-->
 </script>
 
 <style >
 
   input{
-      font-size: 30;
-      width: 400;
-  }
-
-  button {
-      width: 150;
-      height:50;
-      font-size: 20;
-      color: black;
+    font-size: 24px;
+    width: 400;
+    padding: 5px;
   }
 
   select{
-      font-size: 30;
-      width: 400;
-      color: black;
+    font-size: 24px;
+    width: 400;
+    color: black;
+    padding: 5px;
   }
 
   tr{
-   height: 100px;
+    height: 100px;
   }
 
 </style>
 
+<div class="table" style="border-spacing: 10px; min-width: 1000px; height: 100%;">
+  <div class="row">
+    <div class="cell" style="font-size: 36px; text-align: center; margin: 10px; height: 100px;
+         background-color: #cfe7f5; border-radius: 10px; padding: 10px; border: 1px solid #999;">
+      <table width="100%">
+        <tr>
+          <td style="width: 80px;">
+            <img src="/images/home.png" height="75" style="cursor: pointer;" onclick="window.location = '/admin'" />
+          </td>
+          <td style="text-align: center; font-size: 36px; padding-right: 10px;">
+            Register New user
+          </td>
+          <td style="width: 60px;">
+            <img src="/images/coatOfArms.png" alt="" height="60" />
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div style="border: 1px solid #999; border-radius: 10px; padding: 10px; height: 97%;">
 
-
-<div onload="clear()" id="main" style="border: 1px #666 solid;height: 100%;background-color:black; text-align: center">
-
-  <br><font color="#ffd700 "  size="7" >Register New user</font>
-  <img src="/images/coatOfArms.png" alt="" height="120" style="position: absolute; top: 25px; right: 30px;" />
-
-  <div style=" font-size:25 ; color:black; border: 1px solid black;border-radius:15px; width: 60%;height: 70%;background-color:#daa510; margin-top:5%;margin-left:20% " >
-
-
-
-        <table style="width:70%; font-size: 30; margin-top: 5% " align="center"   >
-
-          <tr><td>Username</td><td>:</td><td><input id="username"></td></tr>
-          <tr><td>Password</td><td>:</td><td><input type="password"  name accept="pswd" id="password"></td></tr>
-          <tr><td>Confirm Password</td><td>:</td><td><input type="password"   id="confirm_password"></td></tr>
-          <tr><td>User Role</td><td>:</td><td><select id="user_role"> <option>admin</option><option>editor</option></select></td></tr>
-
-        </table>
-
-        <br>
-
-        <button onClick ="verifyForm()" >Add User</button>
-        <button onClick ="window.location ='/' " >Cancel</button>
-        <button onClick ="window.location ='/edits/logout' " >Log Out</button>
-
-
-
-
-
+    <table style="margin: auto; font-size: 24px; " align="center"   >
+      <tr>
+        <td style="width: 300px;">
+          Username:
+        </td>
+        <td>
+          <input id="username" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Password:
+        </td>
+        <td>
+          <input type="password"  name accept="pswd" id="password" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Confirm Password:
+        </td>
+        <td>
+          <input type="password"   id="confirm_password" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          User Role:
+        </td>
+        <td>
+          <select id="user_role">
+            <option>admin</option>
+            <option>editor</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+          <button class="button blue" onClick ="verifyForm()" >Add User</button>
+        </td>
+        <td align="center">
+          <button class="button blue" onClick ="window.location ='/edits/logout' " >Log Out</button>
+        </td>
+      </tr>
+    </table>    
   </div>
 
 </div>

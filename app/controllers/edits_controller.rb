@@ -28,8 +28,7 @@ class EditsController < ApplicationController
     redirect_to :action => :messages
   end
 
-  def add_user    
-    render :layout =>  false
+  def add_user 
   end
 
   def new_user
@@ -70,8 +69,6 @@ class EditsController < ApplicationController
 
   def delete_user
     @users =  User.find(:all, :conditions => ["voided = 0 AND user_id != 1"])
-
-    render :layout =>  false
   end
 
   def delete
@@ -147,7 +144,6 @@ class EditsController < ApplicationController
   end
 
   def admin
-    # render :layout =>  false
   end
 
 end
