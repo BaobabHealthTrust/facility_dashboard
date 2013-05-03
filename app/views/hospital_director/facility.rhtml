@@ -57,7 +57,7 @@
               color1 = @ranges[center][2][2]
 
             end
-            
+
             if @readings[center][1] >= (@ranges[center][0][0] * 30) && @readings[center][0] <= (@ranges[center][0][1] * 30)
 
               color2 = @ranges[center][0][2]
@@ -85,7 +85,7 @@
               color3 = @ranges[center][2][2]
 
             end
-            
+
           end
 
         %>
@@ -112,8 +112,8 @@
 
 <script type="text/javascript">
   <!--
-  slideShow(100);
+  slideShow(1000);
 
-  setTimeout("window.location = '/common/next_path'", 6000 <%= "+ #{0.3 * 60000}" %>);
+  setTimeout("window.location = '/common/next_path'", 6000 <%= "+ #{@duration.to_i * 60000}" %>);
   //-->
 </script>
