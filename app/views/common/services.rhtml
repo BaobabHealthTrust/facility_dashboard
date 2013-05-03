@@ -17,14 +17,20 @@
 
   <body bgcolor="#f8f8ff"   >
 
-    <div align="center" style="text-align:center;border: 1px solid black; border-radius: 15px; height:80px;width: 95%;margin-top:40px; margin-left: 40px; background-color: #cfe7f5;" >
+  <div id="heading" style="font-size: 36px; text-align: center; margin: 10px;
+          background-color: #cfe7f5; border-radius: 10px; padding: 15px; border: 1px solid #999;">
 
-      <font face="arial" size="25"  >AVAILABLE SERVICES</font>
+        AVAILABLE SERVICES
 
-      <img src="/images/coatOfArms.png" align="right"  style="height: 80%; top:20%" />
-    </div>
+  </div>
 
-    <div align="center" style="border: 1px solid black; border-radius: 15px; height:550px;width: 95%;margin-top:40px; margin-left: 40px; " >
+  <div id="coat">
+    <img src="/images/coatOfArms.png" alt="" height="60" style="position: absolute; top: 25px; right: 30px;" />
+  </div>
+
+
+  <div id="content" style="border-radius: 10px; border: 1px solid #999; margin: 10px;
+          height: 80%; overflow: hidden; padding: 10px;">
 
       <table width="95%" style="margin-left:0.5%; "  >
         <% @services .each do |service| %>
