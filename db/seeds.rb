@@ -44,7 +44,7 @@ FlowOrder.create(
 )
 
 # To create seed:
-# File.open('messages.json', 'w') { |f| f << Message.all.to_json }
+# File.open('test/messages.json', 'w') { |f| f << Message.all.to_json }
 
 if File.exist?("test/messages.json")
   

@@ -6,6 +6,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.facility '/login', :controller => 'edits', :action => 'login'
 
+  map.facility '/admin', :controller => 'edits', :action => 'admin'
+
   map.facility '/logout', :controller => 'edits', :action => 'logout'
 
   map.facility '/next_path', :controller => 'application', :action => 'next_path'

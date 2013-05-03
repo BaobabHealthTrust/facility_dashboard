@@ -59,7 +59,7 @@ class EditsController < ApplicationController
 
     if state
       $current_user = params[:user][:username]
-      redirect_to $return_path.nil? ? "/edits/messages" :$return_path
+      redirect_to $return_path.nil? ? "/edits/admin" :$return_path
 
     else
       flash[:messages] = "Wrong user password combination"
@@ -144,6 +144,10 @@ class EditsController < ApplicationController
     end
 
     redirect_to :action => :flow_reorder
+  end
+
+  def admin
+    # render :layout =>  false
   end
 
 end
