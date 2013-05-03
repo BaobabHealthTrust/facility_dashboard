@@ -8,6 +8,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.facility '/logout', :controller => 'edits', :action => 'logout'
 
+  map.facility '/next_path', :controller => 'application', :action => 'next_path'
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:

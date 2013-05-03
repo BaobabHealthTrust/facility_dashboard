@@ -4,13 +4,23 @@ require "miro"
 class CommonController < ApplicationController
 
   def index
-    if SlideEngine.slide_show.length == 0
-      SlideEngine.new
+    if $slide.nil?
+      $slide = SlideEngine.new
       
-      SlideEngine.reset_slides
-    else
-      SlideEngine.new
+      $slide.reset_slides
     end
+
+    i = 0
+    @news = Message.find(:all, :select => ["msg_id, msg_id * RAND() AS "+
+          "random_no, msg_type, heading, msg_text, start_date, end_date"], :order => "random_no", :limit => 10,
+      :conditions => ["msg_type = 'announcement' AND start_date <= ? and end_date >= ?",
+        DateTime.now, DateTime.now]).collect{|n|
+      i += 1;
+      "<span style='color: #{cycle("#cfe7f5", "#dc9746", i)}'><b>#{n.heading}:</b> <i>" +
+        "#{n.msg_text[0..100]}#{(n.msg_text.length > 100 ? "..." : "")}</i></span>"
+    }.join("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ")
+
+    @news = "No Announcements" if @news.strip.blank?
 
     render :layout => false
   end
@@ -145,8 +155,6 @@ class CommonController < ApplicationController
 
     @duration = @advert.duration.to_i rescue 0
 
-    # @duration = 2 if @duration < 1
-
     @media = @advert.content_path rescue ""
 
     if @media.blank?
@@ -215,7 +223,7 @@ class CommonController < ApplicationController
 
     height = 500 if height.nil?
     width = 500 if width.nil?
-=begin
+
     if height < width
       @width = "100%"
       @height = "#{(width.to_f / height.to_f) * 100}%"
@@ -226,7 +234,7 @@ class CommonController < ApplicationController
       @height = "#{height}px"
       @width = "#{width}px"
     end
-=end
+
     @height = "100%"
     @width = "100%"
   end
@@ -279,20 +287,24 @@ class CommonController < ApplicationController
       @data_list += "{data:"+ d[1].to_json + ", label:'" + d[0]+ "' , lines: {show:true }, points: {show:true }},"
     end
 
-
     @data_list += "]"
     @max +=50
   end
 
-  def next_path
-    
-    SlideEngine.move_to_next_slide
+  def retrieve_announcements
+    i = 0
+    @news = Message.find(:all, :select => ["msg_id, msg_id * RAND() AS "+
+          "random_no, msg_type, heading, msg_text, start_date, end_date"], :order => "random_no", :limit => 10,
+      :conditions => ["msg_type = 'announcement' AND start_date <= ? and end_date >= ?",
+        DateTime.now, DateTime.now]).collect{|n|
+      i += 1;
+      "<span style='color: #{cycle("#cfe7f5", "#dc9746", i)}'><b>#{n.heading}:</b> <i>" +
+        "#{n.msg_text[0..100]}#{(n.msg_text.length > 100 ? "..." : "")}</i></span>"
+    }.join("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ")
 
-    current_slide = SlideEngine.current_slide
+    @news = "No Announcements" if @news.strip.blank?
 
-    # raise SlideEngine.current_slide.to_yaml
-
-    redirect_to SlideEngine.slide_show[current_slide]
+    render :text => @news
   end
 
   protected

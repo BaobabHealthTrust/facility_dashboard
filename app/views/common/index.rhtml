@@ -5,10 +5,44 @@
 
     <script type="text/javascript" src="/javascripts/application.js"></script>
 
+    <script type="text/javascript">
+      <!--
+      
+      function ajaxRequest(aUrl) {
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function() {
+          handleResult(httpRequest);
+        };
+        try {
+          httpRequest.open('GET', aUrl, true);
+          httpRequest.send(null);
+        } catch(e){
+        }
+      }
+
+      function handleResult(aXMLHttpRequest) {
+        if (!aXMLHttpRequest) return;
+
+        if (aXMLHttpRequest.readyState == 4 && aXMLHttpRequest.status == 200) {
+          var result = aXMLHttpRequest.responseText;
+
+          document.getElementById("news").innerHTML = result;
+
+          // Refresh every 10 minutes
+          setTimeout("ajaxRequest('/common/retrieve_announcements')", 1 * 60000);
+        }
+      }
+
+      // Refresh every 10 minutes
+      setTimeout("ajaxRequest('/common/retrieve_announcements')", 1 * 60000);
+      
+      //-->
+    </script>
+
   </head>
   <body style="background-color: #000;">
     <div id="main" style="border: 1px #666 solid; height: 90%; background-color: white;">
-      <iframe src="/common/home" style="border: none; width: 100%; height: 100%;" target="_self"></iframe>
+      <iframe src="/next_path" style="border: none; width: 100%; height: 100%;" target="_self"></iframe>
     </div>
 
     <div style="border: 1px solid #999; margin: 10px; border-radius: 10px;
@@ -22,7 +56,7 @@
             <span style="color: blue; font-size: 0.4em;">Announcements</span>
           </td>
           <td style="background-color: blue; color: white;">
-        <marquee direction="left" style="float: left; font-size: 36px;">
+        <marquee id="news" direction="left" style="float: left; font-size: 36px;">
           <%= @news %>
         </marquee>
         </td>
