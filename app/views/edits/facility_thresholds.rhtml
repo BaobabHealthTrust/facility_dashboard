@@ -16,6 +16,7 @@
                       data: {"threshold_id" : threshold_id },
                       success:function(message){
                           alert(message );
+                          clear ()
                           window.location.reload();
                       },
                       error: function(){
@@ -62,13 +63,19 @@
         alert("Facility name cannot be blank")
       else if (min == "" || min == " ")
         alert("Minimum value cannot be empty")
+      else if (isNaN(min))
+        alert("Minimum can only be an integer")
       else if (avg == "" || avg == " ")
           alert("Median value cannot be empty")
+      else if (isNaN(avg))
+          alert("Median can only be an integer")
       else if (avg <= min)
           alert("Median value cannot be less than or equal to the minimum value")
       else if (max == "" || max == " ")
           alert("Maximum value cannot be empty")
-      else if (max <= median )
+      else if (isNaN(max ))
+          alert("Maximum value can only be an integer")
+      else if (avg > max )
           alert("Maximum value cannot be less than or equal to median value")
       else
       {
@@ -80,6 +87,7 @@
                       dataType : "text",
                       success : function (message){
                         alert(message );
+                        clear()
                         window.location.reload();
 
                       },
@@ -92,28 +100,25 @@
 
   }
 
-  function validate_content(id)
+  function validate_content(input)
   {
-      var returnString="";
-      var text = document.getElementById(id).value;
-      var regex = [0..9];
-      var anArray = text.split('');
-      for(var i=0; i<anArray.length; i++){
-          if(!anArray[i].isNumber())
-          {
-              anArray[i] = '';
+      var num = input.value.replace(/\,/g,'');
+      if(!isNaN(num)){
+          if(num.indexOf('.') > -1) {
+              alert("You may not enter any decimals.");
+              input.value = input.value.substring(0,input.value.length-1);
           }
+      } else {
+          alert('You may enter only numbers in this field!');
+          input.value = input.value.substring(0,input.value.length-1);
       }
-      for(var i=0; i<anArray.length; i++) {
-          returnString += anArray[i];
-      }
-      document.getElementById(id).value = returnString;
   }
 
   function clear()
   {
       document.getElementById("facility").value = "";
       document.getElementById("facility").enabled = true;
+      document.getElementById("facility").disabled = false;
       document.getElementById("minimum").value = "";
       document.getElementById("median").value = "";
       document.getElementById("maximum").value = "" ;
@@ -163,6 +168,12 @@
       font-size:30;
       width:95%;
       color: black;
+  }
+  input.red
+  {
+      font-size:30;
+      width:95%;
+      color: red;
   }
 
 </style>
@@ -218,26 +229,26 @@
             </tr>
             <tr>
               <td style="font-size:27;text-align:left "  width="35%" >Minimum</td><td>:</td>
-              <td> <input id="minimum" onkeypress="validate_content(this.id)"  > </td>
+              <td> <input id="minimum" onkeypress="validate_content(this)"  > </td>
             </tr>
 
             <tr>
               <td style="font-size:27; text-align:left ">Median</td><td>:</td>
-              <td> <input type="number"  id="median" > </td>
+              <td> <input type="number"  id="median" onkeypress="validate_content(this)"> </td>
             </tr>
             <tr>
               <td style="font-size:27;text-align:left ">Maximum</td><td>:</td>
-              <td> <input id="maximum"> </td>
+              <td> <input id="maximum" onkeypress="validate_content(this)"> </td>
             </tr>
             <tr>
               <td colspan ="3">
-                <button class="main" onclick="submit()">Save</button>
+                <button class="button shadow" onclick="submit()">Save</button>
               </td>
             </tr>
 
             <tr>
               <td colspan ="3">
-                <button class="main" onClick ="window.location = '/edits/admin'" >Cancel</button>
+                <button class="button shadow" onClick ="window.location = '/edits/admin'" >Cancel</button>
               </td>
             </tr>
 

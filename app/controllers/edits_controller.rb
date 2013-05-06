@@ -167,6 +167,10 @@ class EditsController < ApplicationController
 
   def delete_threshold
 
+    FacilityThreshold.delete(params[:threshold_id] )
+
+    render :text => "Threshold successfully deleted" and return
+
   end
 
   def update_threshold
@@ -187,4 +191,11 @@ class EditsController < ApplicationController
     render :text => "Thresholds successfully updated" and return
 
   end
+
+  def facility_indicators
+
+    @indicators = HealthCareIndicator.find(:all)
+
+  end
+
 end
