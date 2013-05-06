@@ -4,6 +4,8 @@ def updater
 
   temp_object = JSON.parse(RestClient.get("http://0.0.0.0:8002/updates")) rescue raise("Start the immediate updates servelet (ruby cron_jobs/immediate_updates.rb)")
 
+  facilities = []
+
   temp_object["att_fig_locations"].each do |att_figures|
 
 
@@ -40,6 +42,22 @@ def updater
     health_indicator.indicator_date = indicator["date"]
     health_indicator.facility = indicator["facility"] rescue "Unknown"
     health_indicator.save
+    facilities << health_indicator.facility
+  end
+
+
+  facilities.each do |facility|
+
+    new_threshold = FacilityThreshold.find_all_by_facility(facility)
+
+    if new_threshold.nil?
+
+      new_threshold = FacilityThreshold.new()
+
+    end
+
+    new_threshold.facility = facility
+
 
   end
 

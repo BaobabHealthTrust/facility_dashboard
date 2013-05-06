@@ -148,4 +148,39 @@ class EditsController < ApplicationController
   def admin
   end
 
+  def facility_thresholds
+
+    @thresholds = FacilityThreshold.find(:all)
+  end
+
+  def get_facility_threshold
+
+    threshold = FacilityThreshold.find(:first, :conditions => ["threshold_id = ?", params[:threshold_id]])
+
+    render :json => [threshold.facility, threshold.lower_limit, threshold.average, threshold.upper_limit]
+
+  end
+
+  def delete_threshold
+
+  end
+
+  def update_threshold
+
+    new_threshold = FacilityThreshold.find(:first, :conditions => ["facility = ?", params[:facility]])
+
+    if new_threshold.nil?
+
+      new_threshold = FacilityThreshold.new
+      new_threshold.facility = params[:facility]
+    end
+
+    new_threshold.lower_limit = params[:lower_limit]
+    new_threshold.average = params[:median]
+    new_threshold.upper_limit = params[:upper_limit]
+    new_threshold.save!
+
+    render :text => "Thresholds successfully updated" and return
+
+  end
 end

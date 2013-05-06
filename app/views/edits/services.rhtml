@@ -1,6 +1,6 @@
 <%= javascript_include_tag 'jquery' %>
 <script type="text/javascript ">
-
+  <!--
   function del_service(service_id)
   {
     var confirm = window.confirm("Are you sure you want to delete this service?");
@@ -63,15 +63,6 @@
   function get_service(id)
   {
 
-   /*   Ajax.request("/edits/get_service?id=" + id,
-              {
-                  method: 'get', onSuccess :function(service){
-                    alert(service.responseText )
-                }
-              }
-      ) */
-
-
       jQuery.ajax(
               {
                   url: "/edits/get_service",
@@ -101,6 +92,7 @@
 
   }
   setTimeout("clear()",30 );
+  //-->
 </script>
 
 <style>
@@ -112,10 +104,13 @@
       height: 30px;
       background-color: silver;
   }
-  table
+  table.service
   {
       border: 1px solid black;
       border-color: black;
+      width: 98%;
+      height:94%;
+      margin-top: 1%;
   }
   td
   {
@@ -125,7 +120,7 @@
 
   tr.odd
   {
-    background-color: #ffd780;
+      background-color: white;
   }
 
   tr.even
@@ -167,20 +162,29 @@
 
 </style>
 
-<div id="heading" style="font-size: 36px; text-align: center; margin: 10px;
-        background-color: #cfe7f5; border-radius: 10px; padding: 15px; border: 1px solid #999;">
-  Manage Services
-</div>
-<div id="coat">
-  <img src="/images/coatOfArms.png" alt="" height="60" style="position: absolute; top: 25px; right: 30px;" />
-</div>
+<div class="table" style="border-spacing: 10px; min-width: 1000px; height: 100%;">
+  <div class="row">
+    <div class="cell" style="font-size: 36px; text-align: center; margin: 10px; height: 100px;
+            background-color: #cfe7f5; border-radius: 10px; padding: 10px; border: 1px solid #999;">
+      <table width="100%">
+        <tr>
+          <td style="width: 80px;">
+            <img src="/images/home.png" height="75" style="cursor: pointer;" onclick="window.location = '/admin'" />
+          </td>
+          <td style="text-align: center; font-size: 36px; padding-right: 10px;">
+            Manage Services
+          </td>
+          <td style="width: 60px;">
+            <img src="/images/coatOfArms.png" alt="" height="60" />
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
 
-<div id="content" style="border-radius: 10px; border: 1px solid #999; margin: 10px;
-        height: 80%; overflow: hidden; padding: 10px;">
+<div class="cell" style="font-size: 36px; text-align: center; margin: 10px; border-radius: 10px; padding: 10px; border: 1px solid #999;">
 
-<div  align="center" style="border: 1px solid black; border-radius: 15px; height:670px;width: 95%;margin-top:20px; margin-left: 40px; " >
-
-  <table  cellspacing="5px"  align="center " style="width: 98%;height:94%; margin-top: 1%; ">
+  <table  cellspacing="5px"  align="center " class="service" >
 
     <tr>
 
@@ -232,14 +236,10 @@
 
           <tr>
             <td colspan ="3">
-              <button class="main" onClick ="window.location = '/'" >Cancel</button>
+              <button class="main" onClick ="window.location = '/edits/admin'" >Cancel</button>
             </td>
           </tr>
-          <tr>
-            <td colspan ="3">
-              <button class="main" onClick ="window.location = '/edits/logout'">Logout</button>
-            </td>
-          </tr>
+
         </table>
       </td>
 
@@ -248,3 +248,4 @@
   </table>
 
 </div>
+ </div >
