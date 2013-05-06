@@ -130,16 +130,20 @@ class EditsController < ApplicationController
 
   def flow_reorder
     @flow = FlowOrder.find(:all, :conditions => ["(DATE(start_date) <= DATE(NOW()) " +
-          "AND DATE(end_date) > DATE(NOW())) OR (COALESCE(start_date, '') = '' " +
+          "AND (DATE(end_date) > DATE(NOW()) OR COALESCE(end_date, '') = '')) OR (COALESCE(start_date, '') = '' " +
           "AND COALESCE(end_date, '') = '')"], :order => [:order_id])
 
-    
   end
 
   def update_flow_order
 
     (0..(params["src_id"].length - 1)).each do |i|
-      FlowOrder.update(params["src_id"][i], :order_id => params["dst_id"][i])
+      FlowOrder.update(params["src_id"][i], 
+        :order_id => params["dst_id"][i],
+        :duration => params["duration"][i],
+        :start_date => params["start_date"][i],
+        :end_date => params["end_date"][i]
+      )
     end
 
     redirect_to :action => :flow_reorder

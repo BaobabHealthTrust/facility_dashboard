@@ -34,3 +34,56 @@ function slideShow(step){
         }
     }
 }
+
+function checkIfNumber(id){
+    if(__$(id)){
+
+        if(!__$(id).value.trim().match(/^\d+(\.\d+)?$/)){
+            __$(id).style.color = "red";
+            
+            if(__$(id + "_lbl"))
+                __$(id + "_lbl").style.color = "red";
+        } else {
+            __$(id).style.color = "black";
+
+            if(__$(id + "_lbl"))
+                __$(id + "_lbl").style.color = "black";
+        }
+
+        setTimeout("checkIfNumber('" + id + "')", 100);
+
+    }
+}
+
+function checkDate(id){
+    if(!__$(id).value.trim().match(/^\d{4}\-((0[1-9])|(1[0-2]))\-(([0-2][0-9])|(3[0-1]))$|^$/)){
+        __$(id).style.color = "red";
+
+        if(__$(id + "_lbl"))
+            __$(id + "_lbl").style.color = "red";
+        
+    } else if(__$(id).value.trim().match(/^\d{4}\-((0[1-9])|(1[0-2]))\-(([0-2][0-9])|(3[0-1]))$|^$/)){
+        var d = new Date(__$(id).value.trim());
+
+        if(isNaN(d.getFullYear())){
+            __$(id).style.color = "red";
+
+            if(__$(id + "_lbl"))
+                __$(id + "_lbl").style.color = "red";
+        } else {
+            __$(id).style.color = "green";
+            
+            if(__$(id + "_lbl"))
+                __$(id + "_lbl").style.color = "green";
+        }
+
+    } else {
+        __$(id).style.color = "black";
+        
+        if(__$(id + "_lbl"))
+            __$(id + "_lbl").style.color = "black";
+    }
+
+    setTimeout("checkDate('" + id + "')", 100);
+
+}

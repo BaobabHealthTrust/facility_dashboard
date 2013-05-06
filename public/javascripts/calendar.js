@@ -83,12 +83,16 @@ function loadCalendar(control, minYr, maxYr, topAlign, leftAlign){
     tbl.style.display = "table";
     tbl.style.position = "absolute";
     tbl.style.border = "1px solid #ccc";
-    tbl.style.backgroundColor = "#fff";
+    tbl.style.backgroundColor = "#999";
     tbl.style.borderRadius = "10px";
     tbl.style.padding = "10px";
 
     var w = 536, h = 392;
     
+    if(pos[2] < h){
+        topAlign = true;
+    }
+
     if(topAlign){
         tbl.style.top = (pos[2] + pos[1]) + "px";
     } else {
@@ -258,7 +262,7 @@ function generateDays(){
     var keyboard = document.createElement("div");
     keyboard.style.margin = "auto";
     keyboard.style.display = "table";
-    keyboard.style.backgroundColor = "#fff";
+    keyboard.style.backgroundColor = "#ccc";
     keyboard.style.borderRadius = "10px";
     keyboard.style.borderSpacing = "3px";
 
