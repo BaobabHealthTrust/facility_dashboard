@@ -2,12 +2,18 @@
 class EditsController < ApplicationController
 
  before_filter :check_login, :except => [:login, :check_login, :verify_user]
+ before_filter :check_for_cancel, :only => [:add_message]
 
   def messages   
   end
+ def check_for_cancel
 
+   if params[:cancel] == "Cancel"
+     redirect_to :action =>  :admin
+   end
+ end
   def add_message
-    # raise params.to_yaml    
+
     saved = Message.create(
       :msg_type => params["message_type"],
       :msg_group => params["message_group"],

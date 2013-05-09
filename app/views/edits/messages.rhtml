@@ -1,3 +1,4 @@
+
 <% form_tag ({:controller => "edits", :action => "add_message"}) do %>
 
   <div class="table" style="border-spacing: 10px; min-width: 1000px; height: 100%;">
@@ -116,10 +117,7 @@
                       style="width: 180px; float: left;">
                 Save
               </button>
-              <button class="button blue" onclick="window.location = '/admin'"
-                      style="width: 180px; float: right;">
-                Cancel
-              </button>
+              <%= submit_tag 'Cancel', :name => 'cancel', :class => "button special" %>
             </td>
           </tr>
         </table>
@@ -441,6 +439,6 @@
   }
 
   disableSomeFields();
-  
+
   //-->
 </script>

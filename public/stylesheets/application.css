@@ -126,3 +126,35 @@ body {
     background-repeat: repeat-x;
     border: 1px inset #000;
 }
+.button.special {
+    color: #fff;
+    -moz-transition: none 0s ease 0s;
+    border: 0 none;
+    border-radius: 15px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1) inset, 0 1px 5px rgba(0, 0, 0, 0.25);
+    color: #FFFFFF;
+    padding: 14px 24px;
+    background-color: #006DCC;
+    background-image: -moz-linear-gradient(center top , #0088CC, #0044CC);
+    background-repeat: repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    float: right;
+}
+
+.button.special:hover {
+    color: #ffffee;
+    background-color: #006DCC;
+    background-image: -moz-linear-gradient(center top , #0088EE, #0044EE);
+    background-repeat: repeat-x;
+}
+
+.button.special:active {
+    -moz-user-select:none;
+    -moz-user-focus:disabled;
+    color: #ffffcc;
+    background-color: #006DCC;
+    background-image: -moz-linear-gradient(center top , #CC8800, #CC4400);
+    background-repeat: repeat-x;
+    border: 1px inset #000;
+}
