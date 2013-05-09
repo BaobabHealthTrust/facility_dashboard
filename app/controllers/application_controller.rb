@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
 
   def check_login
 
-    unless ! $current_user.blank?
+    if $current_user.nil?
 
       $return_path = request.path
       redirect_to :controller => "edits", :action =>  "login"

@@ -1,7 +1,7 @@
 
 class EditsController < ApplicationController
 
- # before_filter :check_login, :except => [:login, :check_login, :verify_user]
+ before_filter :check_login, :except => [:login, :check_login, :verify_user]
 
   def messages   
   end
