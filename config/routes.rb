@@ -1,7 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
 
   map.root :controller => 'common', :action => 'index'
-
+  
   map.facility '/facility', :controller => 'hospital_director', :action => 'facility'
 
   map.facility '/login', :controller => 'edits', :action => 'login'

@@ -4,6 +4,15 @@ require "miro"
 class CommonController < ApplicationController
 
   def index
+
+    $audience = params[:id] rescue "consumer"
+    if params[:id] =="p"
+      $audience = "policy_maker"
+    elsif params[:id] == "h"
+      $audience = "hos_dir"
+    else
+      $audience = "consumer"
+    end
     if $slide.nil?
       $slide = SlideEngine.new
       

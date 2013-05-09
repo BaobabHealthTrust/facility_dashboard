@@ -109,7 +109,7 @@
           </th>
           <th style=" border-radius: 10px; border: 1px solid #666; padding: 10px;
                   background-color: #333; color: #eee; font-size: 0.8em; width: 100px;">
-            Audience<br> P H C
+            Display
           </th>
           <th style=" border-radius: 10px; border: 1px solid #666; padding: 10px;
               background-color: #333; color: #eee; font-size: 0.8em; width: 100px;">
@@ -130,6 +130,7 @@
         </tr>
 
         <% i = 0 %>
+
         <% @flow.each do |item| %>
 
           <% i += 1 %>
@@ -164,18 +165,11 @@
                       </td>
                       <td style="border-right: 1px solid #666;width:100px ;border-radius: 10px;
                               border-left: 1px solid #666;">
-                        <input type="checkbox" name="aud_p[<%= i %>]" id="aud_p<%= i %>"
-                                <%= item.policy_maker? ? "checked" : "unchecked"  %>
+                        <input type="checkbox" name="show[<%= i %>]" id="show<%= i %>"
+                                <%= if item[@show ] == true then "checked" else "unchecked" end %>
                                style="text-align: center; width: 100px;"
                                 />
-                        <input type="checkbox" name="aud_h[<%= i %>]" id="aud_h<%= i %>"
-                                <%= item.hos_dir? ? "checked" : "unchecked"  %>
-                               style="text-align: center; width: 100px;"
-                        />
-                        <input type="checkbox" name="aud_c[<%= i %>]" id="aud_c<%= i %>"
-                                <%= item.consumer? ? "checked" : "unchecked"  %>
-                               style="text-align: center; width: 100px;"
-                        />
+
                       </td>
                       <td style="border-right: 1px solid #666; border-radius: 10px;
                           border-left: 1px solid #666; width: 100px;">
@@ -213,7 +207,8 @@
         <% end %>
 
       </table>
-
+        <input  name="target" type="hidden" value="<%= @target %>" />
+        <input  name="display_field" type="hidden" value="<%= @show %>" />
     <% end %>
 
 

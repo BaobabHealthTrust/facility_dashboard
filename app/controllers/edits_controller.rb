@@ -130,30 +130,48 @@ class EditsController < ApplicationController
   end
 
   def flow_reorder
+
+    if params[:id] == "hos_dir"
+      @target = "hos_dir_order_id"
+      @show = "hos_dir"
+    elsif params[:id] == "policy"
+      @target = "policy_order_id"
+      @show = "policy_maker"
+    else
+      @target = "consumer_order_id"
+      @show = "consumer"
+    end
+
     @flow = FlowOrder.find(:all, :conditions => ["(DATE(start_date) <= DATE(NOW()) " +
           "AND (DATE(end_date) > DATE(NOW()) OR COALESCE(end_date, '') = '')) OR (COALESCE(start_date, '') = '' " +
-          "AND COALESCE(end_date, '') = '')"], :order => [:order_id])
+          "AND COALESCE(end_date, '') = '')"], :order => [@target])
+
+
     #raise @flow.inspect
+  end
+
+  def choose_audience
+
   end
 
   def update_flow_order
 
-
+    target = params["target"]
+    show = params["display_field"]
+    #raise params.inspect
     (0..(params["src_id"].length - 1)).each do |i|
 
       new_position = FlowOrder.find(params["src_id"][i])
-      new_position.order_id = params["dst_id"][i]
+      new_position[target] = params["dst_id"][i]
       new_position.duration = params["duration"][i]
-      new_position.policy_maker = params["aud_p"][(i+1).to_s] == "on" ? true : false
-      new_position.hos_dir = params["aud_h"][(i+1).to_s]  == "on" ? true : false
-      new_position.consumer = params["aud_c"][(i+1).to_s] == "on" ? true : false
+      new_position[show] = params["show"][(i+1).to_s] == "on" ? true : false
       new_position.start_date = params["start_date"][i]
       new_position.end_date = params["end_date"][i]
       new_position.save!
       #raise new_position.inspect
     end
 
-    redirect_to :action => :flow_reorder
+    redirect_to :action => :choose_audience
   end
 
   def admin

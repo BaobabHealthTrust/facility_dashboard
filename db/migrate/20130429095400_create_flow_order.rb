@@ -2,6 +2,9 @@ class CreateFlowOrder < ActiveRecord::Migration
   def self.up
     create_table :flow_order do |t|
       t.integer :order_id
+      t.integer :policy_order_id
+      t.integer :hos_dir_order_id
+      t.integer :consumer_order_id
       t.column :order_group, "ENUM('facility attendance', 'area attendance', " +
         "'facility services', 'announcement', 'facility indicators', " +
         "'facility alert', 'educational messages', 'advertisement', 'trends', "+
