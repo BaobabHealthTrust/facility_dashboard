@@ -16,8 +16,8 @@ class CommonController < ApplicationController
       :conditions => ["msg_type = 'announcement' AND start_date <= ? and end_date >= ?",
         DateTime.now, DateTime.now]).collect{|n|
       i += 1;
-      "<span style='color: #{cycle("#cfe7f5", "#dc9746", i)}'><b>#{n.heading}:</b> <i>" +
-        "#{n.msg_text[0..100]}#{(n.msg_text.length > 100 ? "..." : "")}</i></span>"
+      "<span style='color: #{cycle("#cfe7f5", "#dc9746", i)}'><b>#{n.heading}:</b> " +
+        "#{n.msg_text[0..100]}#{(n.msg_text.length > 100 ? "..." : "")}</span>"
     }.join("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ")
 
     @news = "No Announcements" if @news.strip.blank?
@@ -249,7 +249,7 @@ class CommonController < ApplicationController
     @facility = "Kamuzu Central Hospital"
 
     @centers = ["Total Encounters"]
-
+    @ranges = { }
     @readings = Hash.new()
 
     today = 0
@@ -294,13 +294,16 @@ class CommonController < ApplicationController
 
     @readings["Total Encounters"] = [today, this_month, this_year]
 
-    @ranges = {
-        "Ward 4B" =>  [
-            [0, 20, "blue"],
-            [21, 40, "green"],
-            [41, 60, "red"]
-        ]
-    }
+
+    (1..(@centers.length - 1)).each do |i|
+
+      threshold = FacilityThreshold.find(:first, :conditions => ["facility = ?", @centers[i]])
+      min = threshold.lower_limit rescue 20
+      avg = threshold.average rescue 40
+      max = threshold.upper_limit rescue 100
+      @ranges[@centers[i]] = [[0,min, "blue"],[min+1, avg, "green"], [avg+1,max,"red"]]
+
+    end
 
   end
 
@@ -346,12 +349,15 @@ class CommonController < ApplicationController
 
   def catchment_areas
 
+    @areas = CatchmentArea.find(:all)
+
+
   end
 
   def area_attendance
 
     @centers = ["Total Attendance"]
-
+    @ranges = {}
     @readings = Hash.new()
 
     today = 0
@@ -398,14 +404,16 @@ class CommonController < ApplicationController
 
     @readings["Total Attendance"] = [today, this_month, this_year]
 
-    @ranges = {
+    (1..(@centers.length - 1)).each do |i|
 
-        "Ward 2B" =>  [
-            [0, 20, "blue"],
-            [21, 40, "green"],
-            [41, 60, "red"]
-        ]
-    }
+      threshold = FacilityThreshold.find(:first, :conditions => ["facility = ?", @centers[i]])
+      min = threshold.lower_limit rescue 20
+      avg = threshold.average rescue 40
+      max = threshold.upper_limit rescue 100
+      @ranges[@centers[i]] = [[0,min, "blue"],[min+1, avg, "green"], [avg+1,max,"red"]]
+
+    end
+
 
 
 
@@ -418,8 +426,8 @@ class CommonController < ApplicationController
       :conditions => ["msg_type = 'announcement' AND start_date <= ? and end_date >= ?",
         DateTime.now, DateTime.now]).collect{|n|
       i += 1;
-      "<span style='color: #{cycle("#cfe7f5", "#dc9746", i)}'><b>#{n.heading}:</b> <i>" +
-        "#{n.msg_text[0..100]}#{(n.msg_text.length > 100 ? "..." : "")}</i></span>"
+      "<span style='color: #{cycle("#cfe7f5", "#dc9746", i)}'><b>#{n.heading}:</b> " +
+        "#{n.msg_text[0..100]}#{(n.msg_text.length > 100 ? "..." : "")}span>"
     }.join("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ")
 
     @news = "No Announcements" if @news.strip.blank?

@@ -9,6 +9,9 @@ class CreateFlowOrder < ActiveRecord::Migration
       t.integer :src_id, :default => nil
       t.string :src_table, :default => nil
       t.text :description, :default => nil
+      t.boolean :policy_maker, :default => true
+      t.boolean :hos_dir, :default => true
+      t.boolean :consumer, :default => true
       t.decimal :duration, :scale => 2, :precision => 64
       t.date :start_date
       t.date :end_date

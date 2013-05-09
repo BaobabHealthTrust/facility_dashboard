@@ -1,7 +1,7 @@
 
 class EditsController < ApplicationController
 
-  before_filter :check_login, :except => [:login, :check_login, :verify_user]
+ # before_filter :check_login, :except => [:login, :check_login, :verify_user]
 
   def messages   
   end
@@ -59,8 +59,8 @@ class EditsController < ApplicationController
     state = User.authenticate(params[:user][:username],params[:user][:password])
 
     if state
-      $current_user = params[:user][:username]
-      redirect_to $return_path.nil? ? "/edits/admin" :$return_path
+      $current_user = User.find_by_username(params[:user][:username])
+      redirect_to $return_path.nil? ? "/edits/admin" : $return_path
 
     else
       flash[:messages] = "Wrong user password combination"
@@ -125,6 +125,7 @@ class EditsController < ApplicationController
 
   def logout
     $current_user = nil
+    $return_path = "/admin"
     redirect_to "/login"
   end
 
@@ -132,18 +133,24 @@ class EditsController < ApplicationController
     @flow = FlowOrder.find(:all, :conditions => ["(DATE(start_date) <= DATE(NOW()) " +
           "AND (DATE(end_date) > DATE(NOW()) OR COALESCE(end_date, '') = '')) OR (COALESCE(start_date, '') = '' " +
           "AND COALESCE(end_date, '') = '')"], :order => [:order_id])
-
+    #raise @flow.inspect
   end
 
   def update_flow_order
 
+
     (0..(params["src_id"].length - 1)).each do |i|
-      FlowOrder.update(params["src_id"][i], 
-        :order_id => params["dst_id"][i],
-        :duration => params["duration"][i],
-        :start_date => params["start_date"][i],
-        :end_date => params["end_date"][i]
-      )
+
+      new_position = FlowOrder.find(params["src_id"][i])
+      new_position.order_id = params["dst_id"][i]
+      new_position.duration = params["duration"][i]
+      new_position.policy_maker = params["aud_p"][(i+1).to_s] == "on" ? true : false
+      new_position.hos_dir = params["aud_h"][(i+1).to_s]  == "on" ? true : false
+      new_position.consumer = params["aud_c"][(i+1).to_s] == "on" ? true : false
+      new_position.start_date = params["start_date"][i]
+      new_position.end_date = params["end_date"][i]
+      new_position.save!
+      #raise new_position.inspect
     end
 
     redirect_to :action => :flow_reorder

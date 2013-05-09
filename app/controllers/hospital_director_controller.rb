@@ -8,6 +8,8 @@ class HospitalDirectorController < ApplicationController
 
     @readings = Hash.new()
 
+    @ranges = {}
+
     today = 0
     this_month = 0
     this_year = 0
@@ -52,16 +54,18 @@ class HospitalDirectorController < ApplicationController
 
     @readings["Total Attendance"] = [today, this_month, this_year]
 
-    @ranges = {
 
-      "Ward 2B" =>  [
-        [0, 20, "blue"],
-        [21, 40, "green"],
-        [41, 60, "red"]
-      ]
-    }
+    (1..(@centers.length - 1)).each do |i|
 
-    # raise @ranges["Ward 4B"][0][0].to_yaml
+      threshold = FacilityThreshold.find(:first, :conditions => ["facility = ?", @centers[i]])
+      min = threshold.lower_limit rescue 20
+      avg = threshold.average rescue 40
+      max = threshold.upper_limit rescue 100
+      @ranges[@centers[i]] = [[0,min, "blue"],[min+1, avg, "green"], [avg+1,max,"red"]]
+
+    end
+
+     #raise @ranges.to_yaml
   end
 
 end
