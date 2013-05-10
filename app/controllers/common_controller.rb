@@ -8,10 +8,13 @@ class CommonController < ApplicationController
     $audience = params[:id] rescue "consumer"
     if params[:id] =="p"
       $audience = "policy_maker"
+      $order = "policy_order_id"
     elsif params[:id] == "h"
       $audience = "hos_dir"
+      $order = "hos_dir_order_id"
     else
       $audience = "consumer"
+      $order = "consumer_order_id"
     end
     if $slide.nil?
       $slide = SlideEngine.new

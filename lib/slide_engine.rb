@@ -28,7 +28,7 @@ class SlideEngine
     @@slideshow = ["/common/home"]
 
     flow = FlowOrder.find(:all, :conditions => ["#{$audience} = TRUE AND DATE(COALESCE(start_date, NOW())) " +
-          "<= DATE(NOW()) AND DATE(COALESCE(end_date, NOW())) >= DATE(NOW())"], :order => :order_id)
+          "<= DATE(NOW()) AND DATE(COALESCE(end_date, NOW())) >= DATE(NOW())"], :order => $order )
 
     flow.each do |item|
       

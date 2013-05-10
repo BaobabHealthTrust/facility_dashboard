@@ -62,7 +62,7 @@ class Encs < WEBrick::HTTPServlet::AbstractServlet
 end
 
 if $0 == __FILE__ then
-  server = WEBrick::HTTPServer.new(:Port => 8001)
+  server = WEBrick::HTTPServer.new(:Port => 8001, :Binding => "127.0.5.1")
   server.mount "/encounters", Encs
   trap "INT" do server.shutdown end
   server.start

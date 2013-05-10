@@ -13,7 +13,7 @@ class HealthCareIndicator < ActiveRecord::Base
       health_indicator.indicator_type = indicator["indicator_type"]
       health_indicator.indicator_value = indicator["indicator_value"]
       health_indicator.indicator_date = indicator["date"]
-      health_indicator.facility = indicator["facility"] rescue "Unknown"
+      health_indicator.facility = indicator["facility"].blank? ? "Unknown" : location["facility"]
       health_indicator.save
 
     end

@@ -13,7 +13,7 @@ class AttendanceFigure < ActiveRecord::Base
       attendance_figure.attendance_figure = location["number of patients"]
       attendance_figure.attendance_figure_day = location["date"]
       attendance_figure.location_created = location["location name"]
-      attendance_figure.facility = location["facility"] rescue "Unknown"
+      attendance_figure.facility = location["facility"].blank? ? "Unknown" : location["facility"]
       attendance_figure.save
 
     end

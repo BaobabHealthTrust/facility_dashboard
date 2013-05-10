@@ -1,8 +1,12 @@
-require "rest-client"
+#!/usr/bin/ruby
 
-def updater
+require 'rubygems'
+require 'rest-client'
+require 'yaml'
 
-  temp_object = JSON.parse(RestClient.get("http://0.0.0.0:8002/updates")) rescue raise("Start the immediate updates servelet (ruby cron_jobs/immediate_updates.rb)")
+def updater(url)
+
+  temp_object = JSON.parse(RestClient.get(url)) rescue raise("Start the immediate updates servelet (ruby cron_jobs/immediate_updates.rb)")
 
   facilities = []
 
@@ -46,22 +50,19 @@ def updater
   end
 
 
-  facilities.each do |facility|
+end
 
-    new_threshold = FacilityThreshold.find_all_by_facility(facility)
 
-    if new_threshold.nil?
+def load
 
-      new_threshold = FacilityThreshold.new()
+  urls = YAML.load_file("cron_jobs/clients.yml")
 
-    end
+  urls.each_key do |key|
 
-    new_threshold.facility = facility
-
+    updater(urls[key]["url"])
 
   end
 
-
 end
 
-updater
+load

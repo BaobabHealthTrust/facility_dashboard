@@ -21,7 +21,7 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
 
 
 
-    settings = YAML.load_file("cron_jobs/database.yml")
+    settings = YAML.load_file("database.yml")
 
     result = {
         "att_fig_locations" => [], "health_indicator" => []
@@ -36,6 +36,8 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
       pass = settings[key]["password"]
 
       db = settings[key]["database"]
+
+      facility = settings[key]["facility"] rescue "UNKNOWN"
 
       con = Mysql.connect(host, user, pass, db)
 
@@ -60,7 +62,7 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
             "date" => row[2],
             "number of patients" => row[1],
             "location id" => row[0],
-            "facility" => settings[key]["facility"]
+            "facility" => facility
         }
 
       end

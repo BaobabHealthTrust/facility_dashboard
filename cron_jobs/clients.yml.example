@@ -1,0 +1,9 @@
+
+system:
+  url: "ip_address:8002/updates"
+
+bart:
+  url: "192.168.5.14:8002/updates"
+
+opd:
+  url:"192.20.6.1:8002/updates"
