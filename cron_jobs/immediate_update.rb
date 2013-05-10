@@ -37,8 +37,6 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
 
       db = settings[key]["database"]
 
-      facility = settings[key]["facility"] rescue "UNKNOWN"
-
       con = Mysql.connect(host, user, pass, db)
 
       attendance_figures = con.query("SELECT DISTINCT location_id, COUNT(distinct person_id) number_of_patients,
@@ -62,7 +60,7 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
             "date" => row[2],
             "number of patients" => row[1],
             "location id" => row[0],
-            "facility" => facility
+            "facility" => settings[key]["facility"]
         }
 
       end

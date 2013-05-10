@@ -63,6 +63,21 @@ def load
 
   end
 
+  facilites = AttendanceFigure.find_by_sql("SELECT distinct facility from attendance_figures")
+
+  facilites.each do |facility|
+
+    new_threshold = FacilityThreshold.find(:first, :conditions =>  ["facility = ?", facility.facility])
+
+    if new_threshold.nil?
+      new_threshold = FacilityThreshold.new
+      new_threshold.facility = facility.facility
+      new_threshold.save!
+
+    end
+
+  end
+
 end
 
 load
