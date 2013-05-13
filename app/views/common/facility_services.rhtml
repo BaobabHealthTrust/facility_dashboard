@@ -15,6 +15,51 @@
       }
   </style>
 
+  <script type="text/javascript">
+    <!--
+
+        ScrollRate = 20;
+
+        function scrollDiv_init(name) {
+            DivElmnt = document.getElementById(name);
+            ReachedMaxScroll = false;
+
+            DivElmnt.scrollTop = 0;
+            PreviousScrollTop  = 0;
+
+            ScrollInterval = setInterval('scrollDiv()', ScrollRate);
+        }
+
+        function scrollDiv() {
+
+            if (!ReachedMaxScroll) {
+                DivElmnt.scrollTop = PreviousScrollTop;
+                PreviousScrollTop++;
+
+                ReachedMaxScroll = DivElmnt.scrollTop >= (DivElmnt.scrollHeight - DivElmnt.offsetHeight);
+            }
+            else {
+                ReachedMaxScroll = (DivElmnt.scrollTop == 0)?false:true;
+
+                DivElmnt.scrollTop = PreviousScrollTop;
+                PreviousScrollTop--;
+            }
+        }
+
+        function pauseDiv() {
+            clearInterval(ScrollInterval);
+        }
+
+        function resumeDiv() {
+            PreviousScrollTop = DivElmnt.scrollTop;
+            ScrollInterval    = setInterval('scrollDiv()', ScrollRate);
+        }
+
+        setTimeout("scrollDiv_init('content')", 30)
+    //-->
+
+  </script>
+
 </head>
 
 <body bgcolor="#f8f8ff"   >
@@ -32,7 +77,7 @@
 
 
 <div id="content" style="border-radius: 10px; border: 1px solid #999; margin: 10px;
-        height: 80%; overflow: hidden; padding: 10px;">
+        height: 80%; overflow: scroll; padding: 10px;overflow-x:hidden;overflow-y:hidden; ">
 
   <table width="98%" style="margin-left:0.5%; "  >
     <% @services .each do |service| %>

@@ -1,4 +1,10 @@
 <%= javascript_include_tag 'jquery' %>
+
+<script language="javascript" type="text/javascript" src="/javascripts/jquery.ui.draggable.js"></script>
+<script language="javascript" type="text/javascript" src="/javascripts/jquery.alerts.js"></script>
+
+<link href="/stylesheets/jquery.alerts.css" rel="stylesheet" type="text/css" media="screen" />
+
 <script type="text/javascript">
   <!--
   
@@ -11,19 +17,19 @@
 
     if (( username == "") || (username == " "))
     {
-      alert("username cannot be blank");
+      jAlert("username cannot be blank", "Incomplete Information");
     }
     else if ( password == "" || password == " ")
     {
-      alert("Password cannot be blank");
+      jAlert("Password cannot be blank", "Incomplete Information");
     }
     else if ( pswd == "" || pswd == " ")
     {
-      alert("Please enter password for confirmation")
+      jAlert("Please enter password for confirmation", "Incomplete Information")
     }
     else if ( password != pswd)
     {
-      alert("Passwords provided do not match");
+      jAlert("Passwords provided do not match", "Password Mismatch");
     }
     else
     {
@@ -33,12 +39,12 @@
         type:"POST",
         data: {"password" : password, "username" : username, "user_role" : document.getElementById("user_role").value },
         success : function (message){
-          alert(message);
+          jAlert(message, "Success!");
           clear();
         },
         error : function (message)
         {
-          alert(message);
+          jAlert(message, "Error");
         }
       }
     );
@@ -53,7 +59,7 @@
 
   function return_to_main()
   {
-    alert("returning");
+    jAlert("returning");
     window.location = "/common/home";
   }
 
