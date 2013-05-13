@@ -439,7 +439,7 @@ class CommonController < ApplicationController
         DateTime.now, DateTime.now]).collect{|n|
       i += 1;
       "<span style='color: #{cycle("#cfe7f5", "#dc9746", i)}'><b>#{n.heading}:</b> " +
-        "#{n.msg_text[0..100]}#{(n.msg_text.length > 100 ? "..." : "")}span>"
+        "#{n.msg_text[0..100]}#{(n.msg_text.length > 100 ? "..." : "")}<span>"
     }.join("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ")
 
     @news = "No Announcements" if @news.strip.blank?

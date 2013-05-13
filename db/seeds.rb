@@ -13,33 +13,40 @@ FlowOrder.create(
     { 
       :order_group => "facility attendance",
       :description => "Facility attendance figures",
+      :duration => 0.4,
       :creator => 1
     },
     {
       :order_group => "area attendance",
       :description => "Area attendance figures of facilities",
+      :duration => 0.4,
       :creator => 1
     },
     {
       :order_group => "facility services",
       :description => "Services offered at facility",
+      :duration => 0.3,
       :creator => 1
     },
     {
       :order_group => "facility indicators",
       :description => "Indicators of  services offered at facility",
+      :duration => 0.4,
       :creator => 1
     },
     {
       :order_group => "trends",
       :description => "Trends view",
+      :duration => 0.4,
       :creator => 1
-    },
+    }
+=begin   ,
     {
       :order_group => "catchment areas",
       :description => "Facility catchment areas view",
       :creator => 1
     }
+=end
   ]
 )
 

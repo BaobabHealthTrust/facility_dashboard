@@ -5,10 +5,12 @@
    {
        <% if $current_user["user_role"] == "editor"   %>
           var delete_user = document.getElementById("delete_user");
-          var add_user = document.getElementById("add_user").style.visibility = 'hidden';
+          var add_user = document.getElementById("add_user");
           var logout = document.getElementById("logout").style.visibility = 'hidden';
+          var home = document.getElementById("home").style.visibility = 'hidden';
 
-
+          add_user.innerHTML ="Home"
+          add_user.setAttribute("onclick", "window.location = '/common/index'")
           delete_user.innerHTML = "Logout";
           delete_user.setAttribute("onclick","window.location='/edits/logout'")
        <%end unless $current_user.nil?%>
@@ -68,7 +70,7 @@
       </tr>
       <tr>
         <td align="right">
-          <button class="button blue" onclick="window.location = '/edits/add_user'"
+          <button id="add_user" class="button blue" onclick="window.location = '/edits/add_user'"
                   style="width: 200px;">
             New User
           </button>
@@ -82,7 +84,7 @@
       </tr>
       <tr>
         <td align="right">
-          <button id="add_user" class="button blue" onclick="window.location = '/common/index'"
+          <button id="home" class="button blue" onclick="window.location = '/common/index'"
                   style="width: 160px;">
             Home
           </button>
