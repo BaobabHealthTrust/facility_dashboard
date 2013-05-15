@@ -1,3 +1,9 @@
+<%= javascript_include_tag 'jquery' %>
+
+<script language="javascript" type="text/javascript" src="/javascripts/jquery.ui.draggable.js"></script>
+<script language="javascript" type="text/javascript" src="/javascripts/jquery.alerts.js"></script>
+
+<link href="/stylesheets/jquery.alerts.css" rel="stylesheet" type="text/css" media="screen" />
 
 <% form_tag ({:controller => "edits", :action => "add_message"}) do %>
 
@@ -131,7 +137,7 @@
   <!--
 
 <% unless flash[:notice].nil? %>
-    alert("<%= flash[:notice] %>");
+    jAlert("<%= flash[:notice] %>", "Message");
 <% end %>
 
   function checkIfNumber(id){
@@ -311,28 +317,28 @@
         __$("message_text").value = "";
 
         if(!__$("duration").value.match(/^\d+(\.\d+)?$/)){
-          alert("Please provide a valid duration!");
+          jAlert("Please provide a valid duration!", "Wrong Details");
 
           __$("duration").focus();
 
           valid = false;
 
         } else if(!__$("start_date").value.trim().match(/^\d{4}\-((0[1-9])|(1[0-2]))\-(([0-2][0-9])|(3[0-1]))$/)){
-          alert("Please provide a valid start date!");
+          jAlert("Please provide a valid start date!", "Wrong Details");
 
           __$("start_date").focus();
 
           valid = false;
           
         } else if(!__$("end_date").value.match(/^\d{4}\-((0[1-9])|(1[0-2]))\-(([0-2][0-9])|(3[0-1]))$/)){
-          alert("Please provide a valid end date!");
+          jAlert("Please provide a valid end date!", "Wrong Details");
 
           __$("end_date").focus();
 
           valid = false;
 
         } else if(__$("upload_path").value.trim().match(/^$/)){
-          alert("Please upload an advert to display!");
+          jAlert("Please upload an advert to display!", "Incomplete Details");
 
           valid = false;
 
@@ -347,28 +353,28 @@
       case "Announcement":
 
         if(__$("heading").value.trim().match(/^$/)){
-          alert("Please write heading text to display!");
+          jAlert("Please write heading text to display!", "Incomplete Details");
 
           __$("heading").focus();
 
           valid = false;
 
         } else if(__$("message_text").value.trim().match(/^$/)){
-          alert("Please write text to display!");
+          jAlert("Please write text to display!", "Incomplete Details");
 
           __$("message_text").focus();
 
           valid = false;
 
         } else if(!__$("start_date").value.trim().match(/^\d{4}\-((0[1-9])|(1[0-2]))\-(([0-2][0-9])|(3[0-1]))$/)){
-          alert("Please provide a valid start date!");
+          jAlert("Please provide a valid start date!","Wrong Details");
 
           __$("start_date").focus();
 
           valid = false;
 
         } else if(!__$("end_date").value.match(/^\d{4}\-((0[1-9])|(1[0-2]))\-(([0-2][0-9])|(3[0-1]))$/)){
-          alert("Please provide a valid end date!");
+          jAlert("Please provide a valid end date!", "Wrong Details");
 
           __$("end_date").focus();
 
@@ -385,40 +391,40 @@
       case "General Message":
 
         if(__$("heading").value.trim().match(/^$/)){
-          alert("Please write heading text to display!");
+          jAlert("Please write heading text to display!","Incomplete Details");
 
           __$("heading").focus();
 
           valid = false;
 
         } else if(__$("message_text").value.trim().match(/^$/)){
-          alert("Please write text to display!");
+          jAlert("Please write text to display!", "Incomplete Details");
 
           __$("message_text").focus();
 
           valid = false;
 
         } else if(!__$("duration").value.match(/^\d+(\.\d+)?$/)){
-          alert("Please provide a valid duration!");
+          jAlert("Please provide a valid duration!", "Incomplete Details");
 
           __$("duration").focus();
 
           valid = false;
 
         } else if(__$("upload_path").value.trim().match(/^$/)){
-          alert("Please upload an image or video to display!");
+          jAlert("Please upload an image or video to display!","Incomplete Details");
 
           valid = false;
 
         } else if(!__$("start_date").value.trim().match(/^\d{4}\-((0[1-9])|(1[0-2]))\-(([0-2][0-9])|(3[0-1]))$/)){
-          alert("Please provide a valid start date!");
+          jAlert("Please provide a valid start date!", "Success");
 
           __$("start_date").focus();
 
           valid = false;
 
         } else if(!__$("end_date").value.match(/^\d{4}\-((0[1-9])|(1[0-2]))\-(([0-2][0-9])|(3[0-1]))$/)){
-          alert("Please provide a valid end date!");
+          jAlert("Please provide a valid end date!", "Incomplete Details");
 
           __$("end_date").focus();
 
