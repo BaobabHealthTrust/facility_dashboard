@@ -29,18 +29,19 @@ FlowOrder.create(
       :creator => 1
     },
     {
-      :order_group => "facility indicators",
-      :description => "Indicators of  services offered at facility",
-      :duration => 0.4,
-      :creator => 1
-    },
-    {
       :order_group => "trends",
       :description => "Trends view",
       :duration => 0.4,
       :creator => 1
     }
-=begin   ,
+=begin
+,    ,
+    {
+      :order_group => "facility indicators",
+      :description => "Indicators of  services offered at facility",
+      :duration => 0.4,
+      :creator => 1
+    }   ,
     {
       :order_group => "catchment areas",
       :description => "Facility catchment areas view",

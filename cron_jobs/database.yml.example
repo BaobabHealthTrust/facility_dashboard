@@ -1,5 +1,5 @@
 
-bart2:
+database:
   adapter: mysql
   encoding: utf8
   reconnect: false
@@ -10,44 +10,12 @@ bart2:
   facility: BART
   socket: /var/run/mysqld/mysqld.sock
 
-radiology:
-  adapter: mysql
-  database: radiology_db
-  username: username
-  password: password
-  facility: Radiology
-  host: localhost
 
-opd:
-  adapter: mysql
-  encoding: utf8
-  reconnect: false
-  database: opd_db
-  pool: 5
-  username: username
-  password: password
-  facility: OPD
-  socket: /var/run/mysqld/mysqld.sock
-
-registration:
-  adapter: mysql
-  encoding: utf8
-  reconnect: false
-  database: registration_db
-  pool: 5
-  username: username
-  password: password
-  facility: Registration
-  socket: /var/run/mysqld/mysqld.sock
-
-maternity:
-  adapter: mysql
-  database: maternity_db
-  username: username
-  password: password
-  facility: Maternity
-  host: localhost
-
-
-
+dashboard:
+  dashboard_ip: 0.0.0.0
+  user:         username
+  password:     password
+  port: 3001
+  timeout:      600
+  open_timeout: 600
 
