@@ -59,7 +59,7 @@ class SlideEngine
 
       when "advertisement"
 
-        @@slideshow << "/common/advert?duration=#{item.duration.to_f}"
+        @@slideshow << "/common/advert/#{item.src_id rescue ""}?duration=#{item.duration.to_f}"
 
       when "announcement"
 

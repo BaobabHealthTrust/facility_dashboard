@@ -62,9 +62,9 @@
   function submit()
   {
       var facility = document.getElementById("facility").value;
-      var min = document.getElementById("minimum").value;
-      var avg = document.getElementById("median").value;
-      var max = document.getElementById("maximum").value;
+      var min = parseInt(document.getElementById("minimum").value);
+      var avg = parseInt(document.getElementById("median").value);
+      var max = parseInt(document.getElementById("maximum").value);
 
       if (facility == "" || facility == " ")
         jAlert("Facility name cannot be blank")
@@ -84,7 +84,7 @@
           jAlert("Maximum value cannot be empty")
       else if (isNaN(max ))
           jAlert("Maximum value can only be an integer")
-      else if (avg > max )
+      else if(avg > max )
           jAlert("Maximum value cannot be less than or equal to median value")
       else
       {
@@ -95,7 +95,7 @@
                       data: {"facility" : facility , "lower_limit" :min ,"median" : avg, "upper_limit":max },
                       dataType : "text",
                       success : function (message){
-                        alert(message, "Confirmation", function(){
+                        jAlert(message, "Confirmation", function(){
                             clear()
                             window.location.reload();
                         } );
@@ -218,7 +218,7 @@
       </tr>
       <tr>
         <td width="45%" >
-          <div style="width:100%;height:600px; background-color:silver;text-align:center;border:1px solid black;overflow:auto;">
+          <div style="width:100%;height:99%; background-color:silver;text-align:center;border:1px solid black;overflow:auto;">
 
             <table style ="width:100%;vertical-align:top">
               <% @thresholds .each do |threshold|  %>
