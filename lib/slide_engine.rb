@@ -73,6 +73,10 @@ class SlideEngine
 
         @@slideshow << "/common/general_message/#{item.src_id rescue ""}?duration=#{item.duration.to_f}"
 
+      when "notice board"
+
+        @@slideshow << "/common/notice_board?duration=#{item.duration.to_f}"
+
       end
 
     end

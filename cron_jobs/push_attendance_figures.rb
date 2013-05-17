@@ -96,6 +96,12 @@ def push(data_collection)
 
 end
 
+def post
 
-collect
+
+
+end
+
+
+post
 

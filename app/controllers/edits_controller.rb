@@ -91,7 +91,7 @@ class EditsController < ApplicationController
   end
 
   def services
-    @services = Service.find(:all, :conditions =>  ["available = ?", true])
+    @services = Service.find(:all, :conditions =>  ["voided = ?", false])
   end
 
   def get_service
@@ -104,7 +104,7 @@ class EditsController < ApplicationController
 
   def delete_service
     service = Service.find(:first, :conditions => ["service_id = ?", params[:service_id]])
-    service.available = false
+    service.voided = true
     service.save!
     render :text => "true" and return
   end

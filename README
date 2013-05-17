@@ -3,7 +3,7 @@ The facility dashboard was developed to display messages and data collected at s
 
 == Getting Started
 
-1.After cloning the application from github, set database configurations in config/database.yml, cron_job/client.yml
+1.After cloning the application from github, set database configurations in config/database.yml and remote data source url in  cron_job/client.yml
 
 3. Run bundle install
 
@@ -18,18 +18,19 @@ The facility dashboard was developed to display messages and data collected at s
 
 == Data gathering from Remote Applications
 
+
 1. Setup Of Cron-job on remote application server.
 
-     1.1 Create a folder on remote application server and copy database.yml and immediate_update.rb from cron_jobs folder.
+     1.1 Create a folder on remote application server and copy database.yml and latest_attendance_figures.rb from cron_jobs folder into newly created folder.
 
      1.2 Setup database details in database.yml
 
-     1.3 Run the servlet using ruby immediate_update.rb
+     1.3 Run the service using ruby latest_attendance_figures.rb
 
 
 2. Setup of Cron-job on Facility-dashboard server
 
 
-    2.1 In client.yml file, setup details of remote server (application name and url)
+    2.1 In client.yml file, setup details of remote server ( url)
 
-    2.2 Set cron-job at desired time interval to run update_details.rb script.
+    2.2 Set cron-job at desired time interval to run update_details.rb script (use script/runner to execute script).

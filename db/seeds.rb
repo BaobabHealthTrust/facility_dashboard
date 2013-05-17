@@ -33,6 +33,12 @@ FlowOrder.create(
       :description => "Trends view",
       :duration => 0.4,
       :creator => 1
+    },
+    {
+        :order_group => "notice board",
+        :description => "List of ten announcements",
+        :duration => 0.4,
+        :creator => 1
     }
 =begin
 ,    ,

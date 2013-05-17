@@ -1,6 +1,12 @@
 <html>
   <head>
     <title>Login</title>
+    <%= javascript_include_tag "jquery" %>
+
+    <script language="javascript" type="text/javascript" src="/javascripts/jquery.ui.draggable.js"></script>
+    <script language="javascript" type="text/javascript" src="/javascripts/jquery.alerts.js"></script>
+
+    <link href="/stylesheets/jquery.alerts.css" rel="stylesheet" type="text/css" media="screen" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/application.css" />
 
     <style type="text/css">
@@ -31,7 +37,7 @@
     </div>
 
     <% if !flash[:messages].blank?  %>
-      <script type="text/javascript "> alert(<%=flash[:messages].to_json %>);</script>
+      <script type="text/javascript "> jAlert(<%=flash[:messages].to_json %>, "Login Unsuccessful");</script>
     <%end%>
 
     <div style="position: absolute; width: 100%; height: 100%; vertical-align: middle;

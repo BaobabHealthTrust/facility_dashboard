@@ -6,6 +6,7 @@ require "yaml"
 require 'rubygems'
 require 'webrick'
 require "json"
+require "rest-client"
 
 class Stats < WEBrick::HTTPServlet::AbstractServlet
 
@@ -34,13 +35,13 @@ class Stats < WEBrick::HTTPServlet::AbstractServlet
 
     settings.each_key{|key|
 
-      host = settings[key]["host"] || "localhost"
+      host = settings["database"]["host"] || "localhost"
 
-      user = settings[key]["username"]
+      user = settings["database"]["username"]
 
-      pass = settings[key]["password"]
+      pass = settings["database"]["password"]
 
-      db = settings[key]["database"]
+      db = settings["database"]["database"]
 
       con = Mysql.connect(host, user, pass, db)
 

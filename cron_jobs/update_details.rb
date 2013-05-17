@@ -24,8 +24,8 @@ def updater(url)
     end
 
     attendance_figure.attendance_figure = att_figures["number of patients"]
-    attendance_figure.attendance_figure_day = att_figures["date"]
-    attendance_figure.location_created = att_figures["location name"]
+    attendance_figure.attendance_figure_day = att_figures["date"].nil? ? Date.today : att_figures["date"]
+    attendance_figure.location_created = att_figures["location name"].nil? ? "Unknown" : att_figures["location name"]
     attendance_figure.facility = att_figures["facility"] rescue "Unknown"
     attendance_figure.save
 

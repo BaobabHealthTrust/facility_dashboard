@@ -8,7 +8,7 @@ class CreateFlowOrder < ActiveRecord::Migration
       t.column :order_group, "ENUM('facility attendance', 'area attendance', " +
         "'facility services', 'announcement', 'facility indicators', " +
         "'facility alert', 'educational messages', 'advertisement', 'trends', "+
-        "'catchment areas', 'public health messages')", :default => nil
+        "'catchment areas', 'public health messages', 'notice board')", :default => nil
       t.integer :src_id, :default => nil
       t.string :src_table, :default => nil
       t.text :description, :default => nil

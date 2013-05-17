@@ -1,13 +1,59 @@
+<script type="text/javascript">
+    <!--
+
+    ScrollRate = 50;
+
+    function scrollDiv_init(name) {
+        DivElmnt = document.getElementById(name);
+        ReachedMaxScroll = false;
+
+        DivElmnt.scrollTop = 0;
+        PreviousScrollTop  = 0;
+
+        ScrollInterval = setInterval('scrollDiv()', ScrollRate);
+    }
+
+    function scrollDiv() {
+
+        if (!ReachedMaxScroll) {
+            DivElmnt.scrollTop = PreviousScrollTop;
+            PreviousScrollTop++;
+
+            ReachedMaxScroll = DivElmnt.scrollTop >= (DivElmnt.scrollHeight - DivElmnt.offsetHeight);
+        }
+        else {
+            ReachedMaxScroll = (DivElmnt.scrollTop == 0)?false:true;
+
+            DivElmnt.scrollTop = PreviousScrollTop;
+            PreviousScrollTop--;
+        }
+    }
+
+    function pauseDiv() {
+        clearInterval(ScrollInterval);
+    }
+
+    function resumeDiv() {
+        PreviousScrollTop = DivElmnt.scrollTop;
+        ScrollInterval    = setInterval('scrollDiv()', ScrollRate);
+    }
+
+    setTimeout("scrollDiv_init('content')", 30)
+    //-->
+
+</script>
+
+
 <div id="heading" style="font-size: 36px; text-align: center; margin: 10px;
      background-color: #cfe7f5; border-radius: 10px; padding: 15px; border: 1px solid #999;">
-  Area Attendance
+  Facility Attendance
 </div>
 <div id="coat">
   <img src="/images/coatOfArms.png" alt="" height="60" style="position: absolute; top: 25px; right: 30px;" />
 </div>
 
 <div id="content" style="border-radius: 10px; border: 1px solid #999; margin: 10px;
-     height: 80%; overflow: hidden; padding: 10px;">
+     height: 78%; overflow: auto; overflow-x:hidden;overflow-y: hidden;padding: 10px;" onLoad= "scrollDiv_init('content')">
   <div class="table" style="font-size: 28px;">
     <div class="row">
       <div class="cell">

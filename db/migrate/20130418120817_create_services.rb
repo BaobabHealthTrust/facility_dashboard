@@ -5,6 +5,7 @@ class CreateServices < ActiveRecord::Migration
       t.string :service_name
       t.string  :location_offered
       t.boolean :available
+      t.boolean :voided, :default => false
       t.timestamps
     end
   end

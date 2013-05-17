@@ -253,7 +253,7 @@ class CommonController < ApplicationController
 
   def facility_services
 
-    @services = Service.find(:all, :conditions =>  ["available = ?", true])
+    @services = Service.find(:all, :conditions =>  ["available = ? AND voided =?", true, false])
 
   end
 
@@ -508,6 +508,19 @@ class CommonController < ApplicationController
     }
 
   end
+
+  def notice_board
+
+    @announcements = Message.find(:all, :select => ["msg_id, msg_id * RAND() AS random_no, msg_type, heading, msg_text"+
+                                                         ", start_date, end_date, duration, content_path, media_bg_color"],
+                                 :order => "random_no", :limit => 10,
+                                 :conditions => ["msg_type = 'announcement' AND start_date <= ? and end_date >= ?",
+                                                 DateTime.now, DateTime.now])
+
+
+
+  end
+
 
   protected
   
