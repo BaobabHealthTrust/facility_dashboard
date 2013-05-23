@@ -43,7 +43,7 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
                                 date_of_encounter,(SELECT name FROM location WHERE location.location_id = obs.location_id)
                                 location_name ,value_text as service FROM obs
                                 WHERE value_text != 'REGISTRATION' AND voided = 0 AND
-                                YEAR(obs_datetime) = YEAR(current_date) GROUP BY value_text, DATE(obs_datetime);")
+                                DATE(obs_datetime) = current_date GROUP BY value_text, DATE(obs_datetime);")
 
       #people = con.query("SELECT WHERE patient_id IN (SELECT DISTINCT patient_id FROM encounter WHERE encounter_datetime = current_date)")
 
