@@ -19,7 +19,7 @@ The facility dashboard was developed to display messages and data collected at s
 == Data gathering from Remote Applications
 
 
-1. Setup Of Cron-job on remote application server.
+1. Setup Service on remote application server.
 
      1.1 Create a folder on remote application server and copy database.yml and latest_attendance_figures.rb from cron_jobs folder into newly created folder.
 
