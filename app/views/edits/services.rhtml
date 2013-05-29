@@ -117,8 +117,8 @@
       border-color: black;
       width: 99%;
       margin-left:0.5%;
-      height:99%;
-      margin-top: 0.5%;
+      height:50%;
+
   }
   td
   {
@@ -190,39 +190,38 @@
     </div>
   </div>
 
-<div class="cell" style="font-size: 36px; text-align: center; margin: 10px; border-radius: 10px; padding: 10px; border: 1px solid #999;">
+    <div  style="font-size: 36px;height:88%;  text-align: center;  border-radius: 10px; padding: 10px; border: 1px solid #999;">
 
-  <table  cellspacing="5px"  align="center " class="service" >
+      <table  cellspacing="5px"  align="center " height=50px   >
 
-    <tr>
+        <tr>
 
-      <th>Current Available Services</th>
+          <th>Current Available Services</th>
 
-      <th width="45%" >
-        Add/Edit Service
-      </th>
+          <th width="45%" >
+            Add/Edit Service
+          </th>
 
-    </tr>
-    <tr>
-      <td width="45%" >
-         <div style="width:100%;height:100%; background-color:silver;text-align:center;border:1px solid black;overflow:auto;"  >
-           <table style ="width:100%;vertical-align:top">
-             <% @services.each do |service|  %>
-                <tr class=<%= cycle("odd", "even")%> >
-                  <td style="font-size:25 " ><%= service.service_name %></td>
-                  <td width="25%"><button class="options" id= "<%=service.service_id%>" onclick= "get_service(this.id)" >Edit</button></td>
-                  <td width="25%"><button class="options" id= "<%=service.service_id%>"  onclick= "del_service(this.id)">
-                    Delete</button></td>
-                </tr>
-             <%end%>
-           </table>
+        </tr>
+        <tr>
+          <td width="45%" >
+            <div style="width:100%;height:90%; background-color:silver;text-align:center;border:1px solid black;overflow:auto;"  >
+              <table style ="width:100%;vertical-align:top">
+                <% @services.each do |service|  %>
+                    <tr class=<%= cycle("odd", "even")%> >
+                      <td style="font-size:25 " ><%= service.service_name %></td>
+                      <td width="25%"><button class="options" id= "<%=service.service_id%>" onclick= "get_service(this.id)" >Edit</button></td>
+                      <td width="25%"><button class="options" id= "<%=service.service_id%>"  onclick= "del_service(this.id)">
+                        Delete</button></td>
+                    </tr>
+                <%end%>
+              </table>
 
-         </div>
-      </td>
+            </div>
+          </td>
 
-      <td>
-        <table cellpadding="10px"  style ="width:100%; height:100%;text-align: center;vertical-align:top">
-
+          <td>
+            <table cellpadding="10px"  style ="width:100%; height:100%;text-align: center;vertical-align:top">
 
               <tr>
                 <td style="font-size:27;text-align:left "  width="35%" >Service Name</td><td>:</td>
@@ -237,23 +236,19 @@
                 <td> <select id = "available" > <option>Available</option><option>Unavailable</option></select> </td>
               </tr>
               <tr>
-                 <td colspan ="3">
-                   <button class="button shadow" onclick="verify()">Save</button>
-                 </td>
+                <td colspan ="3">
+                  <button class="button shadow" onclick="verify()">Save</button>
+                </td>
+              </tr>
+              <tr>
+                <td colspan ="3">
+                  <button class="button shadow" onClick ="window.location = '/edits/admin'" >Cancel</button>
+                </td>
               </tr>
 
-          <tr>
-            <td colspan ="3">
-              <button class="button shadow" onClick ="window.location = '/edits/admin'" >Cancel</button>
-            </td>
-          </tr>
-
-        </table>
-      </td>
-
-    </tr>
-
-  </table>
-
-</div>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
  </div >

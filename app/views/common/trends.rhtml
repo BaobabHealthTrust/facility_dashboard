@@ -14,7 +14,7 @@
 
 
         graph = Flotr.draw(graph_area,<%= @data_list %>, {xaxis :{ticks : <%=@days.to_json %>, min:0, max:6},
-        yaxis: {min:0, max:<%= @max.to_json %>}, legend: {position :'ne', backgroundColor: '#D2E8FF'}});
+        yaxis: {min:0, max:<%= @max.to_json %>},  legend: {position :'ne', backgroundColor: '#D2E8FF'},fontSize: 8});
 
     }
     setTimeout("draw_trend()", 30);

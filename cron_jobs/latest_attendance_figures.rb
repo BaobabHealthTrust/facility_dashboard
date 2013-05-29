@@ -39,7 +39,7 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
 
       con = Mysql.connect(host, user, pass, db)
 
-      attendance_figures = con.query("SELECT count(distinct person_id) number_of_patients,DATE(obs_datetime)
+      attendance_figures = con.query("SELECT count(person_id) number_of_patients,DATE(obs_datetime)
         date_of_encounter, value_text as service FROM obs
         WHERE concept_id = (SELECT concept_id FROM concept_name WHERE name = 'SERVICES' LIMIT 1)
         AND voided = 0 AND DATE(obs_datetime) = current_date GROUP BY value_text, DATE(obs_datetime);")
@@ -71,7 +71,7 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
 
     con = Mysql.connect(host, user, pass, db)
 
-    attendance_figures = con.query("SELECT COUNT(distinct patient_id) number_of_patients,
+    attendance_figures = con.query("SELECT COUNT(patient_id) number_of_patients,
                          DATE(encounter_datetime) date_of_encounter, (SELECT name FROM location
                          WHERE location.location_id = encounter.location_id) location_name FROM encounter
                           WHERE voided = 0 AND DATE(encounter_datetime) = current_date;")
