@@ -21,7 +21,7 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
 
 
 
-    settings = YAML.load_file("cron_jobs/database.yml")
+    settings = YAML.load_file("database.yml")
 
     result = {
         "att_fig_locations" => [], "health_indicator" => [], "common" => 0
@@ -40,10 +40,9 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
       con = Mysql.connect(host, user, pass, db)
 
       attendance_figures = con.query("SELECT count(distinct person_id) number_of_patients,DATE(obs_datetime)
-                                date_of_encounter,(SELECT name FROM location WHERE location.location_id = obs.location_id)
-                                location_name ,value_text as service FROM obs
-                                WHERE value_text != 'REGISTRATION' AND voided = 0 AND
-                                DATE(obs_datetime) = current_date GROUP BY value_text, DATE(obs_datetime);")
+        date_of_encounter, value_text as service FROM obs
+        WHERE concept_id = (SELECT concept_id FROM concept_name WHERE name = 'SERVICES' LIMIT 1)
+        AND voided = 0 AND DATE(obs_datetime) = current_date GROUP BY value_text, DATE(obs_datetime);")
 
       #people = con.query("SELECT WHERE patient_id IN (SELECT DISTINCT patient_id FROM encounter WHERE encounter_datetime = current_date)")
 
@@ -52,15 +51,15 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
         row = attendance_figures.fetch_row
 
         result["att_fig_locations"] << {
-            "location name" => row[2],
+            "location name" => settings["registration"]["facility"] ,
             "date" => row[1],
             "number of patients" => row[0],
-            "facility" => row[3]
+            "facility" => row[2]
         }
 
       end
 
-
+=begin
 
     host = settings["radiology"]["host"] || "localhost"
 
@@ -91,7 +90,7 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
 
     end
 
-
+=end
     return 200, "text/html", result.to_json
   end
 
