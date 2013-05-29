@@ -21,7 +21,7 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
 
 
 
-    settings = YAML.load_file("database.yml")
+    settings = YAML.load_file(File.dirname(__FILE__)+"/database.yml")
 
     result = {
         "att_fig_locations" => [], "health_indicator" => [], "common" => 0
