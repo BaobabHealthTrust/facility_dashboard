@@ -336,7 +336,8 @@ class CommonController < ApplicationController
 
 
     day_total = AttendanceFigure.find(:all,
-      :conditions => ["attendance_figure_day BETWEEN ? AND ?",start_date , end_date ])
+      :conditions => ["attendance_figure_day BETWEEN ? AND ?",start_date , end_date ],
+      :order => "attendance_figure_day ASC")
 
     day_total.each do |x|
 
