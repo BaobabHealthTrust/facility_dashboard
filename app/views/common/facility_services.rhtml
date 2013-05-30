@@ -81,9 +81,9 @@
 
   <table width="98%" style="margin-left:0.5%; "  >
     <% @services .each do |service| %>
-        <ul>
-          <tr><td class=<%= cycle('odd','even') %> ><li><%= service.service_name  %></td></tr>
-        </ul>
+        
+        <tr><td class=<%= cycle('odd','even') %> <%= service.service_name  %></td></tr>
+        
     <% end %>
   </table>
 

@@ -55,7 +55,7 @@ end
 
 def load
 
-  urls = YAML.load_file(Rails.root.to_s +"/cron_jobs/clients.yml")
+  urls = YAML.load_file(File.dirname(__FILE__)+"/clients.yml")
 
   urls.each_key do |key|
 
