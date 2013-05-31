@@ -2,6 +2,11 @@
 
   <head>
     <title>Attendance Trends</title>
+     <style>
+     .flotr-legend-label  {
+        font-size: 20px;
+      }
+    </style>
   </head>
 
   <script language="javascript" type="text/javascript" src="/javascripts/flotr2.min.js"></script>
@@ -12,9 +17,9 @@
 
         var graph_area = document.getElementById("graph");
 
-
+				
         graph = Flotr.draw(graph_area,<%= @data_list %>, {xaxis :{ticks : <%=@days.to_json %>, min:0, max:6},
-        yaxis: {min:0, max:<%= @max.to_json %>},  legend: {position :'ne', backgroundColor: '#D2E8FF'},fontSize: 8});
+        yaxis: {min:0, max:<%= @max.to_json %>, fontSize:15},legend: {position :'ne', backgroundColor: '#D2E8FF'}});
 
     }
     setTimeout("draw_trend()", 30);
@@ -34,7 +39,7 @@
   <div id="content" style="border-radius: 10px; border: 1px solid #999; margin: 10px;
           height: 78%; overflow: hidden; padding: 10px;">
 
-      <div align="center" id= "graph" style="  width: 98%; margin-top: 2%; height: 95%;text-align:center  " >
+      <div align="center" id= "graph" style=" font-size:30; width: 98%; margin-top: 2%; height: 95%;text-align:center  " >
 
       </div>
 
