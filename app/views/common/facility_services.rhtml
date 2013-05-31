@@ -8,10 +8,12 @@
       td.even{
           background-color: #eee;
           text-indent: 5%;
+          font-size: 35;
       }
       td.odd{
           background-color: #ffffff;
           text-indent: 5%;
+          font-size: 35;
       }
   </style>
 
@@ -82,7 +84,7 @@
   <table width="98%" style="margin-left:0.5%; "  >
     <% @services .each do |service| %>
         
-        <tr><td class=<%= cycle('odd','even') %> <%= service.service_name  %></td></tr>
+        <tr><td class=<%= cycle('odd','even') %>> <%= service.service_name  %></td></tr>
         
     <% end %>
   </table>
