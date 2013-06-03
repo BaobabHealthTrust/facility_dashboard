@@ -21,9 +21,11 @@
                         type:"post",
                         data: {"threshold_id" : threshold_id },
                         success:function(message){
-                            jAlert(message );
-                            clear ()
-                            window.location.reload();
+                            jAlert(message, "Confirmation", function (){
+                                clear ()
+                                window.location.reload();
+                            });
+
                         },
                         error: function(){
                             jAlert("Error while deleting service");
@@ -94,9 +96,11 @@
                         data: {"facility" : facility , "lower_limit" :min ,"median" : avg, "upper_limit":max },
                         dataType : "text",
                         success : function (message){
-                            jAlert(message );
-                            clear()
-                            window.location.reload();
+                            jAlert(message, "Confirmation", function(){
+                                clear()
+                                window.location.reload();
+                            } );
+
 
                         },
                         error : function (){

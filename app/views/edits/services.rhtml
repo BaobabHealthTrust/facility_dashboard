@@ -193,8 +193,8 @@
               <% @services.each do |service|  %>
                   <tr class=<%= cycle("odd", "even")%> >
                     <td style="font-size:25 " ><%= service.service_name %></td>
-                    <td width="25%"><button class="options" id= "<%=service.service_id %>" onclick= "get_threshold(this.id)" >Edit</button></td>
-                    <td width="25%"><button class="options" id= "<%=service.service_id %>"  onclick= "del_threshold(this.id)">
+                    <td width="25%"><button class="options" id= "<%=service.service_id %>" onclick= "get_service(this.id)" >Edit</button></td>
+                    <td width="25%"><button class="options" id= "<%=service.service_id %>"  onclick= "del_service(this.id)">
                       Delete</button></td>
                   </tr>
               <%end%>
