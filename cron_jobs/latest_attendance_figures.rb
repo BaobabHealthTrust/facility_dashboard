@@ -59,22 +59,13 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
 
       end
 
-=begin
 
-    host = settings["radiology"]["host"] || "localhost"
-
-    user = settings["radiology"]["username"]
-
-    pass = settings["radiology"]["password"]
-
-    db = settings["radiology"]["database"]
-
-    con = Mysql.connect(host, user, pass, db)
-
-    attendance_figures = con.query("SELECT COUNT(patient_id) number_of_patients,
-                         DATE(encounter_datetime) date_of_encounter, (SELECT name FROM location
-                         WHERE location.location_id = encounter.location_id) location_name FROM encounter
-                          WHERE voided = 0 AND DATE(encounter_datetime) = current_date;")
+    attendance_figures = con.query("SELECT COUNT(DISTINCT patient_id) number_of_patients,
+                            DATE(encounter_datetime) date_of_encounter,
+                            (SELECT name FROM location WHERE location.location_id = encounter.location_id) location_name
+                            FROM encounter WHERE voided = 0 AND DATE(encounter_datetime) = current_date
+                            AND encounter_type = (SELECT encounter_type_id FROM encounter_type
+                            WHERE name = 'RADIOLOGY EXAMINATION' LIMIT 1);")
 
 
     (0..(attendance_figures .num_rows - 1)).each do |i|
@@ -82,7 +73,7 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
       row = attendance_figures.fetch_row
 
       result["att_fig_locations"] << {
-          "location name" => row[2],
+          "location name" => settings["registration"]["facility"] ,
           "date" => row[1] ,
           "number of patients" => row[0],
           "facility" => "Radiology"
@@ -90,7 +81,7 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
 
     end
 
-=end
+
     return 200, "text/html", result.to_json
   end
 
