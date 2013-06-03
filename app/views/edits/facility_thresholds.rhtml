@@ -1,13 +1,19 @@
-<%= javascript_include_tag "jquery" %>
+<%= javascript_include_tag 'jquery' %>
+
+<script language="javascript" type="text/javascript" src="/javascripts/jquery.ui.draggable.js"></script>
+<script language="javascript" type="text/javascript" src="/javascripts/jquery.alerts.js"></script>
+
+<link href="/stylesheets/jquery.alerts.css" rel="stylesheet" type="text/css" media="screen" />
+
 
 <script type="text/javascript">
     <!--
 
     function del_threshold(threshold_id)
     {
-        var confirm = window.confirm("Are you sure you want to delete this threshold?");
+        jConfirm('Are you sure you want to delete this threshold?', 'Confirmation Dialog', function(r)
 
-        if (confirm )
+
         {
             jQuery.ajax(
                     {
@@ -15,17 +21,17 @@
                         type:"post",
                         data: {"threshold_id" : threshold_id },
                         success:function(message){
-                            alert(message );
+                            jAlert(message );
                             clear ()
                             window.location.reload();
                         },
                         error: function(){
-                            alert("Error while deleting service");
+                            jAlert("Error while deleting service");
                         }
 
                     }
             );
-        }
+        });
 
     }
     function get_threshold(threshold_id)
@@ -46,7 +52,7 @@
 
                     },
                     error : function(){
-                        alert("Failed to retrieve threshold details");
+                        jAlert("Failed to retrieve threshold details");
                     }
                 }
         );
@@ -60,25 +66,25 @@
         var max = document.getElementById("maximum").value;
 
         if (facility == "" || facility == " ")
-            alert("Facility name cannot be blank")
+            jAlert("Facility name cannot be blank")
         else if (min == "" || min == " ")
-            alert("Minimum value cannot be empty")
+            jAlert("Minimum value cannot be empty")
         else if (isNaN(min))
-            alert("Minimum can only be an integer")
+            jAlert("Minimum can only be an integer")
         else if (min < 0)
-            alert ("Threshold value can only be positive ")
+            jAlert ("Threshold value can only be positive ")
         else if (avg == "" || avg == " ")
-            alert("Median value cannot be empty")
+            jAlert("Median value cannot be empty")
         else if (isNaN(avg))
-            alert("Median can only be an integer")
+            jAlert("Median can only be an integer")
         else if (avg <= min)
-            alert("Median value cannot be less than or equal to the minimum value")
+            jAlert("Median value cannot be less than or equal to the minimum value")
         else if (max == "" || max == " ")
-            alert("Maximum value cannot be empty")
+            jAlert("Maximum value cannot be empty")
         else if (isNaN(max ))
-            alert("Maximum value can only be an integer")
+            jAlert("Maximum value can only be an integer")
         else if (avg > max )
-            alert("Maximum value cannot be less than or equal to median value")
+            jAlert("Maximum value cannot be less than or equal to median value")
         else
         {
             jQuery.ajax(
@@ -88,13 +94,13 @@
                         data: {"facility" : facility , "lower_limit" :min ,"median" : avg, "upper_limit":max },
                         dataType : "text",
                         success : function (message){
-                            alert(message );
+                            jAlert(message );
                             clear()
                             window.location.reload();
 
                         },
                         error : function (){
-                            alert("Threshold could not be created");
+                            jAlert("Threshold could not be created");
                         }
                     }
             );
@@ -107,11 +113,11 @@
         var num = input.value.replace(/\,/g,'');
         if(!isNaN(num)){
             if(num.indexOf('.') > -1) {
-                alert("You may not enter any decimals.");
+                jAlert("You may not enter any decimals.");
                 input.value = input.value.substring(0,input.value.length-1);
             }
         } else {
-            alert('You may enter only numbers in this field!');
+            jAlert('You may enter only numbers in this field!');
             input.value = input.value.substring(0,input.value.length-1);
         }
     }
