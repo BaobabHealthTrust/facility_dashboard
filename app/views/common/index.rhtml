@@ -56,12 +56,12 @@
             <span style="color: blue; font-size: 0.4em;">Announcements</span>
           </td>
           <td style="background-color: blue; color: white;">
-        <marquee id="news" direction="left" style="float: left; font-size: 36px;">
+        <marquee id="news" direction="left" style=" font-size: 36px;">
           <%= @news %>
         </marquee>
         </td>
         <td style="vertical-align: middle; background-color: #000; color: #cfe7f5;
-            font-size: 24px; padding-left: 15px; padding-right: 15px;">
+            font-size: 24px;width 10px; padding-left: 15px; padding-right: 15px;">
           <%= @facility.gsub(" ", "<span style='color: black;'>_</span>") %>
         </td>
         </tr>
