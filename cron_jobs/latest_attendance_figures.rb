@@ -71,13 +71,15 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
     (0..(attendance_figures .num_rows - 1)).each do |i|
 
       row = attendance_figures.fetch_row
-
-      result["att_fig_locations"] << {
-          "location name" => settings["registration"]["facility"] ,
-          "date" => row[1] ,
-          "number of patients" => row[0],
-          "facility" => "Radiology"
-      }
+			unless row[1].nil?
+				result["att_fig_locations"] << {
+		        "location name" => settings["registration"]["facility"] ,
+		        "date" => row[1] ,
+		        "number of patients" => row[0],
+		        "facility" => "Radiology"
+		    }
+			end
+      
 
     end
 

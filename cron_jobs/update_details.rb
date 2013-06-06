@@ -17,7 +17,7 @@ def updater(url)
                           :conditions =>["attendance_figure_day = ?
                           AND facility = ? AND location_created =?",
                           att_figures["date"], att_figures["facility"],
-                          att_figures["location name"]]  )
+                          att_figures["location name"] ]  )
 
     if attendance_figure.blank?
       attendance_figure = AttendanceFigure.new
