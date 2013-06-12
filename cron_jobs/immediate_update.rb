@@ -21,7 +21,7 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
 
 
 
-    settings = YAML.load_file("cron_jobs/database.yml")
+    settings = YAML.load_file(File.dirname(__FILE__)+"/database.yml")
 
     result = {
         "att_fig_locations" => [], "health_indicator" => []
@@ -39,18 +39,19 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
 
       con = Mysql.connect(host, user, pass, db)
 
-      attendance_figures = con.query("SELECT DISTINCT location_id, COUNT(distinct person_id) number_of_patients,
-                         DATE(obs_datetime) date_of_encounter, (SELECT name FROM location
-                         WHERE location.location_id = obs.location_id) location_name FROM obs
-                          WHERE voided = 0 AND DATE(obs_datetime) IN (current_date,subdate(current_date, 1))
-                         GROUP BY location_id, DATE(obs_datetime);")
+      attendance_figures = con.query("SELECT DISTINCT location_id, COUNT(distinct patient_id) number_of_patients,
+                         DATE(encounter_datetime) date_of_encounter, (SELECT name FROM location
+                         WHERE location.location_id = encounter.location_id) location_name FROM encounter
+                          WHERE voided = 0 AND DATE(encounter_datetime) IN (current_date,subdate(current_date, 1))
+                         GROUP BY location_id, DATE(encounter_datetime);")
 
+=begin
       indicators = con.query("SELECT count(*) indicator_value, DATE(encounter_datetime) indicator_date," +
                       "(SELECT name FROM encounter_type WHERE encounter_type_id = encounter_type)" +
                       "indicator_type FROM encounter WHERE voided = 0 AND "+
                       "DATE(encounter_datetime) IN (current_date,subdate(current_date, 1))" +
                       "GROUP BY indicator_type, DATE(encounter_datetime);")
-
+=end
       (0..(attendance_figures .num_rows - 1)).each do |i|
 
         row = attendance_figures.fetch_row
@@ -64,7 +65,7 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
         }
 
       end
-
+=begin
       (0..(indicators.num_rows - 1)).each do |i|
 
         row = indicators.fetch_row
@@ -77,7 +78,7 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
         }
 
       end
-
+=end
 
     }
 
