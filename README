@@ -13,7 +13,9 @@ The facility dashboard was developed to display messages and data collected at s
 
 4. Run script/runner db/seeds.rb
 
-5. Start you application: bundle exec script/server
+5. Create a folder 'data' in public folder to keep images for adverts ie mkdir public/data  
+
+6. Start you application: bundle exec script/server
 
 
 == Data gathering from Remote Applications
