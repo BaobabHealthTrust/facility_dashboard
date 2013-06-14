@@ -18,16 +18,7 @@ class ApplicationController < ActionController::Base
     $slide.move_to_next_slide
 
     $current_slide = $slide.current_slide
-		
-		if $current_slide.nil?
-			$slide = SlideEngine.new
-		
-			$slide.move_to_next_slide
 
-		  $current_slide = $slide.current_slide
-			
-		end
-		
     redirect_to $slide.slide_show[$current_slide]
   end
 
