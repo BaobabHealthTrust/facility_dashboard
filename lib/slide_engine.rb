@@ -16,7 +16,7 @@ class SlideEngine
   end
 
   def move_to_next_slide
-    if(@@current_slide + 1 <= @@slideshow.length)
+    if(@@current_slide + 1 <= @@slideshow.length - 1)
       @@current_slide += 1
     else
       reset_slides
