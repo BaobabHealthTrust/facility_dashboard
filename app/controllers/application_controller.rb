@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_location
 
   $audience = "consumer"
+  $order = "consumer_order_id"
 
   def next_path
 
