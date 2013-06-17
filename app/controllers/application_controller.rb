@@ -7,6 +7,8 @@ class ApplicationController < ActionController::Base
 
   before_filter :set_location
 
+  $audience = "consumer"
+
   def next_path
 
     $slide = SlideEngine.new if $slide.nil?
