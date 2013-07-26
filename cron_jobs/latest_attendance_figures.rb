@@ -79,9 +79,39 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
 		        "facility" => "Radiology"
 		    }
 			end
-      
+
 
     end
+
+
+    total_admission = con.query("SELECT count(*) FROM encounter WHERE DATE(encounter_datetime) = current_date AND voided = 0 AND
+                                  encounter_type = (SELECT encounter_type_id FROM encounter_type WHERE name = 'ADMIT PATIENT')")
+
+
+    indicator = total_admission.fetch_row
+
+    result["health_indicator"] << {
+       "indicator_value" => indicator[0],
+       "type" => "Total Admission",
+       "facility" => settings["registration"]["facility"],
+       "date" => Date.today
+    }
+
+    admissions = con.query("SELECT count(*), value_text, DATE(obs_datetime) FROM obs WHERE DATE(obs_datetime)= current_date
+                            AND concept_id = (SELECT concept_id FROM concept_name WHERE name = 'ADMIT TO WARD')
+                            AND voided = 0 GROUP BY value_text ")
+
+    (0..(admissions.num_rows - 1)).each do |i|
+       indicator = admissions.fetch_row
+       result["health_indicator"] << {
+           "indicator_value" => indicator[0],
+           "indicator_type" => "admission",
+           "facility" => indicator[1],
+           "date" => indicator[2]
+       }
+    end
+
+
 
 
     return 200, "text/html", result.to_json
