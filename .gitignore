@@ -8,3 +8,4 @@ tmp/
 public/data/*
 db/schema.rb
 test/*.json
+*.save
