@@ -39,6 +39,12 @@ FlowOrder.create(
         :description => "List of ten announcements",
         :duration => 0.4,
         :creator => 1
+    },
+    {
+        :order_group => "admission figures",
+        :description => "Number of patients admitted per ward",
+        :duration => 0.4,
+        :creator => 1
     }
 =begin
 ,    ,

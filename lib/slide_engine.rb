@@ -28,54 +28,58 @@ class SlideEngine
     @@slideshow = ["/common/home"]
 
     flow = FlowOrder.find(:all, :conditions => ["#{$audience} = TRUE AND DATE(COALESCE(start_date, NOW())) " +
-          "<= DATE(NOW()) AND DATE(COALESCE(end_date, NOW())) >= DATE(NOW())"], :order => $order )
+                                                    "<= DATE(NOW()) AND DATE(COALESCE(end_date, NOW())) >= DATE(NOW())"], :order => $order )
 
     flow.each do |item|
-      
+
       case item.order_group
-      when "facility attendance"
-        
-        @@slideshow << "/hospital_director/facility?duration=#{item.duration.to_f}"
+        when "facility attendance"
 
-      when "trends"
+          @@slideshow << "/hospital_director/facility?duration=#{item.duration.to_f}"
 
-        @@slideshow << "/common/trends?duration=#{item.duration.to_f}"
+        when "trends"
 
-      when "area attendance"
+          @@slideshow << "/common/trends?duration=#{item.duration.to_f}"
 
-        @@slideshow << "/common/area_attendance?duration=#{item.duration.to_f}"
+        when "area attendance"
 
-      when "facility services"
+          @@slideshow << "/common/area_attendance?duration=#{item.duration.to_f}"
 
-        @@slideshow << "/common/facility_services?duration=#{item.duration.to_f}"
+        when "facility services"
 
-      when "facility indicators"
+          @@slideshow << "/common/facility_services?duration=#{item.duration.to_f}"
 
-        @@slideshow << "/common/facility_indicators?duration=#{item.duration.to_f}"
+        when "facility indicators"
 
-      when "catchment areas"
+          @@slideshow << "/common/facility_indicators?duration=#{item.duration.to_f}"
 
-        @@slideshow << "/common/catchment_areas?duration=#{item.duration.to_f}"
+        when "catchment areas"
 
-      when "advertisement"
+          @@slideshow << "/common/catchment_areas?duration=#{item.duration.to_f}"
 
-        @@slideshow << "/common/advert/#{item.src_id rescue ""}?duration=#{item.duration.to_f}"
+        when "advertisement"
 
-      when "announcement"
+          @@slideshow << "/common/advert/#{item.src_id rescue ""}?duration=#{item.duration.to_f}"
 
-        @@slideshow << "/common/announcements?duration=#{item.duration.to_f}"
+        when "announcement"
 
-      when "educational messages"
+          @@slideshow << "/common/announcements?duration=#{item.duration.to_f}"
 
-        @@slideshow << "/common/general_message/#{item.src_id rescue ""}?duration=#{item.duration.to_f}"
+        when "educational messages"
 
-      when "public health messages"
+          @@slideshow << "/common/general_message/#{item.src_id rescue ""}?duration=#{item.duration.to_f}"
 
-        @@slideshow << "/common/general_message/#{item.src_id rescue ""}?duration=#{item.duration.to_f}"
+        when "public health messages"
 
-      when "notice board"
+          @@slideshow << "/common/general_message/#{item.src_id rescue ""}?duration=#{item.duration.to_f}"
 
-        @@slideshow << "/common/notice_board?duration=#{item.duration.to_f}"
+        when "notice board"
+
+          @@slideshow << "/common/notice_board?duration=#{item.duration.to_f}"
+
+        when "admission figures"
+
+          @@slideshow << "/common/admissions?duration=#{item.duration.to_f}"
 
       end
 
