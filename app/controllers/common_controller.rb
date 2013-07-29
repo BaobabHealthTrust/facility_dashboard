@@ -536,7 +536,7 @@ class CommonController < ApplicationController
     day_figures = HealthCareIndicator.find(:all, :conditions => ["indicator_date = ? AND indicator_type = 'admission'",
                                                                 Date.today], :order => "indicator_value DESC")
     month_totals = HealthCareIndicator.find_by_sql("SELECT facility, SUM(indicator_value) total,
-                    Month(indicator_date) month FROM health_care_indicators WHERE
+                    Month(indicator_date) month FROM health_care_indicators WHERE  indicator_type = 'admission' AND
                     Year(indicator_date) = Year(current_date)  GROUP BY facility,Month(indicator_date)")
 
 
