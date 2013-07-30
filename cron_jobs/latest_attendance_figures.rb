@@ -85,34 +85,32 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
 
 
     total_admission = con.query("SELECT count(*) FROM encounter WHERE DATE(encounter_datetime) = current_date AND voided = 0 AND
-                                  encounter_type = (SELECT encounter_type_id FROM encounter_type WHERE name = 'ADMIT PATIENT')")
+                                  encounter_type = (SELECT encounter_type_id FROM encounter_type WHERE name = 'ADMIT PATIENT')").fetch_row[0]
 
     total_discharge = con.query("SELECT count(*) FROM encounter WHERE DATE(encounter_datetime) = current_date AND voided = 0 AND
-                                  encounter_type = (SELECT encounter_type_id FROM encounter_type WHERE name = 'DISCHARGE PATIENT')")
+                                  encounter_type = (SELECT encounter_type_id FROM encounter_type WHERE name = 'DISCHARGE PATIENT')").fetch_row[0]
 
-    bed_count = con.query("SELECT SUM(bed_number) FROM ward").fetch_row[0] rescue nil
+    bed_count = con.query("SELECT SUM(bed_number) FROM ward").fetch_row[0] rescue 0
 
-    indicator = total_admission.fetch_row
 
-    indicator2 = total_discharge.fetch_row
 
     result["health_indicator"] << {
-       "indicator_value" => indicator[0],
+       "indicator_value" => total_admission,
        "indicator_type" => "Total Admissions",
        "facility" => settings["registration"]["facility"],
        "date" => Date.today
     }
 
     result["health_indicator"] << {
-        "indicator_value" => indicator2[0],
+        "indicator_value" => total_discharge,
         "indicator_type" => "Total Discharges",
         "facility" => settings["registration"]["facility"],
         "date" => Date.today
     }
 
     unless bed_count.nil?
-      bed_ratio = indicator[0].to_i/bed_count.to_i rescue 0
-      turn_over = indicator2[0].to_i/bed_count.to_i rescue 0
+      bed_ratio = ((total_admission.to_f / bed_count.to_f )* 100).round.to_f / 100 rescue 0
+      turn_over = ((total_discharge.to_f/bed_count.to_f) * 100).round.to_f / 100 rescue 0
       result["health_indicator"] << {
           "indicator_value" => bed_ratio,
           "indicator_type" => "Bed Occupancy Ratio",
@@ -120,7 +118,7 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
           "date" => Date.today
       }  << {
           "indicator_value" => turn_over,
-          "indicator_type" => "Bed Turn Over Rate",
+          "indicator_type" => "Bed Turnover Rate",
           "facility" => settings["registration"]["facility"],
           "date" => Date.today
       }
