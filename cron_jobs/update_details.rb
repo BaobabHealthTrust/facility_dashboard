@@ -33,7 +33,7 @@ def updater(url)
 
   temp_object["health_indicator"].each do |indicator|
 
-    health_indicator = HealthCareIndicator.find(:last,
+    health_indicator = HealthCareIndicator.find(:first,
                             :conditions =>  ["indicator_type =? AND indicator_date =? AND facility =?",
                              indicator["indicator_type"],indicator["date"], indicator["facility"] ] )
 

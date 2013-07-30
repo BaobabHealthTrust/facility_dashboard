@@ -1,13 +1,59 @@
+<script type="text/javascript">
+    <!--
+
+    ScrollRate = 50;
+
+    function scrollDiv_init(name) {
+        DivElmnt = document.getElementById(name);
+        ReachedMaxScroll = false;
+
+        DivElmnt.scrollTop = 0;
+        PreviousScrollTop = 0;
+
+        ScrollInterval = setInterval('scrollDiv()', ScrollRate);
+    }
+
+    function scrollDiv() {
+
+        if (!ReachedMaxScroll) {
+            DivElmnt.scrollTop = PreviousScrollTop;
+            PreviousScrollTop++;
+
+            ReachedMaxScroll = DivElmnt.scrollTop >= (DivElmnt.scrollHeight - DivElmnt.offsetHeight);
+        }
+        else {
+            ReachedMaxScroll = (DivElmnt.scrollTop == 0)?false:true;
+
+            DivElmnt.scrollTop = PreviousScrollTop;
+            PreviousScrollTop--;
+        }
+    }
+
+    function pauseDiv() {
+        clearInterval(ScrollInterval);
+    }
+
+    function resumeDiv() {
+        PreviousScrollTop = DivElmnt.scrollTop;
+        ScrollInterval = setInterval('scrollDiv()', ScrollRate);
+    }
+
+    setTimeout("scrollDiv_init('content')", 30)
+    //-->
+
+</script>
+
+
 <div id="heading" style="font-size: 36px; text-align: center; margin: 10px;
         background-color: #cfe7f5; border-radius: 10px; padding: 15px; border: 1px solid #999;">
-  Facility Indicators
+Health Care Indicators
 </div>
 <div id="coat">
   <img src="/images/coatOfArms.png" alt="" height="60" style="position: absolute; top: 25px; right: 30px;" />
 </div>
 
-<div id="content" style="border-radius: 10px; border: 1px solid #999; margin: 10px;
-        height: 80%; overflow: hidden; padding: 10px;">
+<div  style="border-radius: 10px; border: 1px solid #999; margin: 10px;
+        overflow: auto; overflow-x:hidden;overflow-y: hidden;padding: 10px;" >
   <div class="table" style="font-size: 28px;">
     <div class="row">
       <div class="cell">
@@ -31,83 +77,90 @@
     </div>
 
 
-    <% @centers.each do |center| %>
+  </div>
+  <div id="content" style="
+  height: 56%;width: 99%; overflow: auto; overflow-x:hidden;overflow-y: hidden;padding: 10px;" onLoad= "scrollDiv_init('content')">
+    <div class="table" style="font-size: 28px;">
+      <% @centers.each do |center| %>
 
-        <div class="row <%= cycle("gray", "") %>">
-          <div class="cell" style="padding-left: 20px;">
-            <%= center %>
-          </div>
-          <div id="<%= center %>1" class="cell">
-            <%
+          <% unless center == "Total Attendance" %>
 
-               color1 = "white"
-               color2 = "white"
-               color3 = "white"
+              <div class="row <%= cycle("gray", "") %>">
+                <div class="cell" style="width:75%">
+                  <%= center %>
+                </div>
+                <div id="<%= center %>1" class="cell">
+                  <%
 
-               unless @ranges[center].nil?
-                 if @readings[center][0] >= @ranges[center][0][0] && @readings[center][0] <= @ranges[center][0][1]
+                     color1 = "white"
+                     color2 = "white"
+                     color3 = "white"
 
-                   color1 = @ranges[center][0][2]
+                     unless @ranges[center].nil?
+                       if @readings[center][0] >= @ranges[center][0][0] && @readings[center][0] <= @ranges[center][0][1]
 
-                 elsif @readings[center][0] >= @ranges[center][1][0] && @readings[center][0] <= @ranges[center][1][1]
+                         color1 = @ranges[center][0][2]
 
-                   color1 = @ranges[center][1][2]
+                       elsif @readings[center][0] >= @ranges[center][1][0] && @readings[center][0] <= @ranges[center][1][1]
 
-                 elsif @readings[center][0] >= @ranges[center][2][0]
+                         color1 = @ranges[center][1][2]
 
-                   color1 = @ranges[center][2][2]
+                       elsif @readings[center][0] >= @ranges[center][2][0]
 
-                 end
+                         color1 = @ranges[center][2][2]
 
-                 if @readings[center][1] >= (@ranges[center][0][0] * 30) && @readings[center][0] <= (@ranges[center][0][1] * 30)
+                       end
 
-                   color2 = @ranges[center][0][2]
+                       if @readings[center][1] >= (@ranges[center][0][0] * 30) && @readings[center][0] <= (@ranges[center][0][1] * 30)
 
-                 elsif @readings[center][1] >= (@ranges[center][1][0] * 30) && @readings[center][0] <= (@ranges[center][1][1] * 30)
+                         color2 = @ranges[center][0][2]
 
-                   color2 = @ranges[center][1][2]
+                       elsif @readings[center][1] >= (@ranges[center][1][0] * 30) && @readings[center][0] <= (@ranges[center][1][1] * 30)
 
-                 elsif @readings[center][1] >= (@ranges[center][2][0] * 30)
+                         color2 = @ranges[center][1][2]
 
-                   color2 = @ranges[center][2][2]
+                       elsif @readings[center][1] >= (@ranges[center][2][0] * 30)
 
-                 end
+                         color2 = @ranges[center][2][2]
 
-                 if @readings[center][2] >= (@ranges[center][0][0] * 365) && @readings[center][0] <= (@ranges[center][0][1] * 365)
+                       end
 
-                   color3 = @ranges[center][0][2]
+                       if @readings[center][2] >= (@ranges[center][0][0] * 365) && @readings[center][0] <= (@ranges[center][0][1] * 365)
 
-                 elsif @readings[center][2] >= (@ranges[center][1][0] * 365) && @readings[center][0] <= (@ranges[center][1][1] * 365)
+                         color3 = @ranges[center][0][2]
 
-                   color3 = @ranges[center][1][2]
+                       elsif @readings[center][2] >= (@ranges[center][1][0] * 365) && @readings[center][0] <= (@ranges[center][1][1] * 365)
 
-                 elsif @readings[center][2] >= (@ranges[center][2][0] * 365)
+                         color3 = @ranges[center][1][2]
 
-                   color3 = @ranges[center][2][2]
+                       elsif @readings[center][2] >= (@ranges[center][2][0] * 365)
 
-                 end
+                         color3 = @ranges[center][2][2]
 
-               end
+                       end
 
-            %>
-            <div class="borderedCell <%= color1 %>">
-              <%= @readings[center][0] %>
-            </div>
-          </div>
-          <div id="<%= center %>2" class="cell">
-            <div class="borderedCell <%= color2 %>">
-              <%= @readings[center][1] %>
-            </div>
-          </div>
-          <div id="<%= center %>3" class="cell">
-            <div class="borderedCell <%= color3 %>">
-              <%= @readings[center][2] %>
-            </div>
-          </div>
-        </div>
+                     end
 
-    <% end %>
+                  %>
+                  <div class="borderedCell <%= color1 %>">
+                    <%= @readings[center][0] %>
+                  </div>
+                </div>
+                <div id="<%= center %>2" class="cell">
+                  <div class="borderedCell <%= color2 %>">
+                    <%= @readings[center][1] %>
+                  </div>
+                </div>
+                <div id="<%= center %>3" class="cell">
+                  <div class="borderedCell <%= color3 %>">
+                    <%= @readings[center][2] %>
+                  </div>
+                </div>
+              </div>
 
+          <% end %>
+      <% end %>
+    </div>
   </div>
 </div>
 

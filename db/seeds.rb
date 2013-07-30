@@ -45,15 +45,14 @@ FlowOrder.create(
         :description => "Number of patients admitted per ward",
         :duration => 0.4,
         :creator => 1
-    }
-=begin
-,    ,
+    }    ,
     {
       :order_group => "facility indicators",
       :description => "Indicators of  services offered at facility",
       :duration => 0.4,
       :creator => 1
-    }   ,
+    }
+=begin  ,
     {
       :order_group => "catchment areas",
       :description => "Facility catchment areas view",

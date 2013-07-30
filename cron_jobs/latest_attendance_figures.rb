@@ -87,15 +87,48 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
     total_admission = con.query("SELECT count(*) FROM encounter WHERE DATE(encounter_datetime) = current_date AND voided = 0 AND
                                   encounter_type = (SELECT encounter_type_id FROM encounter_type WHERE name = 'ADMIT PATIENT')")
 
+    total_discharge = con.query("SELECT count(*) FROM encounter WHERE DATE(encounter_datetime) = current_date AND voided = 0 AND
+                                  encounter_type = (SELECT encounter_type_id FROM encounter_type WHERE name = 'DISCHARGE PATIENT')")
+
+    bed_count = con.query("SELECT SUM(bed_number) FROM ward").fetch_row[0] rescue nil
 
     indicator = total_admission.fetch_row
 
+    indicator2 = total_discharge.fetch_row
+
     result["health_indicator"] << {
        "indicator_value" => indicator[0],
-       "type" => "Total Admission",
+       "indicator_type" => "Total Admissions",
        "facility" => settings["registration"]["facility"],
        "date" => Date.today
     }
+
+    result["health_indicator"] << {
+        "indicator_value" => indicator2[0],
+        "indicator_type" => "Total Discharges",
+        "facility" => settings["registration"]["facility"],
+        "date" => Date.today
+    }
+
+    unless bed_count.nil?
+      bed_ratio = indicator[0].to_i/bed_count.to_i rescue 0
+      turn_over = indicator2[0].to_i/bed_count.to_i rescue 0
+      result["health_indicator"] << {
+          "indicator_value" => bed_ratio,
+          "indicator_type" => "Bed Occupancy Ratio",
+          "facility" => settings["registration"]["facility"],
+          "date" => Date.today
+      }  << {
+          "indicator_value" => turn_over,
+          "indicator_type" => "Bed Turn Over Rate",
+          "facility" => settings["registration"]["facility"],
+          "date" => Date.today
+      }
+
+    end
+
+
+
 
     admissions = con.query("SELECT count(*), value_text, DATE(obs_datetime) FROM obs WHERE DATE(obs_datetime)= current_date
                             AND concept_id = (SELECT concept_id FROM concept_name WHERE name = 'ADMIT TO WARD')
