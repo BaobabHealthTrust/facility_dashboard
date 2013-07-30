@@ -260,7 +260,7 @@ class CommonController < ApplicationController
   def facility_indicators
     @facility = "Kamuzu Central Hospital"
 
-    @centers = ["Total Encounters"]
+    @centers = []
     @ranges = { }
     @readings = Hash.new()
 
@@ -268,10 +268,9 @@ class CommonController < ApplicationController
     this_month = 0
     this_year = 0
 
-    day_figures = HealthCareIndicator.find(:all, :conditions => ["indicator_date = ?", Date.today],
-                                        :order => "indicator_value DESC")
+    day_figures = HealthCareIndicator.find(:all, :conditions => ["indicator_date = ? AND indicator_type != 'admission'", Date.today])
     month_totals = HealthCareIndicator.find_by_sql("SELECT indicator_type, SUM(indicator_value) total,
-                    Month(indicator_date) month FROM health_care_indicators WHERE
+                    Month(indicator_date) month FROM health_care_indicators WHERE indicator_type IN ('Total Admissions') AND
                     Year(indicator_date) = Year(current_date)  GROUP BY indicator_type,Month(indicator_date)")
 
 
@@ -280,7 +279,7 @@ class CommonController < ApplicationController
 
       @readings[todays_indicators.indicator_type ] = [todays_indicators.indicator_value,0,0]
       @centers << todays_indicators.indicator_type
-      today += todays_indicators.indicator_value
+
     end
 
 
@@ -296,15 +295,15 @@ class CommonController < ApplicationController
 
       if Date.today.month.to_s == month_total.month
         @readings[month_total.indicator_type][1] = month_total.total.to_i
-        this_month += month_total.total.to_i
+
       end
 
-      this_year += month_total.total.to_i
+
 
     end
 
 
-    @readings["Total Encounters"] = [today, this_month, this_year]
+
 
 
     (1..(@centers.length - 1)).each do |i|
