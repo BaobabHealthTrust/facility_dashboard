@@ -541,8 +541,8 @@ class CommonController < ApplicationController
 
     day_figures.each do |todays_attendance|
 
-      @readings[todays_attendance.facility] = [todays_attendance.indicator_value, 0, 0]
-      today += todays_attendance.indicator_value
+      @readings[todays_attendance.facility] = [todays_attendance.indicator_value.to_i, 0, 0]
+      today += todays_attendance.indicator_value.to_i
 
     end
 
