@@ -274,11 +274,19 @@ class CommonController < ApplicationController
                     Year(indicator_date) = Year(current_date)  GROUP BY indicator_type,Month(indicator_date)")
 
 
-
+    float_indicators = ['Bed Occupancy Ratio', 'Bed Turnover Rate']
     day_figures.each do |todays_indicators|
 
-      @readings[todays_indicators.indicator_type ] = [todays_indicators.indicator_value,0,0]
       @centers << todays_indicators.indicator_type
+
+      if !float_indicators.include?todays_indicators.indicator_type
+        @readings[todays_indicators.indicator_type ] = [todays_indicators.indicator_value.to_i ,0,0]
+      else
+        @readings[todays_indicators.indicator_type ] = [todays_indicators.indicator_value,0,0]
+      end
+
+
+
 
     end
 
