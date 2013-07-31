@@ -18,35 +18,35 @@ class CommonController < ApplicationController
     end
     if $slide.nil?
       $slide = SlideEngine.new
-      
+
       $slide.reset_slides
     end
 
     i = 0
     @news = Message.find(:all, :select => ["msg_id, msg_id * RAND() AS "+
-          "random_no, msg_type, heading, msg_text, start_date, end_date"], :order => "random_no", :limit => 10,
-      :conditions => ["msg_type = 'announcement' AND start_date <= ? and end_date >= ?",
-        DateTime.now, DateTime.now]).collect{|n|
+                                               "random_no, msg_type, heading, msg_text, start_date, end_date"], :order => "random_no", :limit => 10,
+                         :conditions => ["msg_type = 'announcement' AND start_date <= ? and end_date >= ?",
+                                         DateTime.now, DateTime.now]).collect{|n|
       i += 1;
       "<span style='color: #{cycle("#cfe7f5", "#dc9746", i)}'><b>#{n.heading}:</b> " +
-        "#{n.msg_text[0..100]}#{(n.msg_text.length > 100 ? "..." : "")}</span>"
+          "#{n.msg_text[0..100]}#{(n.msg_text.length > 100 ? "..." : "")}</span>"
     }.join("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ")
 
     @news = "No Announcements" if @news.strip.blank?
 
     render :layout => false
   end
-	
-  def home    
+
+  def home
   end
 
-	def announcements
+  def announcements
 
     @announcement = Message.find(:first, :select => ["msg_id, msg_id * RAND() AS "+
-          "random_no, msg_type, heading, msg_text, start_date, end_date, duration, content_path, media_bg_color"],
-      :order => "random_no", :limit => 10,
-      :conditions => ["msg_type = 'announcement' AND start_date <= ? and end_date >= ?",
-        DateTime.now, DateTime.now])
+                                                         "random_no, msg_type, heading, msg_text, start_date, end_date, duration, content_path, media_bg_color"],
+                                 :order => "random_no", :limit => 10,
+                                 :conditions => ["msg_type = 'announcement' AND start_date <= ? and end_date >= ?",
+                                                 DateTime.now, DateTime.now])
 
     @duration = @announcement.duration rescue 1
 
@@ -62,13 +62,13 @@ class CommonController < ApplicationController
       @media = "/data/#{@media}"
     end
 
-	end
-  
+  end
+
   def uploadfile
     render :layout => false
   end
 
-	def upload_selected_file
+  def upload_selected_file
 
     if File.exist?("#{Rails.root}/public/data/#{params["upload_path_url"]}")
 
@@ -87,18 +87,18 @@ class CommonController < ApplicationController
 
     post = DataFile.save(params[:upload], params["upload_path_url"])
 
-    Image.resize("#{Rails.root}/public/data/#{params["upload_path_url"]}", 
-      "#{Rails.root}/public/data/resized_#{params["upload_path_url"]}", 670, 500)
+    Image.resize("#{Rails.root}/public/data/#{params["upload_path_url"]}",
+                 "#{Rails.root}/public/data/resized_#{params["upload_path_url"]}", 670, 500)
 
     if File.exist?("#{Rails.root}/public/data/resized_#{params["upload_path_url"]}")
-      
+
       File.delete("#{Rails.root}/public/data/#{params["upload_path_url"]}")
 
       File.rename("#{Rails.root}/public/data/resized_#{params["upload_path_url"]}",
-        "#{Rails.root}/public/data/#{params["upload_path_url"]}")
+                  "#{Rails.root}/public/data/#{params["upload_path_url"]}")
 
     end
-    
+
     size = get_image_size("#{Rails.root}/public/data/#{params["upload_path_url"]}")
 
     size = [670, 500] if size.nil?
@@ -108,24 +108,24 @@ class CommonController < ApplicationController
     color = colors.to_hex rescue ["#000000"]
 
     html = "<html><head></head><body style='background-color: #{color[0]}; color: #fff'><div style='position: absolute; left: 30px; " +
-      "top: 30px;'><b>W:</b> #{size[0]}; <b>" +
-      "H:</b> #{size[1]}</div><button onclick='var response = confirm(\"Do you really want " +
-      "to delete this image?\"); if(response){window.location = \"/common/delete_image?upload_path_url=" +
-      "#{params["upload_path_url"]}\";}' style='padding: 10px; position: absolute; top: 5px; " +
-      "right: 5px; font-size: 24px;'>Delete</button><br /><br /><br /><br /><embed src='/data/#{params["upload_path_url"]}' " +
-      "height='#{size[1]}' width='#{size[0]}' /> <script type='text/javascript'><!--\n " +
-      "if(window.parent.document.getElementById('upload_path')){" +
-      "window.parent.document.getElementById('upload_path').value = '#{params["upload_path_url"]}';}" +
-      "if(window.parent.document.getElementById('content_type')){" +
-      "window.parent.document.getElementById('content_type').value = '#{color[0]}';}" +
-      "if(window.parent.document.getElementById('media_bg_color')){" +
-      "window.parent.document.getElementById('media_bg_color').value = '#{color[0]}';}" +
-      "if(window.parent.document.getElementById('width')){" +
-      "window.parent.document.getElementById('width').value = '#{size[0]}';}" +
-      "if(window.parent.document.getElementById('height')){" +
-      "window.parent.document.getElementById('height').value = '#{size[1]}';}" +
-      " \n//--></script></body></html>"
-    
+        "top: 30px;'><b>W:</b> #{size[0]}; <b>" +
+        "H:</b> #{size[1]}</div><button onclick='var response = confirm(\"Do you really want " +
+        "to delete this image?\"); if(response){window.location = \"/common/delete_image?upload_path_url=" +
+        "#{params["upload_path_url"]}\";}' style='padding: 10px; position: absolute; top: 5px; " +
+        "right: 5px; font-size: 24px;'>Delete</button><br /><br /><br /><br /><embed src='/data/#{params["upload_path_url"]}' " +
+        "height='#{size[1]}' width='#{size[0]}' /> <script type='text/javascript'><!--\n " +
+        "if(window.parent.document.getElementById('upload_path')){" +
+        "window.parent.document.getElementById('upload_path').value = '#{params["upload_path_url"]}';}" +
+        "if(window.parent.document.getElementById('content_type')){" +
+        "window.parent.document.getElementById('content_type').value = '#{color[0]}';}" +
+        "if(window.parent.document.getElementById('media_bg_color')){" +
+        "window.parent.document.getElementById('media_bg_color').value = '#{color[0]}';}" +
+        "if(window.parent.document.getElementById('width')){" +
+        "window.parent.document.getElementById('width').value = '#{size[0]}';}" +
+        "if(window.parent.document.getElementById('height')){" +
+        "window.parent.document.getElementById('height').value = '#{size[1]}';}" +
+        " \n//--></script></body></html>"
+
     render :text => html
   end
 
@@ -134,7 +134,7 @@ class CommonController < ApplicationController
     if File.exist?("#{Rails.root}/public/data/#{params["upload_path_url"]}")
 
       File.delete("#{Rails.root}/public/data/#{params["upload_path_url"]}")
-      
+
     end
 
     redirect_to :action => :uploadfile
@@ -142,7 +142,7 @@ class CommonController < ApplicationController
 
   def get_image_size(image)
     if image.downcase.match(/\.png$/)
-      
+
       IO.read(image)[0x10..0x18].unpack('NN')
 
     elsif image.downcase.match(/\.gif$/)
@@ -180,7 +180,7 @@ class CommonController < ApplicationController
 
     height = 500 if height.nil?
     width = 500 if width.nil?
-    
+
     if height > width
       @width = "100%"
       @height = "#{(width.to_f / height.to_f) * 100}%"
@@ -193,7 +193,7 @@ class CommonController < ApplicationController
     end
 
     params[:duration] = @duration
-    
+
   end
 
   def general_message
@@ -201,19 +201,19 @@ class CommonController < ApplicationController
     unless params[:id].blank?
 
       @message = Message.find(:first, :select => ["msg_id, msg_id * RAND() AS "+
-            "random_no, msg_type, msg_group, heading, msg_text, start_date, end_date, " +
-            "duration, media_height, media_width, content_path, media_bg_color"],
-        :order => "random_no",
-        :conditions => ["msg_type = 'general message' AND start_date <= ? AND " +
-            "end_date >= ? AND msg_id = ?", DateTime.now, DateTime.now, params[:id]])
+                                                      "random_no, msg_type, msg_group, heading, msg_text, start_date, end_date, " +
+                                                      "duration, media_height, media_width, content_path, media_bg_color"],
+                              :order => "random_no",
+                              :conditions => ["msg_type = 'general message' AND start_date <= ? AND " +
+                                                  "end_date >= ? AND msg_id = ?", DateTime.now, DateTime.now, params[:id]])
 
     else
 
       @message = Message.find(:first, :select => ["msg_id, msg_id * RAND() AS "+
-            "random_no, msg_type, msg_group, heading, msg_text, start_date, end_date, " +
-            "duration, media_height, media_width, content_path, media_bg_color"],
-        :order => "random_no",
-        :conditions => ["msg_type = 'general message'
+                                                      "random_no, msg_type, msg_group, heading, msg_text, start_date, end_date, " +
+                                                      "duration, media_height, media_width, content_path, media_bg_color"],
+                              :order => "random_no",
+                              :conditions => ["msg_type = 'general message'
       AND start_date <= ? and end_date >= ?",DateTime.now, DateTime.now ])
 
     end
@@ -268,9 +268,11 @@ class CommonController < ApplicationController
     this_month = 0
     this_year = 0
 
-    day_figures = HealthCareIndicator.find(:all, :conditions => ["indicator_date = ? AND indicator_type != 'admission'", Date.today])
+    day_figures = HealthCareIndicator.find(:all, :conditions => ["indicator_date = ? AND indicator_type NOT IN (?)",
+                                                                 Date.today,['admission', 'Admitted Males',
+                                                                             'Admitted Females', 'Discharged Males', 'Discharged Females']])
     month_totals = HealthCareIndicator.find_by_sql("SELECT indicator_type, SUM(indicator_value) total,
-                    Month(indicator_date) month FROM health_care_indicators WHERE indicator_type IN ('Total Admissions') AND
+                    Month(indicator_date) month FROM health_care_indicators WHERE indicator_type IN ('Total Admissions', 'Total Discharges') AND
                     Year(indicator_date) = Year(current_date)  GROUP BY indicator_type,Month(indicator_date)")
 
 
@@ -343,8 +345,8 @@ class CommonController < ApplicationController
 
 
     day_total = AttendanceFigure.find(:all,
-      :conditions => ["attendance_figure_day BETWEEN ? AND ?",start_date , end_date ],
-      :order => "attendance_figure_day ASC")
+                                      :conditions => ["attendance_figure_day BETWEEN ? AND ?",start_date , end_date ],
+                                      :order => "attendance_figure_day ASC")
 
     day_total.each do |x|
 
@@ -442,12 +444,12 @@ class CommonController < ApplicationController
   def retrieve_announcements
     i = 0
     @news = Message.find(:all, :select => ["msg_id, msg_id * RAND() AS "+
-          "random_no, msg_type, heading, msg_text, start_date, end_date"], :order => "random_no", :limit => 10,
-      :conditions => ["msg_type = 'announcement' AND start_date <= ? and end_date >= ?",
-        DateTime.now, DateTime.now]).collect{|n|
+                                               "random_no, msg_type, heading, msg_text, start_date, end_date"], :order => "random_no", :limit => 10,
+                         :conditions => ["msg_type = 'announcement' AND start_date <= ? and end_date >= ?",
+                                         DateTime.now, DateTime.now]).collect{|n|
       i += 1;
       "<span style='color: #{cycle("#cfe7f5", "#dc9746", i)}'><b>#{n.heading}:</b> " +
-        "#{n.msg_text[0..100]}#{(n.msg_text.length > 100 ? "..." : "")}<span>"
+          "#{n.msg_text[0..100]}#{(n.msg_text.length > 100 ? "..." : "")}<span>"
     }.join("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ")
 
     @news = "No Announcements" if @news.strip.blank?
@@ -520,10 +522,10 @@ class CommonController < ApplicationController
   def notice_board
 
     @announcements = Message.find(:all, :select => ["msg_id, msg_id * RAND() AS random_no, msg_type, heading, msg_text"+
-                                                         ", start_date, end_date, duration, content_path, media_bg_color"],
-                                 :order => "random_no", :limit => 10,
-                                 :conditions => ["msg_type = 'announcement' AND start_date <= ? and end_date >= ?",
-                                                 DateTime.now, DateTime.now])
+                                                        ", start_date, end_date, duration, content_path, media_bg_color"],
+                                  :order => "random_no", :limit => 10,
+                                  :conditions => ["msg_type = 'announcement' AND start_date <= ? and end_date >= ?",
+                                                  DateTime.now, DateTime.now])
 
 
 
@@ -541,7 +543,7 @@ class CommonController < ApplicationController
     this_year = 0
 
     day_figures = HealthCareIndicator.find(:all, :conditions => ["indicator_date = ? AND indicator_type = 'admission'",
-                                                                Date.today], :order => "indicator_value DESC")
+                                                                 Date.today], :order => "indicator_value DESC")
     month_totals = HealthCareIndicator.find_by_sql("SELECT facility, SUM(indicator_value) total,
                     Month(indicator_date) month FROM health_care_indicators WHERE  indicator_type = 'admission' AND
                     Year(indicator_date) = Year(current_date)  GROUP BY facility,Month(indicator_date)")
@@ -593,7 +595,49 @@ class CommonController < ApplicationController
 
   end
 
+  def adt_graphs
+
+    start_date = Date.today - 4.days
+    end_date = Date.today
+    r = {}
+    @max = 0
+    @days = []
+    @admissions = []
+
+
+    wards = HealthCareIndicator.find(:all, :conditions => ["indicator_type = 'admission' AND indicator_date = ?", Date.today])
+
+    @wards_data_list = ""
+    wards.each do |d|
+      @wards_data_list += "{data:["+ d.indicator_value.to_json + "], name:'" + d.facility + "' },"
+    end
+
+    admission = HealthCareIndicator.find(:all,
+                                         :conditions => [" indicator_type = 'Total Admissions' AND indicator_date BETWEEN ? AND ?",start_date , end_date ],
+                                         :order => "indicator_date ASC")
+
+    admission.each do |day|
+      @days << (day.indicator_date).strftime('%a')
+      @admissions << day.indicator_value.to_i
+    end
+
+    data = ['Total Admissions', 'Total Discharges','Admitted Males', 'Admitted Females', 'Discharged Males', 'Discharged Females']
+
+    @values = Hash.new(0)
+
+    indicators = HealthCareIndicator.find(:all, :conditions => ["indicator_type IN (?) AND indicator_date = ?", data, Date.today])
+    bed_count = HealthCareIndicator.find(:last, :conditions => ["indicator_type = 'Bed Count'"]).indicator_value rescue 0
+
+    @values['Bed Count'] = bed_count
+
+    indicators.each do |indicator|
+      @values[indicator.indicator_type] = indicator.indicator_value.to_i
+    end
+
+  end
   protected
-  
+
 
 end
+
+
