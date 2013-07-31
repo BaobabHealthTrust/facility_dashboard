@@ -628,7 +628,7 @@ class CommonController < ApplicationController
     @values = Hash.new(0)
 
     indicators = HealthCareIndicator.find(:all, :conditions => ["indicator_type IN (?) AND indicator_date = ?", data, Date.today])
-    bed_count = HealthCareIndicator.find(:last, :conditions => ["indicator_type = 'Bed Count'"]).indicator_value rescue 0
+    bed_count = HealthCareIndicator.find(:last, :conditions => ["indicator_type = 'Bed Count'"]).indicator_value rescue 200
 
     @values['Bed Count'] = bed_count
 

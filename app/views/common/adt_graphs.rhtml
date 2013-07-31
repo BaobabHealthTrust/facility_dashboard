@@ -6,7 +6,7 @@
         font-weight: bold;
         border: 0.01em solid black;
         border-radius: 10px;
-        height: 15%;
+
     }
 
     span.title{
@@ -32,7 +32,7 @@
 <script type="text/javascript" src="/javascripts/jquery-1.8.2.js"></script>
 <script src="/javascripts/highcharts.js"></script>
 <script src="/javascripts/exporting.js"></script>
-
+<script src="/javascripts/highcharts-more.js"></script>
 
 <script type="text/javascript">
 
@@ -61,7 +61,11 @@
                     text: 'Number of admissions'
                 }
             },
-            series: [<%= @wards_data_list %>]
+            series: [<%= @wards_data_list %>],
+            exporting: { enabled: false },
+            credits: {
+                enabled: false
+            }
         });
 
 
@@ -93,11 +97,95 @@
             series: [{
                 name: 'Admissions Per Day',
                 data: <%= @admissions.to_json  %>
-            }]
+            }],
+            exporting: { enabled: false },
+            credits: {
+                enabled: false
+            }
         });
 
 
+        $('#capacity').highcharts({
+            chart: {
+                type: 'gauge',
+                plotBackgroundColor: null,
+                plotBackgroundImage: null,
+                plotBorderWidth: 0,
+                plotShadow: false
+            },
+            title: {
+                text: ''
+            },
+            yAxis: {
+                min: 0,
+                max: <%=@values['Bed Count'] %>,
 
+                title: {
+                    text: 'Patients'
+                },
+                plotBands: [{
+                    from: 0,
+                    to: (<%=@values['Bed Count'] %> * 0.6),
+                    color: '#55BF3B' // green
+                }, {
+                    from: (<%=@values['Bed Count'] %> * 0.6),
+                    to: (<%=@values['Bed Count'] %> * 0.8),
+                    color: '#DDDF0D' // yellow
+                }, {
+                    from: (<%=@values['Bed Count'] %> * 0.8),
+                    to: <%=@values['Bed Count'] %> ,
+                    color: '#DF5353' // red
+                }],
+
+
+            },
+
+            pane: {
+                startAngle: -150,
+                endAngle: 150,
+                background: [{
+                    backgroundColor: {
+                        linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                        stops: [
+                            [0, '#FFF'],
+                            [1, '#333']
+                        ]
+                    },
+                    borderWidth: 0,
+                    outerRadius: '109%'
+                }, {
+                    backgroundColor: {
+                        linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                        stops: [
+                            [0, '#333'],
+                            [1, '#FFF']
+                        ]
+                    },
+                    borderWidth: 1,
+                    outerRadius: '107%'
+                }, {
+                    // default background
+                }, {
+                    backgroundColor: '#DDD',
+                    borderWidth: 0,
+                    outerRadius: '105%',
+                    innerRadius: '103%'
+                }]
+            }
+             ,
+            series: [{
+                name: 'Occupancy',
+                data: [<%= @values['Admitted Patients'] %>],
+                tooltip: {
+                    valueSuffix: 'Patients'
+                }
+            }],
+
+            exporting: { enabled: false },
+            credits: {
+               enabled: false
+            }
+        });
 
 
         // Build the chart
@@ -137,7 +225,11 @@
                     ['Females',<%= @values['Admitted Females'] %> ]
 
                 ]
-            }]
+            }],
+            exporting: { enabled: false },
+            credits: {
+                enabled: false
+            }
         });
 
 
@@ -173,32 +265,32 @@
         <div class="title" > Bed Count<br> <span class="number"><%= @values["Bed Count"] %> </span><br></div>
       </td>
       <td style="width: 40%; height: 50%" >
-        <span class="title" > Admissions By Ward</span>
+        <span class="title" > Bed Occupancy</span>
         <br>
-        <div style="min-width: 99%; height: 280px; margin: 0 auto" id="wards" >
+        <div style="min-width: 99%; height: 200px; margin: 0 auto" id="capacity" >
 
         </div>
 
       </td>
       <td  style="width: 40%; height: 50%">
-        <span class="title" > Admissions Trend</span>
+        <span class="title" > Admission Trend</span>
         <br>
-        <div style="min-width: 99%; height: 280px; margin: 0 auto;" id="trends">
+        <div style="min-width: 99%; height: 200px; margin: 0 auto;" id="trends">
 
         </div>
       </td>
     </tr>
     <tr>
       <td  style="width: 40%; height: 50%" >
-        <span class="title" > Admissions By Gender</span>
-        <div  style="min-width: 99%; height: 280px; margin: 0 auto;" id="gender">
+        <span class="title" > Admissions By Wards</span>
+        <div  style="min-width: 99%; height: 200px; margin: 0 auto;" id="wards">
 
         </div>
 
       </td>
       <td  style="width: 40%; height: 50%">
-        <span class="title" >Admissions By Age</span>
-        <div  style="min-width: 99%; height: 280px; margin: 0 auto;" id="age">
+        <span class="title" >Admissions By Gender</span>
+        <div  style="min-width: 99%; height: 200px; margin: 0 auto;" id="gender">
 
         </div>
       </td>
