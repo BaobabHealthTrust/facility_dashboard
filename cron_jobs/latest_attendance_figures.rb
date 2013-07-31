@@ -83,14 +83,16 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
 
     end
 
+    bed_count = con.query("SELECT SUM(bed_number) FROM ward").fetch_row[0] rescue 0
+    admit_concept = con.query("SELECT concept_id FROM concept_name WHERE name = 'ADMIT TO WARD'").fetch_row[0] rescue nil
+    discharge_concept = con.query("SELECT encounter_type_id FROM encounter_type WHERE name = 'DISCHARGE PATIENT'").fetch_row[0] rescue nil
+    admit_enc_type = con.query("SELECT encounter_type_id FROM encounter_type WHERE name = 'ADMIT PATIENT'").fetch_row[0] rescue nil
 
     total_admission = con.query("SELECT count(*) FROM encounter WHERE DATE(encounter_datetime) = current_date AND voided = 0 AND
-                                  encounter_type = (SELECT encounter_type_id FROM encounter_type WHERE name = 'ADMIT PATIENT')").fetch_row[0]
+                                  encounter_type = #{admit_enc_type}").fetch_row[0]
 
     total_discharge = con.query("SELECT count(*) FROM encounter WHERE DATE(encounter_datetime) = current_date AND voided = 0 AND
-                                  encounter_type = (SELECT encounter_type_id FROM encounter_type WHERE name = 'DISCHARGE PATIENT')").fetch_row[0]
-
-    bed_count = con.query("SELECT SUM(bed_number) FROM ward").fetch_row[0] rescue 0
+                                  encounter_type = #{discharge_concept}").fetch_row[0]
 
 
 
@@ -121,15 +123,17 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
           "indicator_type" => "Bed Turnover Rate",
           "facility" => settings["registration"]["facility"],
           "date" => Date.today
+      } << {
+          "indicator_value" => bed_count,
+          "indicator_type" => "Bed Count",
+          "facility" => settings["registration"]["facility"],
+          "date" => Date.today
       }
 
     end
 
-
-
-
     admissions = con.query("SELECT count(*), value_text, DATE(obs_datetime) FROM obs WHERE DATE(obs_datetime)= current_date
-                            AND concept_id = (SELECT concept_id FROM concept_name WHERE name = 'ADMIT TO WARD')
+                            AND concept_id = #{admit_concept}
                             AND voided = 0 GROUP BY value_text ")
 
     (0..(admissions.num_rows - 1)).each do |i|
@@ -142,7 +146,50 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
        }
     end
 
+    admission_by_gender =  con.query("SELECT gender, COUNT(person_id) FROM person WHERE person_id IN (SELECT patient_id FROM encounter
+                                      WHERE encounter_type = #{admit_enc_type} AND DATE(encounter_datetime) = current_date AND voided = 0)
+                                      GROUP BY gender ")
 
+    (0..(admission_by_gender.num_rows - 1)).each do |i|
+
+      indicator = admission_by_gender.fetch_row
+      if indicator[0]=='M'
+        title = 'Admitted Males'
+      elsif indicator[0]=='F'
+        title = 'Admitted Females'
+      end
+
+      result["health_indicator"] << {
+          "indicator_value" => indicator[1],
+          "indicator_type" => title,
+          "facility" => settings["registration"]["facility"],
+          "date" => Date.today
+      }
+
+    end
+
+    discharge_by_gender =  con.query("SELECT gender, COUNT(person_id) FROM person WHERE person_id IN (SELECT patient_id FROM encounter
+                                      WHERE encounter_type = #{discharge_concept} AND DATE(encounter_datetime) = current_date AND voided = 0)
+                                      GROUP BY gender ")
+
+
+    (0..(discharge_by_gender.num_rows - 1)).each do |i|
+
+      indicator = discharge_by_gender.fetch_row
+      if indicator[0]=='M'
+        title = 'Discharged Males'
+      elsif indicator[0]=='F'
+        title = 'Discharged Females'
+      end
+
+      result["health_indicator"] << {
+          "indicator_value" => indicator[1],
+          "indicator_type" => title,
+          "facility" => settings["registration"]["facility"],
+          "date" => Date.today
+      }
+
+    end
 
 
     return 200, "text/html", result.to_json

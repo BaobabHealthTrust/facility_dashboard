@@ -1,0 +1,243 @@
+<style type="text/css">
+
+    span.title{
+        margin: 10px;
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    span.number{
+        margin: 10px;
+        color: #ff0000;
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    td{
+        text-align: center;
+        vertical-align: top;
+        border: 1px solid silver;
+    }
+
+</style>
+<script type="text/javascript" src="/javascripts/jquery-1.8.2.js"></script>
+<script src="/javascripts/highcharts.js"></script>
+<script src="/javascripts/modules/exporting.js"></script>
+
+
+<script type="text/javascript">
+
+    <!--
+
+    $(function () {
+
+
+        $('#wards').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: ''
+            },
+
+            xAxis: {
+
+                title: {
+                    text: 'Wards'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Number of admissions'
+                }
+            },
+            series: [<%= @wards_data_list %>]
+        });
+
+
+        $('#trends').highcharts({
+            chart: {
+                type: 'line'
+            },
+            title: {
+                text: ''
+            }
+            ,
+            xAxis: {
+                categories: <%= @days.to_json %>
+            },
+            yAxis: {
+                title: {
+                    text: 'Number of Admissions'
+                }
+            },
+
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    },
+                    enableMouseTracking: false
+                }
+            },
+            series: [{
+                name: 'Admissions Per Day',
+                data: <%= @admissions.to_json  %>
+            }]
+        });
+
+
+
+
+        $('#age').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: ''
+            },
+
+            xAxis: {
+
+                title: {
+                    text: 'Wards'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Number of admissions'
+                }
+            },
+            series: [<%= @wards_data_list %>]
+        });
+
+
+            Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function(color) {
+            return {
+                radialGradient: { cx: 0.5, cy: 0.3, r: 0.7 },
+                stops: [
+                    [0, color],
+                    [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+                ]
+            };
+        });
+
+        // Build the chart
+        $('#gender').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            title: {
+                text: ''
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage}%</b>',
+                percentageDecimals: 1
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000',
+                        connectorColor: '#000000',
+                        formatter: function() {
+                            return '<b>'+ this.point.name +'</b>: '+ this.percentage +' %';
+                        }
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'Browser share',
+                data: [
+
+                    ['Males',  <%= @values['Admitted Males'] %>],
+                    ['Females',<%= @values['Admitted Females'] %> ]
+
+                ]
+            }]
+        });
+
+
+
+    });
+
+
+
+    //-->
+
+</script>
+
+
+<div id="heading" style="font-size: 36px; text-align: center; margin: 10px;
+        background-color: #cfe7f5; border-radius: 10px; padding: 15px; border: 1px solid #999;">
+  ADT Overview
+</div>
+<div id="coat">
+  <img src="/images/coatOfArms.png" alt="" height="60" style="position: absolute; top: 25px; right: 30px;" />
+</div>
+
+<div id="content" style="border-radius: 10px; border: 1px solid #999; margin: 10px;
+        height: 80%; overflow: hidden; padding: 10px;">
+
+  <table style="width: 99%; height: 100%; margin-left: 0.5%; margin-top: 0.2%" >
+
+    <tr>
+      <td style="width: 20%; height: 50%" rowspan="2" >
+        <br>
+        <span class="title" > Total Admitted Patients</span><br><br> <span class="number">50</span> <br><br>
+        <span class="title" > Total Admissions Today</span><br><br> <span class="number"><%= @values["Total Admissions"] %></span> <br><br>
+        <span class="title" > Total Discharges Today</span><br><br> <span class="number"><%= @values["Total Discharges"] %></span> <br><br>
+        <span class="title" > Bed Count</span><br><br> <span class="number"><%= @values["Bed Count"] %> </span>
+      </td>
+      <td style="width: 40%; height: 50%" >
+        <span class="title" > Admissions By Ward</span>
+        <br>
+        <div style="min-width: 99%; height: 300px; margin: 0 auto" id="wards" >
+
+        </div>
+
+      </td>
+      <td>
+        <span class="title" > Admissions Trend</span>
+        <br>
+        <div style="min-width: 99%; height: 300px; margin: 0 auto;" id="trends">
+
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 40%" >
+        <span class="title" > Admissions By Gender</span>
+        <div  style="min-width: 99%; height: 350px; margin: 0 auto;" id="gender">
+
+        </div>
+
+      </td>
+      <td>
+        <span class="title" >Admissions By Age</span>
+        <div  style="min-width: 99%; height: 350px; margin: 0 auto;" id="age">
+
+        </div>
+      </td>
+    </tr>
+
+  </table>
+
+
+</div>
+
+
+<script type="text/javascript">
+    <!--
+    slideShow(100);
+
+    setTimeout("window.location = '/common/next_path'", 6000 <%= "+ #{0.3 * 60000}" %>);
+    //-->
+</script>
