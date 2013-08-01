@@ -528,7 +528,9 @@ class CommonController < ApplicationController
                                                   DateTime.now, DateTime.now])
 
 
-
+    if @announcements.blank?
+      redirect_to :action => :next_path
+    end
   end
 
 
