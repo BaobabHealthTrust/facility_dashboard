@@ -81,6 +81,11 @@ class SlideEngine
 
           @@slideshow << "/common/admissions?duration=#{item.duration.to_f}"
 
+
+        when "adt overview"
+
+          @@slideshow << "/common/adt_graphs?duration=#{item.duration.to_f}"
+
       end
 
     end
