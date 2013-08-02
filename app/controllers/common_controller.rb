@@ -605,7 +605,7 @@ class CommonController < ApplicationController
     @max = 0
     @days = []
     @admissions = []
-
+    @patients = []
 
     wards = HealthCareIndicator.find(:all, :conditions => ["indicator_type = 'admission' AND indicator_date = ?", Date.today])
 
@@ -615,15 +615,22 @@ class CommonController < ApplicationController
     end
 
     admission = HealthCareIndicator.find(:all,
-                                         :conditions => [" indicator_type = 'New Admissions' AND indicator_date BETWEEN ? AND ?",start_date , end_date ],
+                                         :conditions => [" indicator_type IN ['New Admissions','Admitted Patients'] AND indicator_date BETWEEN ? AND ?",start_date , end_date ],
                                          :order => "indicator_date ASC")
 
     admission.each do |day|
       @days << (day.indicator_date).strftime('%a')
-      @admissions << day.indicator_value.to_i
+
+      if day.indicator_type == 'Admitted Patients'
+        @patients << day.indicator_value.to_i
+      else
+        @admissions << day.indicator_value.to_i
+      end
+
     end
 
-    data = ['New Admissions', 'Total Discharges','Admitted Males', 'Admitted Females', 'Discharged Males', 'Discharged Females','Admitted Patients']
+    data = ['New Admissions', 'Total Discharges','Admitted Males', 'Admitted Females', 'Discharged Males',
+            'Discharged Females','Admitted Patients']
 
     @values = Hash.new(0)
 

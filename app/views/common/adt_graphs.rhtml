@@ -99,7 +99,11 @@
             series: [{
                 name: 'Admissions Per Day',
                 data: <%= @admissions.to_json  %>
-            }],
+            },{
+                name: 'Admitted Patients',
+                data: <%= @patients.to_json  %>
+            }
+            ],
             exporting: { enabled: false },
             credits: {
                 enabled: false
