@@ -87,18 +87,24 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
     admit_concept = con.query("SELECT concept_id FROM concept_name WHERE name = 'ADMIT TO WARD'").fetch_row[0] rescue nil
     discharge_concept = con.query("SELECT encounter_type_id FROM encounter_type WHERE name = 'DISCHARGE PATIENT'").fetch_row[0] rescue nil
     admit_enc_type = con.query("SELECT encounter_type_id FROM encounter_type WHERE name = 'ADMIT PATIENT'").fetch_row[0] rescue nil
-
+    workflow_id = con.query("SELECT program_workflow_id FROM program_workflow WHERE program_id =
+                      (SELECT program_id FROM program WHERE name = 'IPD program')").fetch_row[0] rescue nil
+    admitted_state = con.query("SELECT program_workflow_state_id FROM program_workflow_state WHERE
+                                program_workflow_id = #{workflow_id} AND concept_id = (SELECT concept_id FROM
+                                concept_name WHERE name = 'Admitted' AND voided = 0 LIMIT 1)").fetch_row[0] rescue nil
     total_admission = con.query("SELECT count(*) FROM encounter WHERE DATE(encounter_datetime) = current_date AND voided = 0 AND
                                   encounter_type = #{admit_enc_type}").fetch_row[0]
 
     total_discharge = con.query("SELECT count(*) FROM encounter WHERE DATE(encounter_datetime) = current_date AND voided = 0 AND
                                   encounter_type = #{discharge_concept}").fetch_row[0]
+    admitted_patients = con.query("SELECT count(*) FROM patient_state WHERE state = #{admitted_state}
+                                    AND end_date IS NULL AND voided = 0").fetch_row[0]
 
 
 
     result["health_indicator"] << {
        "indicator_value" => total_admission,
-       "indicator_type" => "Total Admissions",
+       "indicator_type" => "New Admissions",
        "facility" => settings["registration"]["facility"],
        "date" => Date.today
     }
@@ -111,7 +117,7 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
     }
 
     unless bed_count.nil?
-      bed_ratio = ((total_admission.to_f / bed_count.to_f )* 100).round.to_f / 100 rescue 0
+      bed_ratio = ((admitted_patients.to_f / bed_count.to_f )* 100).round.to_f / 100 rescue 0
       turn_over = ((total_discharge.to_f/bed_count.to_f) * 100).round.to_f / 100 rescue 0
       result["health_indicator"] << {
           "indicator_value" => bed_ratio,
@@ -130,6 +136,15 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
           "date" => Date.today
       }
 
+    end
+
+    unless admitted_patients.nil?
+      result["health_indicator"] << {
+          "indicator_value" => admitted_patients,
+          "indicator_type" => "Admitted Patients",
+          "facility" => settings["registration"]["facility"],
+          "date" => Date.today
+      }
     end
 
     admissions = con.query("SELECT count(*), value_text, DATE(obs_datetime) FROM obs WHERE DATE(obs_datetime)= current_date
