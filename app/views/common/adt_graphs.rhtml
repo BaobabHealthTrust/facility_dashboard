@@ -40,6 +40,15 @@
 
     $(function () {
 
+        count = 0;
+        if (<%=@values['Bed Count'] %>  < <%= @values['Admitted Patients'] %>)
+        {
+            count =  parseInt(<%=@values['Bed Count'] %>) ;
+        }
+        else
+        {
+            count = parseInt(<%= @values['Admitted Patients'] %>)
+        }
 
         $('#wards').highcharts({
             chart: {
@@ -181,7 +190,7 @@
              ,
             series: [{
                 name: 'Occupancy',
-                data: [<%= @values['Admitted Patients'] %>],
+                data: [count],
                 tooltip: {
                     valueSuffix: 'Patients'
                 }

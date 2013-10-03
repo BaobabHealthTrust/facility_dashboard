@@ -615,7 +615,7 @@ class CommonController < ApplicationController
     end
 
     admission = HealthCareIndicator.find(:all,
-                                         :conditions => [" indicator_type IN ['New Admissions','Admitted Patients'] AND indicator_date BETWEEN ? AND ?",start_date , end_date ],
+                                         :conditions => [" indicator_type IN (?) AND indicator_date BETWEEN ? AND ?",['New Admissions','Admitted Patients'],start_date , end_date ],
                                          :order => "indicator_date ASC")
 
     admission.each do |day|
@@ -637,7 +637,7 @@ class CommonController < ApplicationController
     indicators = HealthCareIndicator.find(:all, :conditions => ["indicator_type IN (?) AND indicator_date = ?", data, Date.today])
     bed_count = HealthCareIndicator.find(:last, :conditions => ["indicator_type = 'Bed Count'"]).indicator_value rescue 0
 
-    @values['Bed Count'] = bed_count
+    @values['Bed Count'] = bed_count.to_i
 
     indicators.each do |indicator|
       @values[indicator.indicator_type] = indicator.indicator_value.to_i
