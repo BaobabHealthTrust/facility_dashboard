@@ -40,6 +40,15 @@
 
     $(function () {
 
+        count = 0;
+        if (<%=@values['Bed Count'] %>  < <%= @values['Admitted Patients'] %>)
+        {
+            count =  parseInt(<%=@values['Bed Count'] %>) ;
+        }
+        else
+        {
+            count = parseInt(<%= @values['Admitted Patients'] %>)
+        }
 
         $('#wards').highcharts({
             chart: {
@@ -99,7 +108,11 @@
             series: [{
                 name: 'Admissions Per Day',
                 data: <%= @admissions.to_json  %>
-            }],
+            },{
+                name: 'Admitted Patients',
+                data: <%= @patients.to_json  %>
+            }
+            ],
             exporting: { enabled: false },
             credits: {
                 enabled: false
@@ -177,7 +190,7 @@
              ,
             series: [{
                 name: 'Occupancy',
-                data: [<%= @values['Admitted Patients'] %>],
+                data: [count],
                 tooltip: {
                     valueSuffix: 'Patients'
                 }

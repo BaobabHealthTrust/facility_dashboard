@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
 
     if !user.nil?
 
-      salt = Digest::SHA1.hexdigest(password+ user.salt)
+      salt = Digest::SHA1.hexdigest(password + user.salt)
 
       if salt == user.password
 

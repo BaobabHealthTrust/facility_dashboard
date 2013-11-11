@@ -117,10 +117,10 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
     }
 
     unless bed_count.nil?
-      bed_ratio = ((admitted_patients.to_f / bed_count.to_f )* 100).round.to_f / 100 rescue 0
-      turn_over = ((total_discharge.to_f/bed_count.to_f) * 100).round.to_f / 100 rescue 0
+      bed_ratio = ((admitted_patients.to_f / bed_count.to_f )* 100).round.to_f rescue 0
+      turn_over = ((total_discharge.to_f/bed_count.to_f) * 100).round.to_f  rescue 0
       result["health_indicator"] << {
-          "indicator_value" => bed_ratio,
+          "indicator_value" => bed_ratio ,
           "indicator_type" => "Bed Occupancy Ratio",
           "facility" => settings["registration"]["facility"],
           "date" => Date.today
