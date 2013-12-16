@@ -97,8 +97,9 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
 
     total_discharge = con.query("SELECT count(*) FROM encounter WHERE DATE(encounter_datetime) = current_date AND voided = 0 AND
                                   encounter_type = #{discharge_concept}").fetch_row[0]
-    admitted_patients = con.query("SELECT count(*) FROM patient_state WHERE state = #{admitted_state}
-                                    AND end_date IS NULL AND voided = 0").fetch_row[0]
+    admitted_patients = con.query("SELECT COUNT(distinct patient_id) FROM patient_state as s inner join patient_program as p
+                                   on p.patient_program_id = s.patient_program_id
+                                   WHERE state = #{admitted_state} AND end_date IS NULL AND p.voided = 0 AND s.voided = 0").fetch_row[0]
 
 
 
@@ -161,8 +162,9 @@ class Updates < WEBrick::HTTPServlet::AbstractServlet
        }
     end
 
-    admission_by_gender =  con.query("SELECT gender, COUNT(person_id) FROM person WHERE person_id IN (SELECT patient_id FROM encounter
-                                      WHERE encounter_type = #{admit_enc_type} AND DATE(encounter_datetime) = current_date AND voided = 0)
+    admission_by_gender =  con.query("SELECT gender, COUNT(person_id) FROM person WHERE person_id IN (SELECT patient_id
+                                      FROM patient_state as s inner join patient_program as p on p.patient_program_id = s.patient_program_id
+                                      WHERE state = #{admitted_state} AND end_date IS NULL AND p.voided = 0 AND s.voided = 0)
                                       GROUP BY gender ")
 
     (0..(admission_by_gender.num_rows - 1)).each do |i|
