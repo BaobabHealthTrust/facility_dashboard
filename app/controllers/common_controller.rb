@@ -5,8 +5,12 @@ require "csv"
 class CommonController < ApplicationController
 
   def index
+    if !params[:id].blank?
+      $audience = params[:id]
+    else
+      $audience = "consumer" unless !$audience.blank?
+    end
 
-    $audience = params[:id] rescue "consumer"
     if params[:id] =="p"
       $audience = "policy_maker"
       $order = "policy_order_id"
