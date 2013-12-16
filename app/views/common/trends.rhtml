@@ -10,21 +10,103 @@
   </head>
 
   <script language="javascript" type="text/javascript" src="/javascripts/flotr2.min.js"></script>
+  <script type="text/javascript" src="/javascripts/jquery-1.8.2.js"></script>
+  <script src="/javascripts/highcharts.js"></script>
+  <script src="/javascripts/exporting.js"></script>
+
 
   <script type="text/javascript ">
 
-    function draw_trend(){
+      $(function () {
+          $('#graph').highcharts({
+              chart: {
+                  type: 'line',
+                  marginRight: 130,
+                  marginBottom: 35
+              },
+              title: {
+                  text: '',
+                  x: -20 //center
+              },
+              xAxis: {
+                  categories: <%= @days2.to_json %>,
+                  labels: {
+                      style : {
+                          fontSize: '21px'
+                      },
+                      y: 27
+                  },
+                  title:{
+                      text: 'Days',
+                      style : {
+                          fontSize: '21px',
+                          fontWeight: 'bold'
+                      }
+                  }
+              },
+              yAxis: {
+                  title: {
+                      text: 'Number Of Patients',
+                      style : {
+                          fontSize: '23px',
+                          fontWeight: 'bold'
+                      }
+                  },
+                  labels: {
+                      style : {
+                          fontSize: '21px'
+                      },
+                      y: 10
+                  },
+                  min: 0,
+                  plotLines: [{
+                      value: 0,
+                      width: 1,
+                      color: '#808080'
+                  }]
+              },
+              tooltip: {
+                  valueSuffix: 'Patients'
+              },
+              legend: {
+                  layout: 'vertical',
+                  align: 'right',
+                  verticalAlign: 'top',
+                  x: 15,
+                  y: 0,
+                  itemStyle: {
+                      cursor: 'pointer',
+                      color: '#274b6d',
+                      fontSize: '21px'
+                  },
+                  borderWidth: 0.5
+              },
+              exporting:{
+                  enabled:false
+              },
+              credits:{
+                  enabled:false
+              },
+              series:<%= @data_list %>
+          });
+      });
 
-        var graph_area = document.getElementById("graph");
 
-				
-        graph = Flotr.draw(graph_area,<%= @data_list %>, {xaxis :{ticks : <%=@days.to_json %>, min:0, max:6},
+
+      /*
+function draw_trend(){
+
+    var graph_area = document.getElementById("graph");
+
+
+    graph = Flotr.draw(graph_area,<%= @data_list %>, {xaxis :{ticks : <%=@days.to_json %>, min:0, max:6},
         yaxis: {min:0, max:<%= @max.to_json %>, fontSize:15},legend: {position :'ne', backgroundColor: '#D2E8FF'},
         colors:  	 ['#FF1493','#0000CD','#7FFF00','#D2691E','#4B0082','#6A5ACD','#006400','#FF4500','#800000',
             '#8B008B','#B8860B','#4C7D7E','#7E587E','#E56E94','#48CCCD','#FFFF00','#FF0000']});
 
     }
     setTimeout("draw_trend()", 30);
+   */
   </script>
 
   <body>
@@ -41,7 +123,7 @@
   <div id="content" style="border-radius: 10px; border: 1px solid #999; margin: 10px;
           height: 76%; overflow: hidden; padding: 10px;">
 
-      <div align="center" id= "graph" style=" font-size:30; width: 98%; margin-top: 2%; height: 95%;text-align:center  " >
+      <div align="center" id= "graph" style=" font-size:80; width: 98%; margin-top: 2%; height: 92%;text-align:center  " >
 
       </div>
 
