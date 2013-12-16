@@ -86,6 +86,9 @@ class SlideEngine
 
           @@slideshow << "/common/adt_graphs?duration=#{item.duration.to_f}"
 
+        when "dde syncs"
+
+          @@slideshow << "/common/dde_syncs?duration=#{item.duration.to_f}"
       end
 
     end

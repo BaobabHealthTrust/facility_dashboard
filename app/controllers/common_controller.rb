@@ -1,5 +1,6 @@
 require 'ImageResize'
 require "miro"
+require "csv"
 
 class CommonController < ApplicationController
 
@@ -336,10 +337,12 @@ class CommonController < ApplicationController
     r = {}
     @max = 0
     @days = [[0," "],[6," "] ]
+    @days2 = []
     x_values={}
 
     (0..4).each do |i|
       @days << [ x_values[(start_date + i.days ).strftime('%A')]= i+1 ,(start_date + i.days ).strftime('%A')]
+      @days2 << (start_date + i.days ).strftime('%A')
     end
 
 
@@ -362,7 +365,7 @@ class CommonController < ApplicationController
 
     @data_list = "["
     r.each do |d|
-      @data_list += "{data:"+ d[1].to_json + ", label:'" + d[0]+ "' , lines: {show:true }, points: {show:true }},"
+      @data_list += "{data:"+ d[1].to_json + ", name:'" + d[0]+ "'},"
     end
 
     @data_list += "]"
@@ -644,6 +647,33 @@ class CommonController < ApplicationController
     end
 
   end
+
+  def dde_syncs
+
+    @syncs = []
+    CSV.foreach("#{Rails.root}/public/data/sync_data.csv") do |row|
+
+      site, sync_type, sync_time = row
+      next if site.squish == "Site"
+      case sync_type
+        when "Partial":
+          state = "yellow"
+        when "Complete"
+          if (Date.today.to_date - sync_time.to_date) > 2
+            state = "orange"
+          else
+            state = "green"
+          end
+          sync_time = sync_time.to_time.strftime("%d %b,%Y %H:%M")
+        when "Never"
+          state = "red"
+      end
+      @syncs << {"site" => site, "type" => sync_type, "time" => sync_time, "status" => state }
+
+    end
+
+  end
+
   protected
 
 

@@ -1,0 +1,164 @@
+<html>
+<head>
+  <title>DDE Syncs</title>
+  <style>
+      td{
+          font-size: 35px;
+          height: 75px;
+      }
+      div.yellow{
+          background-color: #FFCC00;
+          color: #000066;
+          height: 94%;
+          border-radius:7px;
+          padding-left: 15px;
+          padding-top: 15px;
+      }
+      div.red{
+          background-color: #C80000;
+          color: #FFFFCC;
+          height: 94%;
+          border-radius:7px;
+          padding-left: 15px;
+          padding-top: 15px;
+      }
+      div.orange{
+          background-color: #FF9950;
+          color: #000000;
+          height: 94%;
+          border-radius:7px;
+          padding-left: 15px;
+          padding-top: 15px;
+      }
+      div.green{
+          background-color: #00CC00;
+          color: #000066;
+          height: 94%;
+          border-radius:7px;
+          padding-left: 15px;
+          padding-top: 15px;
+      }
+
+  </style>
+
+  <script type="text/javascript">
+      <!--
+
+      ScrollRate = 20;
+
+      function scrollDiv_init(name) {
+          DivElmnt = document.getElementById(name);
+          ReachedMaxScroll = false;
+
+          DivElmnt.scrollTop = 0;
+          PreviousScrollTop  = 0;
+
+          ScrollInterval = setInterval('scrollDiv()', ScrollRate);
+      }
+
+      function scrollDiv() {
+
+          if (!ReachedMaxScroll) {
+              DivElmnt.scrollTop = PreviousScrollTop;
+              PreviousScrollTop++;
+
+              ReachedMaxScroll = DivElmnt.scrollTop >= (DivElmnt.scrollHeight - DivElmnt.offsetHeight);
+          }
+          else {
+              ReachedMaxScroll = (DivElmnt.scrollTop == 0)?false:true;
+
+              DivElmnt.scrollTop = PreviousScrollTop;
+              PreviousScrollTop--;
+          }
+      }
+
+      function pauseDiv() {
+          clearInterval(ScrollInterval);
+      }
+
+      function resumeDiv() {
+          PreviousScrollTop = DivElmnt.scrollTop;
+          ScrollInterval    = setInterval('scrollDiv()', ScrollRate);
+      }
+
+      setTimeout("scrollDiv_init('content')", 300)
+      //-->
+
+  </script>
+
+</head>
+
+<body bgcolor="#f8f8ff"   >
+
+<div id="heading" style="font-size: 36px; text-align: center; margin: 10px;
+        background-color: #cfe7f5; border-radius: 10px; padding: 15px; border: 1px solid #999;">
+Recent DDE Syncs
+</div>
+
+<div id="coat">
+  <img src="/images/coatOfArms.png" alt="" height="60" style="position: absolute; top: 25px; right: 30px;" />
+</div>
+
+
+<div style="border-radius: 10px; border: 1px solid #999; margin-left: 10px; margin-top:-5px;
+        height: 78%; overflow: scroll; padding: 10px;overflow-x:hidden;overflow-y:hidden; ">
+  <div style="border-radius: 10px; overflow: hidden;">
+      <div class="table" style="font-size: 28px;" >
+        <table style="width: 100%;">
+          <tr style="height: 80px;">
+            <td style="width: 50%;">
+              <div style="width: 98%;height:70%;background: #87ceeb;border-radius:7px;padding-left: 15px;padding-top: 5px;">
+                Site Name
+              </div>
+            </td>
+            <td style="width:20%;">
+              <div style="background: #87ceeb;height:70%;border-radius:7px;padding-left: 15px;padding-top: 5px; ">
+                Sync Type
+              </div>
+            </td>
+            <td >
+              <div style="background: #87ceeb;height:70%;border-radius:7px;padding-left: 15px;padding-top: 5px; ">
+                Sync Time
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+  </div>
+  <div id="content" style="border-radius: 10px; border: 1px solid #999;height: 87%;overflow: hidden;">
+    <table width="100%" >
+      <% @syncs.each do |sync| %>
+       <tr>
+         <td style="width: 50%">
+           <div class = '<%= sync['status'] %>'>
+             <%= sync['site'] %>
+           </div>
+         </td>
+         <td style="width:20%">
+           <div class = '<%= sync['status'] %>'>
+             <%= sync['type'] %>
+           </div>
+         </td>
+         <td>
+           <div class = '<%= sync['status'] %>'>
+             <%= sync['time'] %>
+           </div>
+         </td>
+       </tr>
+      <% end %>
+    </table>
+  </div>
+
+</div>
+
+<script type="text/javascript">
+    <!--
+    slideShow(1000);
+
+    setTimeout("window.location = '/next_path'", 6000 <%= "+ #{params[:duration].to_f * 60000}" %>);
+    //-->
+</script>
+
+</body>
+</html>
+

@@ -89,7 +89,7 @@
             }
             ,
             xAxis: {
-                categories: <%= @days.to_json %>
+                categories: <%= @days.uniq.to_json %>
             },
             yAxis: {
                 title: {
@@ -140,19 +140,17 @@
                 },
                 plotBands: [{
                     from: 0,
-                    to: (<%=@values['Bed Count'] %> * 0.6),
+                    to: (<%=@values['Bed Count'] * 0.6 %>),
                     color: '#55BF3B' // green
                 }, {
-                    from: (<%=@values['Bed Count'] %> * 0.6),
-                    to: (<%=@values['Bed Count'] %> * 0.8),
+                    from: (<%=@values['Bed Count'] * 0.6 %>),
+                    to: (<%=@values['Bed Count'] * 0.8 %>),
                     color: '#DDDF0D' // yellow
                 }, {
-                    from: (<%=@values['Bed Count'] %> * 0.8),
+                    from: (<%= @values['Bed Count']  * 0.8 %>),
                     to: <%=@values['Bed Count'] %> ,
                     color: '#DF5353' // red
-                }],
-
-
+                }]
             },
 
             pane: {
@@ -257,9 +255,7 @@
 
 </script>
 
-
-<div id="heading" style="font-size: 36px; text-align: center; margin: 10px;
-        background-color: #cfe7f5; border-radius: 10px; padding: 15px; border: 1px solid #999;">
+<div id="heading" style="font-size: 36px; text-align: center; margin: 10px; background-color: #cfe7f5; border-radius: 10px; padding: 15px; border: 1px solid #999;">
   ADT Overview
 </div>
 <div id="coat">
