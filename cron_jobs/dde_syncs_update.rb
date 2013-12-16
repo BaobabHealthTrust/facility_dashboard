@@ -41,7 +41,7 @@ def get_sites
 end
 
 def get_syncs(site)
-  sync_output = RestClient.get("http://admin:admin@192.168.15.5:#{MasterPort}/sites/last_sync?site_code=#{site}")
+  sync_output = RestClient.get("http://#{Settings['username']}:#{Settings['password']}@#{Settings['target_server']}:#{Settings['port']}/sites/last_sync?site_code=#{site}")
   output = JSON.parse(sync_output)
   return output
 end
