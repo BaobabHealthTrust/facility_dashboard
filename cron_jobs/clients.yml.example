@@ -7,3 +7,9 @@ bart:
 
 opd:
   url:"192.20.6.1:8002/updates"
+
+dde:
+  username: admin
+  target_server: localhost
+  port : 3000
+  password: admin

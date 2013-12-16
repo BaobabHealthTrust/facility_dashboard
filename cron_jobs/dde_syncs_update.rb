@@ -3,7 +3,7 @@ require 'rest-client'
 require 'json'
 require 'csv'
 
-MasterPort = 3002
+Settings = YAML.load_file("#{Rails.root}/cron_jobs/clients.yml")["dde"] rescue {}
 
 def start
 
@@ -35,7 +35,7 @@ end
 
 def get_sites
 
-  site_codes_output = RestClient.post("http://admin:admin@192.168.15.5:#{MasterPort}/sites/site_codes",nil)
+  site_codes_output = RestClient.post("http://#{Settings['username']}:#{Settings['password']}@#{Settings['target_server']}:#{Settings['port']}/sites/site_codes",nil)
   site_codes = JSON.parse(site_codes_output)
   return site_codes
 end
