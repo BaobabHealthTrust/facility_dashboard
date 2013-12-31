@@ -340,12 +340,10 @@ class CommonController < ApplicationController
     end_date = Date.today
     r = {}
     @max = 0
-    @days = [[0," "],[6," "] ]
     @days2 = []
     x_values={}
 
     (0..4).each do |i|
-      @days << [ x_values[(start_date + i.days ).strftime('%A')]= i+1 ,(start_date + i.days ).strftime('%A')]
       @days2 << (start_date + i.days ).strftime('%A')
     end
 
