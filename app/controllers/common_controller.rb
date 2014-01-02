@@ -340,10 +340,12 @@ class CommonController < ApplicationController
     end_date = Date.today
     r = {}
     @max = 0
+    @days = [[0," "],[6," "] ]
     @days2 = []
     x_values={}
 
     (0..4).each do |i|
+      @days << [ x_values[(start_date + i.days ).strftime('%A')]= i+1 ,(start_date + i.days ).strftime('%A')]
       @days2 << (start_date + i.days ).strftime('%A')
     end
 
@@ -356,9 +358,12 @@ class CommonController < ApplicationController
     day_total.each do |x|
 
       if r[x.facility].blank?
-        r[x.facility] = [[ x_values[x.attendance_figure_day.strftime('%A')],x.attendance_figure]]
+        r[x.facility] = [0,0,0,0,0]
+        index = @days2.index(x.attendance_figure_day.strftime('%A'))
+        r[x.facility][index] = x.attendance_figure
       else
-        r[x.facility] << [x_values[x.attendance_figure_day.strftime('%A')] ,x.attendance_figure]
+        index = @days2.index(x.attendance_figure_day.strftime('%A'))
+        r[x.facility][index] = x.attendance_figure
       end
 
       @max = x.attendance_figure unless @max >x.attendance_figure
